@@ -1,6 +1,4 @@
 /**
- * This example is following frontend and backend separation.
- *
  * Before this .js is loaded, the html skeleton is created.
  *
  * This .js performs two steps:
@@ -9,12 +7,27 @@
  */
 
 
+
+
+let cachedRecords = []; // array
+
+/**
+ * Handles the data returned by the API, read the jsonObject and copy records into cache
+ * @param resultData jsonObject
+ */
+function movieRecordHandler(resultData) {
+    console.log("movieRecordHandler: Uploading top 100 records to cache");
+    cachedRecords = [];
+    cachedRecords = resultData;
+    populateMovieTable(1);
+}
+
 /**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
  */
-function handleStarResult(resultData) {
-    console.log("handleStarResult: populating star table from resultData");
+function populateMovieTable(pageNumber) {
+    console.log("populateMovieTable: populating movie table");
 
     // Populate the star table
     // Find the empty table body by id "star_table_body"
@@ -50,6 +63,6 @@ function handleStarResult(resultData) {
 jQuery.ajax({
     dataType: "json", // Setting return data type
     method: "GET", // Setting request method
-    url: "api/stars", // Setting request url, which is mapped by StarsServlet in Stars.java
-    success: (resultData) => handleStarResult(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
+    url: "api/movies", // Setting request url, which is mapped by MoviesServlet in MoviesServlet.java
+    success: (resultData) => movieRecordHandler(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
 });
