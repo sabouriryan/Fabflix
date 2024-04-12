@@ -10,6 +10,7 @@
 
 
 let cachedRecords = []; // array
+const recordsPerPage = 20;
 
 /**
  * Handles the data returned by the API, read the jsonObject and copy records into cache
@@ -24,17 +25,20 @@ function movieRecordHandler(resultData) {
 
 /**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
- * @param resultData jsonObject
+ * @param pageNumber the current page number
  */
 function populateMovieTable(pageNumber) {
     console.log("populateMovieTable: populating movie table");
+    const startIndex = (pageNumber - 1) * recordsPerPage;
+    const endIndex = Math.min(startIndex + recordsPerPage, cachedRecords.length);
+    const recordsToDisplay = cachedRecords.slice(startIndex, endIndex);
 
     // Populate the star table
     // Find the empty table body by id "star_table_body"
-    let starTableBodyElement = jQuery("#star_table_body");
+    let movieTableBodyElement = jQuery("#star_table_body");
 
     // Iterate through resultData, no more than 10 entries
-    for (let i = 0; i < Math.min(10, resultData.length); i++) {
+    for (let i = 0; i < recordsToDisplay.length; i++) {
 
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
@@ -42,18 +46,19 @@ function populateMovieTable(pageNumber) {
         rowHTML +=
             "<th>" +
             // Add a link to single-star.html with id passed with GET url parameter
-            '<a href="public/single-star.html?id=' + resultData[i]['star_id'] + '">'
-            + resultData[i]["star_name"] +     // display star_name for the link text
+            '<a href="public/single-star.html?id=' + recordsToDisplay[i]['star_id'] + '">'
+            + recordsToDisplay[i]["star_name"] +     // display star_name for the link text
             '</a>' +
             "</th>";
-        rowHTML += "<th>" + resultData[i]["star_dob"] + "</th>";
+        rowHTML += "<th>" + recordsToDisplay[i]["star_dob"] + "</th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
-        starTableBodyElement.append(rowHTML);
+        movieTableBodyElement.append(rowHTML);
     }
 }
 
+    // implement pagination here later
 
 /**
  * Once this .js is loaded, following scripts will be executed by the browser
