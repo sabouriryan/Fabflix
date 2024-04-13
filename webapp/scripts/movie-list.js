@@ -43,16 +43,13 @@ function populateMovieTable(pageNumber) {
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
         rowHTML += "<tr>";
-        rowHTML +=
-            "<th>" +
-            // Add a link to single-star.html with id passed with GET url parameter
-            '<a href="public/single-movie.html?id=' + recordsToDisplay[i]['id'] + '">'
-            + recordsToDisplay[i]["star_name"] +     // display star_name for the link text
-            '</a>' +
-            "</th>";
-        rowHTML += "<th>" + recordsToDisplay[i]["star_dob"] + "</th>";
+        rowHTML += "<td>" + recordsToDisplay[i]["movie_title"] + "</td>";
+        rowHTML += "<td>" + recordsToDisplay[i]["movie_year"] + "</td>";
+        rowHTML += "<td>" + recordsToDisplay[i]["movie_director"] + "</td>";
         rowHTML += "</tr>";
-
+        //'<a href="public/single-movie.html?id=' + recordsToDisplay[i]['id'] + '">'
+        //+ recordsToDisplay[i]["star_name"] +     // display star_name for the link text
+        //'</a>' +
         // Append the row created to the table body, which will refresh the page
         movieTableBodyElement.append(rowHTML);
     }
