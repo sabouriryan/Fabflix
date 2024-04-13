@@ -28,6 +28,19 @@ public class MoviesServlet extends HttpServlet {
         }
     }
 
+    private void getResultMetaData(ResultSet rs) {
+        try {
+            ResultSetMetaData md = rs.getMetaData();
+            System.out.println("There are " + md.getColumnCount() + " columns");
+            for (int i = 1; i <= md.getColumnCount(); i++) {
+                System.out.println("Name of column " + i + " is " + md.getColumnName(i));
+                System.out.println("Type of column " + i + " is " + md.getColumnTypeName(i));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
@@ -45,6 +58,7 @@ public class MoviesServlet extends HttpServlet {
 
             String query = "SELECT * from movies";
             ResultSet rs = statement.executeQuery(query);
+
 
             JsonArray jsonArray = new JsonArray();
 
