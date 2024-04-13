@@ -17,7 +17,7 @@ import java.sql.Statement;
 
 
 // Declaring a WebServlet called MoviesServlet, which maps to url "/api/movies"
-@WebServlet(name = "MoviesServlet", urlPatterns = "public/api/movies")
+@WebServlet(name = "MoviesServlet", urlPatterns = "/api/movies")
 public class MoviesServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -48,7 +48,9 @@ public class MoviesServlet extends HttpServlet {
             // Declare our statement
             Statement statement = conn.createStatement();
 
-            String query = "SELECT m.id, m.title, m.year, m.director, r.rating, r.numVotes FROM moviedb.movies m JOIN moviedb.ratings r ON m.id = r.movieId ORDER BY r.rating DESC LIMIT 100";
+            //String query = "SELECT m.id, m.title, m.year, m.director, r.rating, r.numVotes FROM moviedbexample.movies m JOIN moviedbexample.ratings r ON m.id = r.movieId ORDER BY r.rating DESC LIMIT 100";
+            String query = "SELECT m.title, m.year, m.director, r.rating FROM moviedbexample.movies m LEFT JOIN moviedbexample.ratings r ON m.id = r.movieId ORDER BY r.rating DESC LIMIT 50";
+
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
@@ -61,6 +63,7 @@ public class MoviesServlet extends HttpServlet {
                 String title = rs.getString("title");
                 int year = rs.getInt("year");
                 String director = rs.getString("director");
+                double rating = rs.getDouble("rating");
 
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
@@ -68,6 +71,7 @@ public class MoviesServlet extends HttpServlet {
                 jsonObject.addProperty("title", title);
                 jsonObject.addProperty("year", year);
                 jsonObject.addProperty("director", director);
+                jsonObject.addProperty("rating", rating);
 
                 jsonArray.add(jsonObject);
             }
