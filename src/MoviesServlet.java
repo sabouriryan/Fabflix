@@ -49,7 +49,7 @@ public class MoviesServlet extends HttpServlet {
             Statement statement = conn.createStatement();
 
             //String query = "SELECT m.id, m.title, m.year, m.director, r.rating, r.numVotes FROM moviedbexample.movies m JOIN moviedbexample.ratings r ON m.id = r.movieId ORDER BY r.rating DESC LIMIT 100";
-            String query = "SELECT m.title, m.year, m.director, r.rating FROM moviedbexample.movies m LEFT JOIN moviedbexample.ratings r ON m.id = r.movieId ORDER BY r.rating DESC LIMIT 50";
+            String query = "SELECT m.id, m.title, m.year, m.director, r.rating FROM moviedbexample.movies m LEFT JOIN moviedbexample.ratings r ON m.id = r.movieId ORDER BY r.rating DESC LIMIT 100";
 
 
             // Perform the query
