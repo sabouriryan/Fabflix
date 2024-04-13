@@ -7,7 +7,7 @@
 
 <!doctype html>
 <html lang="en">
-<head>
+  <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport"
@@ -17,26 +17,25 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>Star List</title>
-</head>
+    <title>Movie List</title>
+  </head>
 <body>
 
 
 <h1>stars</h1>
-
+gt
 <!-- Id "star_table" is useful for jQuery to find the html element with id, class here is mapping to Bootstrap defined class CSS -->
-<table id=star_table class="table table-striped">
-    <!-- Create a table header -->
-    <thead>
-    <tr>
-        <!-- Titles of each column-->
-        <th>Name</th>
-        <th>Birth Year</th>
-    </tr>
-    </thead>
-    <!-- Table body is left empty here, will be populated with the data retrieved with movie-list.js -->
-    <!-- Again, id "star_table_body" is useful for jQuery to find this html element -->
-    <tbody id=star_table_body></tbody>
+<table id=movie_table class="table table-striped">
+  <!-- Create a table header -->
+  <thead>
+  <tr>
+    <!-- Titles of each column-->
+    <th>Name</th>
+    <th>Birth Year</th>
+  </tr>
+  </thead>
+  <!-- Table body is left empty here, will be populated with the data retrieved with movie-list.js -->
+  <tbody id=movie_table_body></tbody>
 </table>
 
 <!-- Load jQuery and Bootstrap JS -->

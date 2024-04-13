@@ -11,22 +11,18 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 
 // Declaring a WebServlet called StarsServlet, which maps to url "/api/stars"
-@WebServlet(name = "StarsServlet", urlPatterns = "/api/stars")
-public class StarsServlet extends HttpServlet {
+@WebServlet(name = "MoviesServlet", urlPatterns = "/api/movies")
+public class MoviesServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
-    // Create a dataSource which registered in web.
-    private DataSource dataSource;
+    private DataSource dataSource; // Create a dataSource which registered in web.
 
     public void init(ServletConfig config) {
         try {
-            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedbexample");
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -45,27 +41,25 @@ public class StarsServlet extends HttpServlet {
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
 
-            // Declare our statement
             Statement statement = conn.createStatement();
 
-            String query = "SELECT * from stars";
-
-            // Perform the query
+            String query = "SELECT * from movies";
             ResultSet rs = statement.executeQuery(query);
 
             JsonArray jsonArray = new JsonArray();
 
             // Iterate through each row of rs
             while (rs.next()) {
-                String star_id = rs.getString("id");
-                String star_name = rs.getString("name");
-                String star_dob = rs.getString("birthYear");
-
+                String movie_id = rs.getString("id");
+                String movie_title = rs.getString("title");
+                String movie_year = rs.getString("year");
+                String movie_director = rs.getString("director");
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("star_id", star_id);
-                jsonObject.addProperty("star_name", star_name);
-                jsonObject.addProperty("star_dob", star_dob);
+                jsonObject.addProperty("movie_id", movie_id);
+                jsonObject.addProperty("movie_title", movie_title);
+                jsonObject.addProperty("movie_year", movie_year);
+                jsonObject.addProperty("movie_director", movie_director);
 
                 jsonArray.add(jsonObject);
             }

@@ -19,7 +19,9 @@ const recordsPerPage = 20;
 function movieRecordHandler(resultData) {
     console.log("movieRecordHandler: Uploading top 100 records to cache");
     cachedRecords = [];
-    cachedRecords = resultData;
+    cachedRecords = resultData.slice(0, 100);
+    if (cachedRecords.length === 0) { console.log("Empty cache!!"); }
+    console.log(cachedRecords)
     populateMovieTable(1);
 }
 
@@ -33,11 +35,9 @@ function populateMovieTable(pageNumber) {
     const endIndex = Math.min(startIndex + recordsPerPage, cachedRecords.length);
     const recordsToDisplay = cachedRecords.slice(startIndex, endIndex);
 
-    // Populate the star table
-    // Find the empty table body by id "star_table_body"
-    let movieTableBodyElement = jQuery("#star_table_body");
+    // Populate the movie table by id "star_table_body"
+    let movieTableBodyElement = jQuery("#movie_table_body");
 
-    // Iterate through resultData, no more than 10 entries
     for (let i = 0; i < recordsToDisplay.length; i++) {
 
         // Concatenate the html tags with resultData jsonObject
@@ -46,7 +46,7 @@ function populateMovieTable(pageNumber) {
         rowHTML +=
             "<th>" +
             // Add a link to single-star.html with id passed with GET url parameter
-            '<a href="public/single-star.html?id=' + recordsToDisplay[i]['star_id'] + '">'
+            '<a href="public/single-movie.html?id=' + recordsToDisplay[i]['id'] + '">'
             + recordsToDisplay[i]["star_name"] +     // display star_name for the link text
             '</a>' +
             "</th>";

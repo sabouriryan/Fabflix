@@ -1,4 +1,4 @@
-CREATE DATABASE moviedb;
+-- noinspection SqlNoDataSourceInspectionForFile
 
 CREATE TABLE moviedb.movies (
     id VARCHAR(10) PRIMARY KEY,
