@@ -6,9 +6,6 @@
  *      2. Populate the data to correct html elements.
  */
 
-
-
-
 let cachedRecords = []; // array
 const recordsPerPage = 20;
 
@@ -26,7 +23,7 @@ function movieRecordHandler(resultData) {
 }
 
 /**
- * Handles the data returned by the API, read the jsonObject and populate data into html elements
+ * Populates data into html elements from cache
  * @param pageNumber the current page number
  */
 function populateMovieTable(pageNumber) {

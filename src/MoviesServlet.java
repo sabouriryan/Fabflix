@@ -31,10 +31,9 @@ public class MoviesServlet extends HttpServlet {
     private void getResultMetaData(ResultSet rs) {
         try {
             ResultSetMetaData md = rs.getMetaData();
-            System.out.println("There are " + md.getColumnCount() + " columns");
+            System.out.println("There are " + md.getColumnCount() + " columns: ");
             for (int i = 1; i <= md.getColumnCount(); i++) {
-                System.out.println("Name of column " + i + " is " + md.getColumnName(i));
-                System.out.println("Type of column " + i + " is " + md.getColumnTypeName(i));
+                System.out.println("Name/Type of column " + i + " is " + md.getColumnName(i) + " " + md.getColumnTypeName(i));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -78,7 +77,7 @@ public class MoviesServlet extends HttpServlet {
                 ResultSet rsGenres = pstmtGenres.executeQuery();
 
                 JsonArray topGenresArray = new JsonArray();
-                for (int genreCount = 0; rs.next() && genreCount < 3; ++genreCount) {
+                for (int genreCount = 0; rsGenres.next() && genreCount < 3; ++genreCount) {
                     topGenresArray.add(rsGenres.getString("name"));
                 }
                 rsGenres.close();
@@ -94,7 +93,7 @@ public class MoviesServlet extends HttpServlet {
                 ResultSet rsStars = pstmtStars.executeQuery();
 
                 JsonArray topStarsArray = new JsonArray();
-                for (int starCount = 0; rs.next() && starCount < 3; ++starCount) {
+                for (int starCount = 0; rsStars.next() && starCount < 3; ++starCount) {
                     topStarsArray.add(rsStars.getString("name"));
                 }
                 rsStars.close();
@@ -129,7 +128,7 @@ public class MoviesServlet extends HttpServlet {
             response.setStatus(200);
 
         } catch (Exception e) {
-
+            e.printStackTrace();
             // Write error message JSON object to output
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("errorMessage", e.getMessage());
