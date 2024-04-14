@@ -15,10 +15,12 @@ const recordsPerPage = 20;
  */
 function movieRecordHandler(resultData) {
     console.log("movieRecordHandler: Uploading top 100 records to cache");
-    cachedRecords = [];
-    cachedRecords = resultData.slice(0, 100);
-    if (cachedRecords.length === 0) { console.log("Empty cache!!"); }
-    console.log(cachedRecords)
+    cachedRecords = []; // clear the cache
+
+    cachedRecords = resultData;
+    //cachedRecords = resultData.slice(0, 100); // If more than 100 records, cache only 100
+    console.log("Logged " + cachedRecords.length + " records")
+    console.log(cachedRecords);
     populateMovieTable(1);
 }
 
@@ -34,21 +36,22 @@ function populateMovieTable(pageNumber) {
 
     // Populate the movie table by id "star_table_body"
     let movieTableBodyElement = jQuery("#movie_table_body");
-
     for (let i = 0; i < recordsToDisplay.length; i++) {
 
-        // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
         rowHTML += "<tr>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_title"] + "</td>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_year"] + "</td>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_director"] + "</td>";
+        rowHTML += "<td>" + recordsToDisplay[i]["movie_genres"].join(", ") + "</td>";
+        rowHTML += "<td>" + recordsToDisplay[i]["movie_stars"].join(", ") + "</td>";
+        rowHTML += "<td>" + recordsToDisplay[i]["movie_rating"] + "</td>";
         rowHTML += "</tr>";
         //'<a href="public/single-movie.html?id=' + recordsToDisplay[i]['id'] + '">'
         //+ recordsToDisplay[i]["star_name"] +     // display star_name for the link text
         //'</a>' +
-        // Append the row created to the table body, which will refresh the page
-        movieTableBodyElement.append(rowHTML);
+
+        movieTableBodyElement.append(rowHTML); // refreshes page
     }
 }
 
