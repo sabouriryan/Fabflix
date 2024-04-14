@@ -59,7 +59,7 @@ public class MoviesServlet extends HttpServlet {
             String query = "SELECT * from movies";
             ResultSet rs = statement.executeQuery(query);
 
-
+            getResultMetaData(rs);
             JsonArray jsonArray = new JsonArray();
 
             // Iterate through each row of rs
