@@ -5,13 +5,13 @@ CREATE TABLE movies (
     director VARCHAR(100) NOT NULL DEFAULT ''
 );
 
-CREATE TABLE stars (
+CREATE TABLE moviedb.stars (
     id VARCHAR(10) PRIMARY KEY,
     name VARCHAR(100) NOT NULL DEFAULT '',
     birthYear INTEGER
 );
 
-CREATE TABLE stars_in_movies (
+CREATE TABLE moviedb.stars_in_movies (
     starId VARCHAR(10) NOT NULL DEFAULT '',
     movieId VARCHAR(10) NOT NULL DEFAULT '',
     PRIMARY KEY (starId, movieId),
@@ -19,12 +19,12 @@ CREATE TABLE stars_in_movies (
     FOREIGN KEY (movieId) REFERENCES movies(id)
 );
 
-CREATE TABLE genres (
+CREATE TABLE moviedb.genres (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(32) NOT NULL DEFAULT ''
 );
 
-CREATE TABLE genres_in_movies (
+CREATE TABLE moviedb.genres_in_movies (
     genreId INTEGER NOT NULL,
     movieId VARCHAR(10) NOT NULL DEFAULT '',
     PRIMARY KEY (genreId, movieId),
@@ -32,7 +32,7 @@ CREATE TABLE genres_in_movies (
     FOREIGN KEY (movieId) REFERENCES movies(id)
 );
 
-CREATE TABLE creditcards (
+CREATE TABLE moviedb.creditcards (
     id VARCHAR(20) PRIMARY KEY,
     firstName VARCHAR(50) NOT NULL DEFAULT '',
     lastName VARCHAR(50) NOT NULL DEFAULT '',
@@ -40,7 +40,7 @@ CREATE TABLE creditcards (
 );
 
 
-CREATE TABLE customers (
+CREATE TABLE moviedb.customers (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     firstName VARCHAR(50) NOT NULL DEFAULT '',
     lastName VARCHAR(50) NOT NULL DEFAULT '',
@@ -51,7 +51,7 @@ CREATE TABLE customers (
     FOREIGN KEY (ccId) REFERENCES creditcards(id)
 );
 
-CREATE TABLE sales (
+CREATE TABLE moviedb.sales (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     customerId INTEGER NOT NULL,
     movieId VARCHAR(10) NOT NULL DEFAULT '',
@@ -60,7 +60,7 @@ CREATE TABLE sales (
     FOREIGN KEY (movieId) REFERENCES movies(id)
 );
 
-CREATE TABLE ratings (
+CREATE TABLE moviedb.ratings (
     movieId VARCHAR(10) NOT NULL DEFAULT '',
     rating FLOAT NOT NULL,
     numVotes INTEGER NOT NULL,
