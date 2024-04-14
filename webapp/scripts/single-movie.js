@@ -42,29 +42,30 @@ function handleResult(resultData) {
 
     // populate the star info h3
     // find the empty h3 body by id "star_info"
-    let starInfoElement = jQuery("#movie_info");
+    let movieTitleElement = jQuery("#movie_title");
+    movieTitleElement.append(resultData["movie_title"])
 
-    // append two html <p> created to the h3 body, which will refresh the page
-    starInfoElement.append("<p>Movie Name: " + resultData[0]["star_name"] + "</p>" +
-        "<p>Date Of Birth: " + resultData[0]["star_dob"] + "</p>");
+    let movieYearElement = jQuery("#movie_year");
+    movieYearElement.append(resultData["movie_year"])
 
-    console.log("handleResult: populating movie table from resultData");
 
-    // Populate the star table
-    // Find the empty table body by id "movie_table_body"
-    let movieTableBodyElement = jQuery("#movie_table_body");
+    let movieDirectorElement = jQuery("#movie_director");
+    movieDirectorElement.append(resultData["movie_director"])
+    
+    let movieRatingElement = jQuery("#movie_rating");
+    movieRatingElement.append(resultData["movie_rating"])
+    
+    let genreListElement = jQuery("#genre_list");
 
-    // Concatenate the html tags with resultData jsonObject to create table rows
-    for (let i = 0; i < Math.min(20, resultData.length); i++) {
-        let rowHTML = "";
-        rowHTML += "<tr>";
-        rowHTML += "<th>" + resultData[i]["movie_title"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
-        rowHTML += "</tr>";
+    for (let i = 0; i < resultData['genres']; ++i){
+        genreListHTML = "<li>" + resultData['genres'][i] + "</li>";
+        genreListElement.append(genreListHTML);
+    }
 
-        // Append the row created to the table body, which will refresh the page
-        movieTableBodyElement.append(rowHTML);
+    let starListElement = jQuery("#star_list");
+    for (let i = 0; i < resultData['stars']; ++i){
+        starListHTML = "<a href='public/single-star.html?id=" + stars[i]["star_id"] + "'>" + stars[i]["star_name"] + "</a>";
+        starListElement.append(starListHTML);
     }
 }
 
