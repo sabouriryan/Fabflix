@@ -1,6 +1,4 @@
--- noinspection SqlNoDataSourceInspectionForFile
-
-CREATE TABLE moviedb.movies (
+CREATE TABLE movies (
     id VARCHAR(10) PRIMARY KEY,
     title VARCHAR(100) NOT NULL DEFAULT '',
     year INTEGER NOT NULL,
@@ -66,7 +64,6 @@ CREATE TABLE moviedb.ratings (
     movieId VARCHAR(10) NOT NULL DEFAULT '',
     rating FLOAT NOT NULL,
     numVotes INTEGER NOT NULL,
-    PRIMARY KEY (movieId),
     FOREIGN KEY (movieId) REFERENCES movies(id)
 );
 

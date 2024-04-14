@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.sql.*;
 
 
-// Declaring a WebServlet called StarsServlet, which maps to url "/api/stars"
+// Declaring a WebServlet called MoviesServlet, which maps to url "/api/movies"
 @WebServlet(name = "MoviesServlet", urlPatterns = "/api/movies")
 public class MoviesServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -55,25 +55,65 @@ public class MoviesServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
 
             Statement statement = conn.createStatement();
-
-            String query = "SELECT * from movies";
-            ResultSet rs = statement.executeQuery(query);
+            String topHundredQuery = "SELECT m.id, m.title, m.year, m.director, r.rating FROM moviedb.movies m " +
+                                     "LEFT JOIN moviedb.ratings r ON m.id = r.movieId " +
+                                     "ORDER BY r.rating DESC LIMIT 100";
+            ResultSet rs = statement.executeQuery(topHundredQuery);
 
             getResultMetaData(rs);
+
             JsonArray jsonArray = new JsonArray();
 
             // Iterate through each row of rs
             while (rs.next()) {
                 String movie_id = rs.getString("id");
+
+                // Get top 3 genres
+                String queryGenres = "SELECT g.name FROM genres_in_movies gim " +
+                                     "JOIN genres g ON gim.genreId = g.id " +
+                                     "WHERE gim.movieId = ?";
+
+                PreparedStatement pstmtGenres = conn.prepareStatement(queryGenres);
+                pstmtGenres.setString(1, movie_id);
+                ResultSet rsGenres = pstmtGenres.executeQuery();
+
+                JsonArray topGenresArray = new JsonArray();
+                for (int genreCount = 0; rs.next() && genreCount < 3; ++genreCount) {
+                    topGenresArray.add(rsGenres.getString("name"));
+                }
+                rsGenres.close();
+                pstmtGenres.close();
+
+                // Get top 3 stars
+                String queryStars = "SELECT s.name FROM stars_in_movies sim " +
+                                    "JOIN stars s ON sim.starId = s.id " +
+                                    "WHERE sim.movieId = ?";
+
+                PreparedStatement pstmtStars = conn.prepareStatement(queryStars);
+                pstmtStars.setString(1, movie_id);
+                ResultSet rsStars = pstmtStars.executeQuery();
+
+                JsonArray topStarsArray = new JsonArray();
+                for (int starCount = 0; rs.next() && starCount < 3; ++starCount) {
+                    topStarsArray.add(rsStars.getString("name"));
+                }
+                rsStars.close();
+                pstmtStars.close();
+
                 String movie_title = rs.getString("title");
-                String movie_year = rs.getString("year");
+                int movie_year = rs.getInt("year");
                 String movie_director = rs.getString("director");
+                double movie_rating = rs.getDouble("rating");
+
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("movie_id", movie_id);
                 jsonObject.addProperty("movie_title", movie_title);
                 jsonObject.addProperty("movie_year", movie_year);
                 jsonObject.addProperty("movie_director", movie_director);
+                jsonObject.add("top_genres", topGenresArray);
+                jsonObject.add("top_stars", topStarsArray);
+                jsonObject.addProperty("movie_rating", movie_rating);
 
                 jsonArray.add(jsonObject);
             }
