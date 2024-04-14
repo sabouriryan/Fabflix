@@ -21,7 +21,7 @@ function handleMovieResult(resultData) {
     let movieTableBodyElement = jQuery("#movie_table_body");
 
     // Iterate through resultData, no more than 10 entries
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 20; i++) {
 
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";

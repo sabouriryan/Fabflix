@@ -49,17 +49,51 @@ public class MoviesServlet extends HttpServlet {
             Statement statement = conn.createStatement();
 
             //String query = "SELECT m.id, m.title, m.year, m.director, r.rating, r.numVotes FROM moviedbexample.movies m JOIN moviedbexample.ratings r ON m.id = r.movieId ORDER BY r.rating DESC LIMIT 100";
-            String query = "SELECT m.id, m.title, m.year, m.director, r.rating FROM moviedbexample.movies m LEFT JOIN moviedbexample.ratings r ON m.id = r.movieId ORDER BY r.rating DESC LIMIT 100";
+            String topHundredQuery = "SELECT m.id, m.title, m.year, m.director, r.rating FROM moviedbexample.movies m LEFT JOIN moviedbexample.ratings r ON m.id = r.movieId ORDER BY r.rating DESC LIMIT 100";
 
 
             // Perform the query
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet rs = statement.executeQuery(topHundredQuery);
 
             JsonArray jsonArray = new JsonArray();
 
             // Iterate through each row of rs
             while (rs.next()) {
+
                 String movie_id = rs.getString("id");
+                
+                String queryGenres = "SELECT g.name FROM genres_in_movies gim " +
+                "JOIN genres g ON gim.genreId = g.id " +
+                "WHERE gim.movieId = " + movie_id;
+                
+                Statement stmtGenres = conn.createStatement();
+                ResultSet rsGenres = stmtGenres.executeQuery(queryGenres);
+
+                JsonArray topGenresArray = new JsonArray();
+                int genreCount = 0;
+                while (rsGenres.next() && genreCount < 3) {
+                    topGenresArray.add(rsGenres.getString("name"));
+                    genreCount++;
+                }
+                rsGenres.close();
+                stmtGenres.close();
+
+                String queryStars = "SELECT s.name FROM stars_in_movies sim " +
+                "JOIN stars s ON sim.starId = s.id " +
+                "WHERE sim.movieId = " + movie_id;
+                
+                Statement stmtStars = conn.createStatement();
+                ResultSet rsStars = stmtStars.executeQuery(queryStars);
+
+                JsonArray topStarsArray = new JsonArray();
+                int starCount = 0;
+                while (rsStars.next() && starCount < 3) {
+                    topStarsArray.add(rsStars.getString("name"));
+                    starCount++;
+                }
+                rsStars.close();
+                stmtStars.close();
+
                 String title = rs.getString("title");
                 int year = rs.getInt("year");
                 String director = rs.getString("director");
@@ -71,10 +105,13 @@ public class MoviesServlet extends HttpServlet {
                 jsonObject.addProperty("title", title);
                 jsonObject.addProperty("year", year);
                 jsonObject.addProperty("director", director);
+                jsonObject.add("top_genres", topGenresArray);
+                jsonObject.add("top_stars", topStarsArray);
                 jsonObject.addProperty("rating", rating);
 
                 jsonArray.add(jsonObject);
             }
+
             rs.close();
             statement.close();
 
