@@ -84,7 +84,7 @@ public class MoviesServlet extends HttpServlet {
                 pstmtGenres.close();
 
                 // Get top 3 stars
-                String queryStars = "SELECT s.name FROM stars_in_movies sim " +
+                String queryStars = "SELECT s.name, s.id FROM stars_in_movies sim " +
                                     "JOIN stars s ON sim.starId = s.id " +
                                     "WHERE sim.movieId = ?";
 
@@ -94,7 +94,10 @@ public class MoviesServlet extends HttpServlet {
 
                 JsonArray topStarsArray = new JsonArray();
                 for (int starCount = 0; rsStars.next() && starCount < 3; ++starCount) {
-                    topStarsArray.add(rsStars.getString("name"));
+                    JsonObject starObject = new JsonObject();
+                    starObject.addProperty("star_name", rsStars.getString("name"));
+                    starObject.addProperty("star_id", rsStars.getString("id"));
+                    topStarsArray.add(starObject);
                 }
                 rsStars.close();
                 pstmtStars.close();
