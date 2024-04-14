@@ -44,7 +44,16 @@ function populateMovieTable(pageNumber) {
         rowHTML += "<td>" + recordsToDisplay[i]["movie_year"] + "</td>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_director"] + "</td>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_genres"].join(", ") + "</td>";
-        rowHTML += "<td>" + recordsToDisplay[i]["movie_stars"].join(", ") + "</td>";
+
+        let stars = recordsToDisplay[i]["movie_stars"];
+        for (let i = 0; i < stars.length; ++i) {
+            rowHTML += "<td>" +
+                "<a href='public/single-star.html'>" +
+                "</a>" +
+            "</td>";
+        }
+
+
         rowHTML += "<td>" + recordsToDisplay[i]["movie_rating"] + "</td>";
         rowHTML += "</tr>";
         //'<a href="public/single-movie.html?id=' + recordsToDisplay[i]['id'] + '">'
@@ -54,7 +63,6 @@ function populateMovieTable(pageNumber) {
         movieTableBodyElement.append(rowHTML); // refreshes page
     }
 }
-
     // implement pagination here later
 
 /**
