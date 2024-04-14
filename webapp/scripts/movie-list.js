@@ -40,7 +40,7 @@ function populateMovieTable(pageNumber) {
 
         let rowHTML = "";
         rowHTML += "<tr>";
-        rowHTML += "<td>" + recordsToDisplay[i]["movie_title"] + "</td>";
+        rowHTML += "<td>" + "<a href='public/single-movie.html?id=" + recordsToDisplay[i]["movie_id"] + "'>" + recordsToDisplay[i]["movie_title"] + "</a>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_year"] + "</td>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_director"] + "</td>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_genres"].join(", ") + "</td>";
