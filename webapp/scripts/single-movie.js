@@ -38,6 +38,7 @@ function getParameterByName(target) {
 
 function handleResult(resultData) {
 
+    console.log(resultData);
     console.log("handleResult: populating movie info from resultData");
 
     // populate the star info h3
@@ -57,14 +58,14 @@ function handleResult(resultData) {
     
     let genreListElement = jQuery("#genre_list");
 
-    for (let i = 0; i < resultData['genres']; ++i){
-        genreListHTML = "<li>" + resultData['genres'][i] + "</li>";
+    for (let i = 0; i < resultData['movie_genres'].length; ++i){
+        genreListHTML = "<li>" + resultData['movie_genres'][i] + "</li>";
         genreListElement.append(genreListHTML);
     }
 
     let starListElement = jQuery("#star_list");
-    for (let i = 0; i < resultData['stars']; ++i){
-        starListHTML = "<a href='public/single-star.html?id=" + stars[i]["star_id"] + "'>" + stars[i]["star_name"] + "</a>";
+    for (let i = 0; i < resultData['movie_stars'].length; ++i){
+        starListHTML = "<li><a href='single-star.html?id=" + resultData["movie_stars"][i]["star_id"] + "'>" + resultData["movie_stars"][i]["star_name"] + "</a></li>";
         starListElement.append(starListHTML);
     }
 }
@@ -74,12 +75,12 @@ function handleResult(resultData) {
  */
 
 // Get id from URL
-let starId = getParameterByName('id');
+let movieId = getParameterByName('id');
 
 // Makes the HTTP GET request and registers on success callback function handleResult
 jQuery.ajax({
     dataType: "json",  // Setting return data type
     method: "GET",// Setting request method
-    url: "api/single-star?id=" + starId, // Setting request url, which is mapped by StarsServlet in Stars.java
+    url: "api/single-movie?id=" + movieId, // Setting request url, which is mapped by StarsServlet in Stars.java
     success: (resultData) => handleResult(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
 });
