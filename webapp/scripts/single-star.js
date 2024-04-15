@@ -44,7 +44,7 @@ function handleResult(resultData) {
     starNameElement.append(resultData["star_name"]);
 
     let starDobElement = jQuery("#star_dob");
-    starDobElement.append(resultData["star_dob"]);
+    starDobElement.append("("+ resultData["star_dob"] + ")");
 
     console.log("handleResult: populating movie table from resultData");
 

@@ -59,13 +59,17 @@ function handleResult(resultData) {
     let genreListElement = jQuery("#genre_list");
 
     for (let i = 0; i < resultData['movie_genres'].length; ++i){
-        genreListHTML = "<li>" + resultData['movie_genres'][i] + "</li>";
+        genreListHTML = resultData['movie_genres'][i];
+        if (i !== resultData['movie_genres'].length - 1) genreListHTML += ", "
         genreListElement.append(genreListHTML);
     }
 
     let starListElement = jQuery("#star_list");
     for (let i = 0; i < resultData['movie_stars'].length; ++i){
-        starListHTML = "<li><a href='single-star.html?id=" + resultData["movie_stars"][i]["star_id"] + "'>" + resultData["movie_stars"][i]["star_name"] + "</a></li>";
+        starListHTML = "<a href='single-star.html?id=" + resultData["movie_stars"][i]["star_id"] + "'>" + resultData["movie_stars"][i]["star_name"] + "</a>";
+        if (i < resultData['movie_stars'].length - 1) {
+            starListHTML+= ", ";
+        }
         starListElement.append(starListHTML);
     }
 }

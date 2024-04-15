@@ -1,0 +1,21 @@
+.movie-card {
+    border-radius: 10px;
+    margin-top: 50px;
+    padding: 20px;
+    min-width: 60%;
+    max-width: 70%;
+    background-color: #1f203c;
+}
+
+.movie-card h1 {
+    color: #553eb0;
+}
+
+.movie-card a {
+    text-decoration: none;
+    color: white;
+}
+
+.movie-card a:hover {
+    color: #745cb2;
+}
