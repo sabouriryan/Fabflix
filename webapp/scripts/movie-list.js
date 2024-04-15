@@ -45,20 +45,16 @@ function populateMovieTable(pageNumber) {
         rowHTML += "<td>" + recordsToDisplay[i]["movie_director"] + "</td>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_genres"].join(", ") + "</td>";
 
+        rowHTML += "<td>";
         let stars = recordsToDisplay[i]["movie_stars"];
         for (let i = 0; i < stars.length; ++i) {
-            rowHTML += "<td>" +
-                "<a href='public/single-star.html'>" +
-                "</a>" +
-            "</td>";
+            rowHTML += "<a href='public/single-star.html?id=" + stars[i]["star_id"] + "'>" + stars[i]["star_name"] + "</a>";
+            if (i !== stars.length - 1) rowHTML += ", ";
         }
-
+        rowHTML += "</td>";
 
         rowHTML += "<td>" + recordsToDisplay[i]["movie_rating"] + "</td>";
         rowHTML += "</tr>";
-        //'<a href="public/single-movie.html?id=' + recordsToDisplay[i]['id'] + '">'
-        //+ recordsToDisplay[i]["star_name"] +     // display star_name for the link text
-        //'</a>' +
 
         movieTableBodyElement.append(rowHTML); // refreshes page
     }
