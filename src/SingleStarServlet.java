@@ -57,15 +57,16 @@ public class SingleStarServlet extends HttpServlet {
             pstmtStar.setString(1, star_id);
             ResultSet rs = pstmtStar.executeQuery();
 
+            rs.next();
             String star_name = rs.getString("name");
-            String star_birthYear = rs.getString("birthYear");
+            String star_dob = rs.getString("birthYear");
 
             pstmtStar.close();
             rs.close();
 
-            String queryMovies = "SELECT m.id, m.title, m.year, m.director" +
-                                 "FROM movies AS m JOIN stars_in_movies sim ON m.id = sim.movieId" +
-                                 "JOIN stars s ON s.id = sim.starId" +
+            String queryMovies = "SELECT m.id, m.title, m.year, m.director " +
+                                 "FROM movies AS m JOIN stars_in_movies sim ON m.id = sim.movieId " +
+                                 "JOIN stars s ON s.id = sim.starId " +
                                  "WHERE s.id = ?";
 
             PreparedStatement pstmtMovies = conn.prepareStatement(queryMovies);
@@ -94,7 +95,7 @@ public class SingleStarServlet extends HttpServlet {
             rsMovies.close();
 
             output.addProperty("star_name", star_name);
-            output.addProperty("star_birthYear", star_birthYear);
+            output.addProperty("star_dob", star_dob);
             output.add("star_movies", star_movies);
 
             // Write JSON string to output
@@ -104,6 +105,7 @@ public class SingleStarServlet extends HttpServlet {
 
         } catch (Exception e) {
             // Write error message JSON object to output
+            e.printStackTrace();
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("errorMessage", e.getMessage());
             out.write(jsonObject.toString());

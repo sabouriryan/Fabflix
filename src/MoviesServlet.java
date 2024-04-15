@@ -59,7 +59,7 @@ public class MoviesServlet extends HttpServlet {
                                      "ORDER BY r.rating DESC LIMIT 100";
             ResultSet rs = statement.executeQuery(topHundredQuery);
 
-            getResultMetaData(rs);
+            //getResultMetaData(rs);
 
             JsonArray output = new JsonArray();
 
