@@ -37,7 +37,6 @@ function populateMovieTable(pageNumber) {
     // Populate the movie table by id "star_table_body"
     let movieTableBodyElement = jQuery("#movie_table_body");
     for (let i = 0; i < recordsToDisplay.length; i++) {
-
         let rowHTML = "";
         rowHTML += "<tr>";
         rowHTML += "<td>" + "<a href='public/single-movie.html?id=" + recordsToDisplay[i]["movie_id"] + "'>" + recordsToDisplay[i]["movie_title"] + "</a>";
