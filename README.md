@@ -1,4 +1,4 @@
-Demo: [[https://drive.google.com/file/d/1IksWyqWZ7xbY_slNIyHQp0ITwFQUqFbt/view?usp=sharing](https://drive.google.com/file/d/14Ji0qJhlS5msaiH2g4hKG_VdH5984ob-/view?usp=sharing)](https://youtu.be/bzPq-a75s8M)
+Demo: https://youtu.be/bzPq-a75s8M
 
 
 CONTRIBUTIONS FOR EACH MEMBER
