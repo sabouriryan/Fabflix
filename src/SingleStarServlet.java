@@ -95,7 +95,7 @@ public class SingleStarServlet extends HttpServlet {
             rsMovies.close();
 
             output.addProperty("star_name", star_name);
-            output.addProperty("star_dob", star_dob);
+            output.addProperty("star_dob", star_dob == null ? "N/A" : star_dob);
             output.add("star_movies", star_movies);
 
             // Write JSON string to output
@@ -105,7 +105,6 @@ public class SingleStarServlet extends HttpServlet {
 
         } catch (Exception e) {
             // Write error message JSON object to output
-            e.printStackTrace();
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("errorMessage", e.getMessage());
             out.write(jsonObject.toString());
