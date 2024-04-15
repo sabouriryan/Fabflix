@@ -53,8 +53,8 @@ function handleResult(resultData) {
     for (let i = 0; i < resultData["star_movies"].length; i++) {
         let movieTableHTML = "";
         movieTableHTML += "<tr>";
-        movieTableHTML += "<td><a href='single-movie.html?id=" + resultData[i]["movie_id"] + "'>" +
-            resultData[i]["movie_title"] + "</a></td>";
+        movieTableHTML += "<td><a href='single-movie.html?id=" + resultData["star_movies"][i]["movie_id"] + "'>" +
+            resultData["star_movies"][i]["movie_title"] + "</a></td>";
 
         movieTableHTML += "<td>" + resultData["star_movies"][i]["movie_year"] + "</td>";
         movieTableHTML += "<td>" + resultData["star_movies"][i]["movie_director"] + "</td>";
