@@ -29,25 +29,27 @@
     <header>
       <nav class="nav-bar">
         <div class="logo-container">
-          <a id="home-button" classhref="index.html">Fabflix</a>
+          <a id="home-button" href="index.html">Fabflix</a>
         </div>
       </nav>
     </header>
     <main>
       <h1>Movies</h1>
-      <table id=movie_table class="floating-table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Year</th>
-            <th>Director</th>
-            <th>Genres</th>
-            <th>Stars</th>
-            <th>Rating</th>
-          </tr>
-        </thead>
-        <tbody id=movie_table_body></tbody>
-      </table>
+      <div class="movie-list-container">
+        <table id=movie_table class="floating striped">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Year</th>
+              <th>Director</th>
+              <th>Genres</th>
+              <th>Stars</th>
+              <th>Rating</th>
+            </tr>
+          </thead>
+          <tbody id=movie_table_body></tbody>
+        </table>
+      </div>
     </main>
 
 

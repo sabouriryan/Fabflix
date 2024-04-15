@@ -7,7 +7,7 @@
 
 <!doctype html>
 <html lang="en">
-<head>
+  <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport"
@@ -17,36 +17,52 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="../styles/style.css"/>
+    <link rel="stylesheet" href="../styles/single-star-style.css"/>
     <title>Single Star</title>
-</head>
-<body>
-<h1 id="star_name"></h1>
-<h3 id="star_dob"></h3>
-<table id=movie_table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Movie Title</th>
-        <th>Release Year</th>
-        <th>Director</th>
-        <th>
-    </tr>
-    </thead>
-    <tbody id=movie_table_body></tbody>
-</table>
+  </head>
+  <body>
+    <header>
+      <nav class="nav-bar">
+        <div class="logo-container">
+          <a id="home-button" href="../index.html">Fabflix</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="star-card floating">
+        <div class="star-info">
+          <h1 id="star_name"></h1>
+          <span id="star_dob"></span>
+        </div>
 
-<a href="../index.html">Home</a>
+        <table id=movie_table class="striped">
+            <thead>
+              <tr>
+                <th>Movie Title</th>
+                <th>Release Year</th>
+                <th>Director</th>
+              </tr>
+            </thead>
+            <tbody id=movie_table_body></tbody>
+        </table>
+      </div>
+    </main>
 
-<!-- Load jQuery and Bootstrap JS -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-<!-- Load our own JS file -->
-<!-- The path is relative to single-star.html, since these two files are in the same directory -->
-<!-- Note the url does not contain a "/" in the beginning, which means the url is relative to current path
-     otherwise the url is relative to the root path-->
-<script src="../scripts/single-star.js"></script>
-</body>
+
+
+  <!-- Load jQuery and Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- Load our own JS file -->
+  <!-- The path is relative to single-star.html, since these two files are in the same directory -->
+  <!-- Note the url does not contain a "/" in the beginning, which means the url is relative to current path
+       otherwise the url is relative to the root path-->
+  <script src="../scripts/single-star.js"></script>
+  </body>`
 
 
 </html>
