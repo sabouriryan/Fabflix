@@ -59,9 +59,9 @@ public class MoviesServlet extends HttpServlet {
                                      "ORDER BY r.rating DESC LIMIT 100";
             ResultSet rs = statement.executeQuery(topHundredQuery);
 
-            getResultMetaData(rs);
+            //getResultMetaData(rs);
 
-            JsonArray jsonArray = new JsonArray();
+            JsonArray output = new JsonArray();
 
             // Iterate through each row of rs
             while (rs.next()) {
@@ -84,7 +84,7 @@ public class MoviesServlet extends HttpServlet {
                 pstmtGenres.close();
 
                 // Get top 3 stars
-                String queryStars = "SELECT s.name FROM stars_in_movies sim " +
+                String queryStars = "SELECT s.name, s.id FROM stars_in_movies sim " +
                                     "JOIN stars s ON sim.starId = s.id " +
                                     "WHERE sim.movieId = ?";
 
@@ -94,7 +94,10 @@ public class MoviesServlet extends HttpServlet {
 
                 JsonArray topStarsArray = new JsonArray();
                 for (int starCount = 0; rsStars.next() && starCount < 3; ++starCount) {
-                    topStarsArray.add(rsStars.getString("name"));
+                    JsonObject starObject = new JsonObject();
+                    starObject.addProperty("star_name", rsStars.getString("name"));
+                    starObject.addProperty("star_id", rsStars.getString("id"));
+                    topStarsArray.add(starObject);
                 }
                 rsStars.close();
                 pstmtStars.close();
@@ -105,25 +108,25 @@ public class MoviesServlet extends HttpServlet {
                 double movie_rating = rs.getDouble("rating");
 
                 // Create a JsonObject based on the data we retrieve from rs
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("movie_id", movie_id);
-                jsonObject.addProperty("movie_title", movie_title);
-                jsonObject.addProperty("movie_year", movie_year);
-                jsonObject.addProperty("movie_director", movie_director);
-                jsonObject.add("movie_genres", topGenresArray);
-                jsonObject.add("movie_stars", topStarsArray);
-                jsonObject.addProperty("movie_rating", movie_rating);
+                JsonObject movieObject = new JsonObject();
+                movieObject.addProperty("movie_id", movie_id);
+                movieObject.addProperty("movie_title", movie_title);
+                movieObject.addProperty("movie_year", movie_year);
+                movieObject.addProperty("movie_director", movie_director);
+                movieObject.add("movie_genres", topGenresArray);
+                movieObject.add("movie_stars", topStarsArray);
+                movieObject.addProperty("movie_rating", movie_rating);
 
-                jsonArray.add(jsonObject);
+                output.add(movieObject);
             }
             rs.close();
             statement.close();
 
             // Log to localhost log
-            request.getServletContext().log("getting " + jsonArray.size() + " results");
+            request.getServletContext().log("getting " + output.size() + " results");
 
             // Write JSON string to output
-            out.write(jsonArray.toString());
+            out.write(output.toString());
             // Set response status to 200 (OK)
             response.setStatus(200);
 

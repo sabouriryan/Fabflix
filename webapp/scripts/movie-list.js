@@ -37,24 +37,27 @@ function populateMovieTable(pageNumber) {
     // Populate the movie table by id "star_table_body"
     let movieTableBodyElement = jQuery("#movie_table_body");
     for (let i = 0; i < recordsToDisplay.length; i++) {
-
         let rowHTML = "";
         rowHTML += "<tr>";
         rowHTML += "<td>" + "<a href='public/single-movie.html?id=" + recordsToDisplay[i]["movie_id"] + "'>" + recordsToDisplay[i]["movie_title"] + "</a>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_year"] + "</td>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_director"] + "</td>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_genres"].join(", ") + "</td>";
-        rowHTML += "<td>" + recordsToDisplay[i]["movie_stars"].join(", ") + "</td>";
+
+        rowHTML += "<td>";
+        let stars = recordsToDisplay[i]["movie_stars"];
+        for (let i = 0; i < stars.length; ++i) {
+            rowHTML += "<a href='public/single-star.html?id=" + stars[i]["star_id"] + "'>" + stars[i]["star_name"] + "</a>";
+            if (i !== stars.length - 1) rowHTML += ", ";
+        }
+        rowHTML += "</td>";
+
         rowHTML += "<td>" + recordsToDisplay[i]["movie_rating"] + "</td>";
         rowHTML += "</tr>";
-        //'<a href="public/single-movie.html?id=' + recordsToDisplay[i]['id'] + '">'
-        //+ recordsToDisplay[i]["star_name"] +     // display star_name for the link text
-        //'</a>' +
 
         movieTableBodyElement.append(rowHTML); // refreshes page
     }
 }
-
     // implement pagination here later
 
 /**

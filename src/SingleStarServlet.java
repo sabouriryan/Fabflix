@@ -40,64 +40,66 @@ public class SingleStarServlet extends HttpServlet {
         response.setContentType("application/json"); // Response mime type
 
         // Retrieve parameter id from url request.
-        String id = request.getParameter("id");
+        String star_id = request.getParameter("id");
 
         // The log message can be found in localhost log
-        request.getServletContext().log("getting id: " + id);
+        request.getServletContext().log("getting id: " + star_id);
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
-            // Get a connection from dataSource
 
-            // Construct a query with parameter represented by "?"
-            String query = "SELECT * from stars as s, stars_in_movies as sim, movies as m " +
-                    "where m.id = sim.movieId and sim.starId = s.id and s.id = ?";
+            String queryStarInfo = "SELECT s.name, s.birthYear FROM stars AS s WHERE s.id = ?";
 
-            // Declare our statement
-            PreparedStatement statement = conn.prepareStatement(query);
+            PreparedStatement pstmtStar = conn.prepareStatement(queryStarInfo);
+            pstmtStar.setString(1, star_id);
+            ResultSet rs = pstmtStar.executeQuery();
 
-            // Set the parameter represented by "?" in the query to the id we get from url,
-            // num 1 indicates the first "?" in the query
-            statement.setString(1, id);
+            rs.next();
+            String star_name = rs.getString("name");
+            String star_dob = rs.getString("birthYear");
 
-            // Perform the query
-            ResultSet rs = statement.executeQuery();
-
-            JsonArray jsonArray = new JsonArray();
-
-            // Iterate through each row of rs
-            while (rs.next()) {
-
-                String starId = rs.getString("starId");
-                String starName = rs.getString("name");
-                String starDob = rs.getString("birthYear");
-
-                String movieId = rs.getString("movieId");
-                String movieTitle = rs.getString("title");
-                String movieYear = rs.getString("year");
-                String movieDirector = rs.getString("director");
-                System.out.println(starId + starName + starDob);
-                // Create a JsonObject based on the data we retrieve from rs
-
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("star_id", starId);
-                jsonObject.addProperty("star_name", starName);
-                jsonObject.addProperty("star_dob", starDob);
-                jsonObject.addProperty("movie_id", movieId);
-                jsonObject.addProperty("movie_title", movieTitle);
-                jsonObject.addProperty("movie_year", movieYear);
-                jsonObject.addProperty("movie_director", movieDirector);
-
-                jsonArray.add(jsonObject);
-            }
+            pstmtStar.close();
             rs.close();
-            statement.close();
+
+            String queryMovies = "SELECT m.id, m.title, m.year, m.director " +
+                                 "FROM movies AS m JOIN stars_in_movies sim ON m.id = sim.movieId " +
+                                 "JOIN stars s ON s.id = sim.starId " +
+                                 "WHERE s.id = ?";
+
+            PreparedStatement pstmtMovies = conn.prepareStatement(queryMovies);
+            pstmtMovies.setString(1, star_id);
+            ResultSet rsMovies = pstmtMovies.executeQuery();
+
+            JsonObject output = new JsonObject();
+
+            JsonArray star_movies = new JsonArray();
+            // Iterate through movies the star is featured in
+            while (rsMovies.next()) {
+                String movie_id = rsMovies.getString("id");
+                String movie_title = rsMovies.getString("title");
+                String movie_year = rsMovies.getString("year");
+                String movie_director = rsMovies.getString("director");
+
+                JsonObject movieObject = new JsonObject();;
+                movieObject.addProperty("movie_id", movie_id);
+                movieObject.addProperty("movie_title", movie_title);
+                movieObject.addProperty("movie_year", movie_year);
+                movieObject.addProperty("movie_director", movie_director);
+
+                star_movies.add(movieObject);
+            }
+            pstmtMovies.close();
+            rsMovies.close();
+
+            output.addProperty("star_name", star_name);
+            output.addProperty("star_dob", star_dob == null ? "N/A" : star_dob);
+            output.add("star_movies", star_movies);
 
             // Write JSON string to output
-            out.write(jsonArray.toString());
+            out.write(output.toString());
             // Set response status to 200 (OK)
             response.setStatus(200);
 
@@ -114,9 +116,5 @@ public class SingleStarServlet extends HttpServlet {
         } finally {
             out.close();
         }
-
-        // Always remember to close db connection after usage. Here it's done by try-with-resources
-
     }
-
 }
