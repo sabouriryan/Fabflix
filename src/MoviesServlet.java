@@ -61,7 +61,7 @@ public class MoviesServlet extends HttpServlet {
 
             getResultMetaData(rs);
 
-            JsonArray jsonArray = new JsonArray();
+            JsonArray output = new JsonArray();
 
             // Iterate through each row of rs
             while (rs.next()) {
@@ -108,25 +108,25 @@ public class MoviesServlet extends HttpServlet {
                 double movie_rating = rs.getDouble("rating");
 
                 // Create a JsonObject based on the data we retrieve from rs
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("movie_id", movie_id);
-                jsonObject.addProperty("movie_title", movie_title);
-                jsonObject.addProperty("movie_year", movie_year);
-                jsonObject.addProperty("movie_director", movie_director);
-                jsonObject.add("movie_genres", topGenresArray);
-                jsonObject.add("movie_stars", topStarsArray);
-                jsonObject.addProperty("movie_rating", movie_rating);
+                JsonObject movieObject = new JsonObject();
+                movieObject.addProperty("movie_id", movie_id);
+                movieObject.addProperty("movie_title", movie_title);
+                movieObject.addProperty("movie_year", movie_year);
+                movieObject.addProperty("movie_director", movie_director);
+                movieObject.add("movie_genres", topGenresArray);
+                movieObject.add("movie_stars", topStarsArray);
+                movieObject.addProperty("movie_rating", movie_rating);
 
-                jsonArray.add(jsonObject);
+                output.add(movieObject);
             }
             rs.close();
             statement.close();
 
             // Log to localhost log
-            request.getServletContext().log("getting " + jsonArray.size() + " results");
+            request.getServletContext().log("getting " + output.size() + " results");
 
             // Write JSON string to output
-            out.write(jsonArray.toString());
+            out.write(output.toString());
             // Set response status to 200 (OK)
             response.setStatus(200);
 
