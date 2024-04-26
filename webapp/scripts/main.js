@@ -10,7 +10,7 @@ function getGenres(resultData) {
     let genresMenuElement = jQuery("#genres");
     for (let i = 0; i < resultData.length; i++) {
         let genresMenuHTML = "";
-        genresMenuHTML += "<a class='genre-item' href='/public/api/movie-list.html?action=browse&genre=" + resultData[i] + "'>" + resultData[i] + "</a>";
+        genresMenuHTML += "<a class='genre-item' href='/public/movie-list.html?action=browse&genre=" + resultData[i] + "'>" + resultData[i] + "</a>";
 
         // Append the row created to the table body, which will refresh the page
         genresMenuElement.append(genresMenuHTML);
@@ -24,12 +24,12 @@ function getGenres(resultData) {
 let letters = $("#letters-container");
 for (let i = 65; i <= 90; i++) {
     let letter = String.fromCharCode(i);
-    letters.append("<div><a href='public/api/movie-list.html?action=browse&title=" + letter + "'>" + letter + "</a></div>")
+    letters.append("<div><a href='public/movie-list.html?action=browse&title=" + letter + "'>" + letter + "</a></div>")
 }
 
 let numbers = $("#numbers-container");
 for (let i = 0; i <= 9; i++) {
-    numbers.append("<div><a href='public/api/movie-list.html?action=browse&title=" + i + "'>" + i + "</a></div>")
+    numbers.append("<div><a href='public/movie-list.html?action=browse&title=" + i + "'>" + i + "</a></div>")
 }
 
 // Makes the HTTP GET request and registers on success callback function handleResult
