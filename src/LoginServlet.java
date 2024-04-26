@@ -1,4 +1,3 @@
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,7 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 
-@WebServlet("/LoginServlet")
+@WebServlet(name = "LoginServlet", urlPatterns = "/public/api/login")
 public class LoginServlet extends HttpServlet {
     private DataSource dataSource;
 
@@ -27,47 +26,55 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-
-        String email = request.getParameter("email");
+        String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+        PrintWriter out = response.getWriter();
 
-        try {
-            conn = dataSource.getConnection();
-            String sql = "SELECT * FROM customers WHERE email = ? AND password = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, email);
-            stmt.setString(2, password);
-            rs = stmt.executeQuery();
+        try (Connection conn = dataSource.getConnection()) {
 
-            JsonObject jsonResponse = new JsonObject();
+            String loginQuery = "SELECT * FROM customers WHERE email = ? AND password = ?";
+
+            PreparedStatement pstmtLogin = conn.prepareStatement(loginQuery);
+            pstmtLogin.setString(1, username);
+            pstmtLogin.setString(2, password);
+            ResultSet rs = pstmtLogin.executeQuery();
+
+            /* This example only allows username/password to be test/test
+            /  in the real project, you should talk to the database to verify username/password
+            */
+            JsonObject output = new JsonObject();
             if (rs.next()) {
-                jsonResponse.addProperty("success", true);
+                request.getSession().setAttribute("user", new User(username));
+                output.addProperty("status", "success");
             } else {
-                jsonResponse.addProperty("success", false);
-                jsonResponse.addProperty("message", "Invalid email or password");
+                output.addProperty("status", "fail");
+                output.addProperty("message", "Invalid email or password");
             }
-            out.print(jsonResponse.toString());
-        } catch (SQLException e) {
+
+            rs.close();
+            pstmtLogin.close();
+            out.print(output.toString());
+
+        } catch (Exception e) {
+            // Write error message JSON object to output
             e.printStackTrace();
-            JsonObject jsonResponse = new JsonObject();
-            jsonResponse.addProperty("success", false);
-            jsonResponse.addProperty("message", "Error occurred during login");
-            out.print(jsonResponse.toString());
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("errorMessage", e.getMessage());
+            out.write(jsonObject.toString());
+
+            // Log error to localhost log
+            request.getServletContext().log("Error:", e);
+            // Set response status to 500 (Internal Server Error)
+            response.setStatus(500);
         } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            out.close();
         }
     }
+
 }
+
