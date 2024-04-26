@@ -63,11 +63,30 @@ function populateMovieTable(pageNumber) {
 /**
  * Once this .js is loaded, following scripts will be executed by the browser
  */
+let action = getParameterByName('action');
+let type;
+if (action === 'browse') {
+    let genre = getParameterByName('genre');
+    let title = getParameterByName('title');
 
+    if (genre !== null) {
+        type=genre;
+        console.log("Genre:", genre);
+    } else if (title !== null) {
+        type=title;
+        console.log("Title:", title);
+    } else {
+        console.log("Error - no genre or title given for browse")
+    }
+} else if (action === 'search') {
+    // Handle search parameters
+} else {
+    // Handle other actions or invalid actions
+}
 // Makes the HTTP GET request and registers on success callback function handleStarResult
 jQuery.ajax({
     dataType: "json", // Setting return data type
     method: "GET", // Setting request method
-    url: "api/movies", // Setting request url, which is mapped by MoviesServlet in MoviesServlet.java
+    url: "api/movie-list?" + action + "&" + type, // Setting request url, which is mapped by MovieListServlet in MovieListServlet.java
     success: (resultData) => movieRecordHandler(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
 });

@@ -1,13 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
   <link rel="stylesheet" type="text/css" href="styles/style.css">
-  </head>
-  <body>
-    <h1>Main page</h1>
-    <script src="scripts/main.js"></script>
-  </body>
+  <link rel="stylesheet" type="text/css" href="styles/main.css">
+</head>
+<body>
+<header>
+  <nav class="nav-bar">
+    <div class="left">
+      <div class="logo-container">
+        <a id="home-button" href="index.html">Fabflix</a>
+      </div>
+      <div class="genre-dropdown">
+        <span>genres</span>
+        <div id="genres" class="genre-dropdown-content floating"></div>
+      </div>
+    </div>
+  </nav>
+</header>
+<h1 class="gradient-text">FABFLIX</h1>
+<main>
+  <div class="search-bar-container">
+    <input type="text" class="search-bar" placeholder="Search...">
+    <div class="search-by-title-options">
+      <div id="letters-container"></div>
+      <div id="numbers-container"></div>
+    </div>
+  </div>
+</main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="scripts/main.js"></script>
+</body>
 </html>
