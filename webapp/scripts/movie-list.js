@@ -39,7 +39,7 @@ function populateMovieTable(pageNumber) {
     for (let i = 0; i < recordsToDisplay.length; i++) {
         let rowHTML = "";
         rowHTML += "<tr>";
-        rowHTML += "<td>" + "<a href='public/single-movie.html?id=" + recordsToDisplay[i]["movie_id"] + "'>" + recordsToDisplay[i]["movie_title"] + "</a>";
+        rowHTML += "<td>" + "<a href='single-movie.html?id=" + recordsToDisplay[i]["movie_id"] + "'>" + recordsToDisplay[i]["movie_title"] + "</a>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_year"] + "</td>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_director"] + "</td>";
         rowHTML += "<td>" + recordsToDisplay[i]["movie_genres"].join(", ") + "</td>";
@@ -47,7 +47,7 @@ function populateMovieTable(pageNumber) {
         rowHTML += "<td>";
         let stars = recordsToDisplay[i]["movie_stars"];
         for (let i = 0; i < stars.length; ++i) {
-            rowHTML += "<a href='public/single-star.html?id=" + stars[i]["star_id"] + "'>" + stars[i]["star_name"] + "</a>";
+            rowHTML += "<a href='single-star.html?id=" + stars[i]["star_id"] + "'>" + stars[i]["star_name"] + "</a>";
             if (i !== stars.length - 1) rowHTML += ", ";
         }
         rowHTML += "</td>";

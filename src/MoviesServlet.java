@@ -15,7 +15,7 @@ import java.sql.*;
 
 
 // Declaring a WebServlet called MoviesServlet, which maps to url "/api/movies"
-@WebServlet(name = "MoviesServlet", urlPatterns = "/api/movies")
+@WebServlet(name = "MoviesServlet", urlPatterns = "/public/api/movies")
 public class MoviesServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private DataSource dataSource; // Create a dataSource which registered in web.
@@ -124,7 +124,7 @@ public class MoviesServlet extends HttpServlet {
 
             // Log to localhost log
             request.getServletContext().log("getting " + output.size() + " results");
-
+            System.out.println(output.toString());
             // Write JSON string to output
             out.write(output.toString());
             // Set response status to 200 (OK)

@@ -11,7 +11,8 @@ function login() {
           var response = JSON.parse(xhr.responseText);
           if (response.success) {
             // Redirect to movie-list.html on successful login
-            window.location.href = "../public/movie-list.html";
+            console.log("SUCCESSS!!")
+            window.location.href = "public/movie-list.html";
           } else {
             document.getElementById("error-message").innerText = response.message;
           }
