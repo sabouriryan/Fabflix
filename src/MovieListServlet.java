@@ -84,9 +84,68 @@ public class MovieListServlet extends HttpServlet {
     }
 
     private void handleSearchRequest(HttpServletRequest request, PrintWriter out, Connection conn) throws SQLException {
-        System.out.println("Searching for movies...");
+        String title = request.getParameter("title");
+        String year = request.getParameter("year");
+        String director = request.getParameter("director");
+        String starName = request.getParameter("starName");
+    
+        PreparedStatement preStmtSearch = conn.prepareStatement(getSearchQuery(title, year, director, starName));
+    
+        if (title != null) {
+            preStmtSearch.setString(1, "%" + title + "%");
+        }
+        if (year != null) {
+            preStmtSearch.setInt(2, Integer.parseInt(year));
+        }
+        if (director != null) {
+            preStmtSearch.setString(3, "%" + director + "%");
+        }
+        if (starName != null) {
+            preStmtSearch.setString(4, "%" + starName + "%");
+        }
+    
+        JsonArray output = new JsonArray();
+        try (ResultSet rs = preStmtSearch.executeQuery()) {
+            while (rs.next()) {
+                output.add(getMovieObject(rs, conn));
+            }
+        }
+        preStmtSearch.close();
+        out.write(output.toString());
     }
-
+    
+    // Modify this method to support search parameters
+    private static String getSearchQuery(String title, String year, String director, String starName) {
+        String query = "SELECT m.*, r.rating FROM moviedb.movies m " +
+                "LEFT JOIN moviedb.ratings r ON m.id = r.movieId ";
+    
+        boolean whereAdded = false;
+    
+        if (title != null) {
+            query += (whereAdded ? "AND " : "WHERE ") + "m.title LIKE ?";
+            whereAdded = true;
+        }
+        if (year != null) {
+            // Assuming 'year' is exact match
+            query += (whereAdded ? "AND " : "WHERE ") + "m.year = ?";
+            whereAdded = true;
+        }
+        if (director != null) {
+            query += (whereAdded ? "AND " : "WHERE ") + "m.director LIKE ?";
+            whereAdded = true;
+        }
+        if (starName != null) {
+            query += "JOIN moviedb.stars_in_movies sim ON m.id = sim.movieId " +
+                     "JOIN moviedb.stars s ON sim.starId = s.id " +
+                     (whereAdded ? "AND " : "WHERE ") + "s.name LIKE ?";
+        }
+    
+        query += " ORDER BY m.title";
+    
+        return query;
+    }
+    
+    
     private void handleBrowseRequest(HttpServletRequest request, PrintWriter out, Connection conn) throws SQLException {
         String genre = request.getParameter("genre");
         String firstChar = request.getParameter("firstChar");
