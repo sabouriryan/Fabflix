@@ -127,7 +127,7 @@ public class MovieListServlet extends HttpServlet {
         boolean whereAdded = false;
     
         if (title != null) {
-            query += ("WHERE ") + "m.title LIKE ?";
+            query += "WHERE " + "m.title LIKE ?";
             whereAdded = true;
         }
         if (year != null) {
@@ -142,11 +142,11 @@ public class MovieListServlet extends HttpServlet {
         if (starName != null) {
             query += "JOIN moviedb.stars_in_movies sim ON m.id = sim.movieId " +
                      "JOIN moviedb.stars s ON sim.starId = s.id " +
-                     (whereAdded ? "AND " : "WHERE ") + "s.name LIKE ?";
+                     (whereAdded ? "AND " : "WHERE ") + "LOWER(s.name) LIKE LOWER(%?%)";
         }
     
         query += " ORDER BY m.title";
-    
+
         return query;
     }
     
