@@ -55,7 +55,7 @@ main {
     width: 100%;
     background: transparent;
     border: none;
-    border-bottom: 1px solid #161127;
+    border-bottom: 2px solid #161127;
     font-size: 15px;
     color: white;
     padding: 5px;
@@ -81,6 +81,11 @@ main {
 
 #login-submit:hover {
     background: linear-gradient(to bottom, #5b3cbb, #6f69cd, #9484d1);
+}
+
+#login_error_message {
+    color: red;
+    font-size: 12px;
 }
 
 
