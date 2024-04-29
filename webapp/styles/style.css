@@ -29,6 +29,7 @@ body {
     align-items: center;
     background-color: #040112;
     height: 8vh;
+    border-bottom: 2px solid #161127;
 }
 
 .left-nav, .right-nav {
@@ -58,14 +59,14 @@ body {
 }
 
 .gradient-text {
-    background: linear-gradient(to right, #8367f1, #9d93f3);
+    background: linear-gradient(to right, #7d59ef, #9d93f3);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
 }
 
 .search-dropdown {
-    margin-right: 20px;
+    margin-right: 60px;
     position: relative;
 }
 
@@ -76,6 +77,11 @@ body {
     align-items: center;
     gap: 10px;
 }
+
+.search-dropdown:hover {
+    color: #9da6eb;
+}
+
 
 #search-dropdown-form {
     display: none;
@@ -92,14 +98,31 @@ body {
     width: 80%;
     font-size: 15px;
     padding: 5px 10px;
-    border: 1px solid white;
+    border: 1px solid #b2baef;
     border-radius: 20px;
     background-color: transparent;
     color: white;
 }
 
 #search-submit {
-    background-color: #9da6eb;
+    width: 40%;
+    background-color: #7d59ef;
     color: #12122b;
-    border-radius: 3px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    border: none; /* Remove default border */
+    cursor: pointer; /* Change cursor to pointer */
+    outline: none; /* Remove default focus outline */
+    font-size: 13px;
+}
+
+#search-submit:hover {
+    background-color: #5037ae; /* Change background color on hover */
+}
+
+
+.search-bar:focus {
+    border-color: #7d59ef; /* Change border color */
+    box-shadow: 0 0 5px rgba(125, 89, 239, 0.5); /* Add box shadow */
+    outline: none; /* Remove default outline */
 }

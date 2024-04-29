@@ -61,7 +61,7 @@ function populateMovieTable(pageNumber) {
         }
         rowHTML += "</td>";
 
-        rowHTML += "<td>" + recordsToDisplay[i]["movie_rating"] + "</td>";
+        rowHTML += "<td><span class='rating-td'>" + recordsToDisplay[i]["movie_rating"] + "</span></td>";
         rowHTML += "</tr>";
 
         movieTableBodyElement.append(rowHTML); // refreshes page
@@ -76,27 +76,23 @@ function populateMovieTable(pageNumber) {
 let params = [];
 
 let genre = getParameterByName('genre');
-let title = getParameterByName('title');
 let firstChar = getParameterByName('firstChar');
-let page = getParameterByName('page');
-let pageLimit = getParameterByName('pageLimit');
+let title = getParameterByName('title');
 let year = getParameterByName('year');
 let director = getParameterByName('director');
+let starName = getParameterByName('starName')
+let page = getParameterByName('page');
+let pageLimit = getParameterByName('pageLimit');
+
 
 if (genre !== null) {
     params.push('genre=' + genre);
 }
-if (title !== null) {
-    params.push('title=' + title);
-}
 if (firstChar !== null) {
     params.push('firstChar=' + firstChar);
 }
-if (page !== null) {
-    params.push('page=' + page);
-}
-if (pageLimit !== null) {
-    params.push('pageLimit=' + pageLimit);
+if (title !== null) {
+    params.push('title=' + title);
 }
 if (year !== null) {
     params.push('year=' + year);
@@ -104,7 +100,15 @@ if (year !== null) {
 if (director !== null) {
     params.push('director=' + director);
 }
-
+if (starName !== null) {
+    params.push('starName=' + starName);
+}
+if (page !== null) {
+    params.push('page=' + page);
+}
+if (pageLimit !== null) {
+    params.push('pageLimit=' + pageLimit);
+}
 // Makes the HTTP GET request and registers on success callback function handleStarResult
 jQuery.ajax({
     dataType: "json", // Setting return data type

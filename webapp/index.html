@@ -6,6 +6,7 @@
   <title>Login Page</title>
   <link rel="stylesheet" type="text/css" href="styles/style.css">
   <link rel="stylesheet" type="text/css" href="styles/main.css">
+  <script src="https://kit.fontawesome.com/4d7e7da3eb.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <header>
@@ -17,13 +18,13 @@
     </div>
     <div class="right-nav">
       <div class="search-dropdown">
-        <span>Search</span>
+        <i class='fas fa-search'></i>
         <form id="search-dropdown-form" class="floating">
           <input type="text" class="search-bar" name="title" placeholder="Title">
           <input type="text" class="search-bar" name="year" placeholder="Year">
           <input type="text" class="search-bar" name="director" placeholder="Director">
-          <input type="text" class="search-bar" name="star" placeholder="Star">
-          <input type="submit" value="Submit">
+          <input type="text" class="search-bar" name="starName" placeholder="Star">
+          <input id="search-submit" type="submit" value="Submit">
         </form>
       </div>
     </div>

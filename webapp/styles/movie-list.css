@@ -6,25 +6,26 @@ main {
 }
 
 .movie-list-container {
+    margin-top: 40px;
     width: 80%;
-    border-radius: 15px 15px 15px 25px;
+    border-radius: 15px 15px 15px 15px;
     overflow: hidden;
 }
 
 #movie_table {
     width: 100%;
-    font-size: 10px;
-    background-color: #1f213c;
+    font-size: 12px;
+    background-color: #040112;
 }
 
 #movie_table th {
-    color: #745cb2;
+    color: #120b35;
     background-color: #9da6eb;
     font-size: 10px;
 }
 
 #movie_table th, td {
-    padding: 10px;
+    padding: 10px 15px;
 }
 
 #movie_table td a {
@@ -36,6 +37,10 @@ main {
     color: #745cb2;
 }
 
-.striped tr:nth-child(even) {
-    background-color: #181930;
+#movie_table tr:not(:last-child) {
+    border-bottom: 1px solid #161127; /* Apply border color between rows */
+}
+
+#movie_table .rating-td {
+    color: #c284d7;
 }
