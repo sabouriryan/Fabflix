@@ -1,9 +1,5 @@
-body {
-    display: flex;
-    flex-direction: column;
-}
-
 main {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,11 +10,11 @@ h1 {
     font-size: 9vw;
     font-weight: bold;
     text-align: center;
-    margin: 40px;
+    margin: 37px;
 }
 
 #genres-container {
-    width: 60%;
+    width: 70%;
     display: flex;
     flex-wrap: wrap;
     gap: 13px;
@@ -58,4 +54,26 @@ h1 {
 
 #letters-container a:hover, #numbers-container a:hover{
     color: #745cb2;
+}
+
+.main-page-header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.custom-hr {
+    border-top: 1px solid #36247e;
+    width: 20vw;
+    margin: 0 10px;
+}
+
+.main-page-header-text {
+    font-size: 2vw;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
 }
