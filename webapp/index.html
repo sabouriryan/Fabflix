@@ -10,23 +10,29 @@
 <body>
 <header>
   <nav class="nav-bar">
-    <div class="left">
+    <div class="left-nav">
       <div class="logo-container">
         <a id="home-button" href="index.html">Fabflix</a>
       </div>
-      <div class="genre-dropdown">
-        <span>genres</span>
-        <div id="genres" class="genre-dropdown-content floating"></div>
+    </div>
+    <div class="right-nav">
+      <div class="search-dropdown">
+        <span>Search</span>
+        <div id="search-dropdown-content" class="floating">
+          <input type="text" class="search-bar" placeholder="Title">
+          <input type="text" class="search-bar" placeholder="Year">
+          <input type="text" class="search-bar" placeholder="Director">
+          <input type="text" class="search-bar" placeholder="Star">
+          <button id="search-submit">Submit</button>
+        </div>
       </div>
     </div>
   </nav>
 </header>
 <h1 class="gradient-text">FABFLIX</h1>
 <main>
-  <div class="search-bar-container">
-    <input type="text" class="search-bar" placeholder="Search...">
-  </div>
-  <div class="search-by-title-options">
+  <div id="genres-container"></div>
+  <div class="browse-by-title-options">
     <div id="letters-container"></div>
     <div id="numbers-container"></div>
   </div>

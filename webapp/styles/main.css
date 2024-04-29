@@ -11,16 +11,32 @@ h1 {
     margin: 40px;
 }
 
-.search-bar-container {
-    width: 100%;
+.search-dropdown {
+    position: relative;
+}
+
+.search-dropdown:hover #search-dropdown-content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
+}
+
+#search-dropdown-content {
+    display: none;
+    position: absolute;
+    width: 15vw;
+    background-color: #040112;
+    padding: 10px;
+    border-radius: 5px;
+    top: 105%;
+    right: -10px;
 }
 
 .search-bar {
-    width: 40%;
-    padding: 10px;
+    width: 80%;
+    font-size: 15px;
+    padding: 5px 10px;
     border: 1px solid white;
     border-radius: 20px;
     background-color: transparent;
@@ -29,31 +45,19 @@ h1 {
     margin-bottom: 10px;
 }
 
-.left {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+#search-submit {
+    background-color: #9da6eb;
+    color: #12122b;
+    border-radius: 3px;
 }
 
-.genre-dropdown {
-    position: relative;
-}
-.genre-dropdown-content {
-    display: none;
-    position: absolute;
-    width: 45vw;
-    background-color: #040112;
-    padding: 10px;
-    border-radius: 5px;
-    top: 110%;
-    left: 0;
-}
-
-.genre-dropdown:hover .genre-dropdown-content {
+#genres-container {
+    width: 60%;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
-    gap: 12px;
+    gap: 13px;
+    justify-content: center;
+    margin-bottom: 40px;
 }
 
 .genre-item{
@@ -82,7 +86,8 @@ h1 {
 
 #letters-container a, #numbers-container a {
     text-decoration: None;
-    color: white;
+    color: #9da6eb;
+    font-size: 24px;
 }
 
 #letters-container a:hover, #numbers-container a:hover{
