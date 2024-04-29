@@ -127,7 +127,7 @@ public class MovieListServlet extends HttpServlet {
         boolean whereAdded = false;
     
         if (title != null) {
-            query += ("WHERE ") + "m.title LIKE ?";
+            query += "WHERE m.title LIKE ?";
             whereAdded = true;
         }
         if (year != null) {

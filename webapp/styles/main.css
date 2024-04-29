@@ -1,3 +1,8 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+
 main {
     display: flex;
     flex-direction: column;
@@ -9,46 +14,7 @@ h1 {
     font-weight: bold;
     text-align: center;
     margin: 40px;
-}
-
-.search-dropdown {
-    position: relative;
-}
-
-.search-dropdown:hover #search-dropdown-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-#search-dropdown-content {
-    display: none;
-    position: absolute;
-    width: 15vw;
-    background-color: #040112;
-    padding: 10px;
-    border-radius: 5px;
-    top: 105%;
-    right: -10px;
-}
-
-.search-bar {
-    width: 80%;
-    font-size: 15px;
-    padding: 5px 10px;
-    border: 1px solid white;
-    border-radius: 20px;
-    background-color: transparent;
-    color: white;
-    outline: none;
-    margin-bottom: 10px;
-}
-
-#search-submit {
-    background-color: #9da6eb;
-    color: #12122b;
-    border-radius: 3px;
+    font-style: oblique;
 }
 
 #genres-container {

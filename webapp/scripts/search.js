@@ -1,4 +1,4 @@
-let search_form = $("#search-form");
+let search_form = $("#search-dropdown-form");
 
 function submitSearch(searchEvent) {
     console.log("Search form submitted");
