@@ -91,7 +91,7 @@ public class MovieListServlet extends HttpServlet {
     
         PreparedStatement preStmtSearch = conn.prepareStatement(getSearchQuery(title, year, director, starName));
     
-        int parameterIndex = 0;
+        int parameterIndex = 1;
 
         if (title != null) {
             preStmtSearch.setString(parameterIndex, "%" + title + "%");
