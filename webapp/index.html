@@ -19,11 +19,13 @@
       <div class="search-dropdown">
         <span>Search</span>
         <div id="search-dropdown-content" class="floating">
-          <input type="text" class="search-bar" placeholder="Title">
-          <input type="text" class="search-bar" placeholder="Year">
-          <input type="text" class="search-bar" placeholder="Director">
-          <input type="text" class="search-bar" placeholder="Star">
-          <button id="search-submit">Submit</button>
+          <form id="search-form">
+            <input type="text" class="search-bar" name="title" placeholder="Title">
+            <input type="text" class="search-bar" name="year" placeholder="Year">
+            <input type="text" class="search-bar" name="director" placeholder="Director">
+            <input type="text" class="search-bar" name="star" placeholder="Star">
+            <input type="submit">Submit</input>
+          </form>
         </div>
       </div>
     </div>
@@ -39,5 +41,7 @@
 </main>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="scripts/main.js"></script>
+<script src="scripts/search.js"></script>
+
 </body>
 </html>
