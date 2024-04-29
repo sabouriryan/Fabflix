@@ -33,6 +33,8 @@ public class SingleMovieServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
      * response)
      */
+
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         response.setContentType("application/json"); // Response mime type
@@ -106,7 +108,7 @@ public class SingleMovieServlet extends HttpServlet {
             
             rsStars.close();
             pstmtStars.close();
-            System.out.println(movie_title + movie_year + movie_director + " " + starsArray.toString() + genresArray.toString());
+            //System.out.println(movie_title + movie_year + movie_director + " " + starsArray.toString() + genresArray.toString());
             JsonObject output = new JsonObject();
             output.addProperty("movie_title", movie_title);
             output.addProperty("movie_year", movie_year);
