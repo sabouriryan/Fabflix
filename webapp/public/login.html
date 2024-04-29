@@ -5,26 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Login</title>
     <link rel="stylesheet" href="../styles/style.css"/>
+    <link rel="stylesheet" href="../styles/login.css"/>
+    <script src="https://kit.fontawesome.com/4d7e7da3eb.js" crossorigin="anonymous"></script>
+
   </head>
   <body>
-    <h2>Login to Fablix</h2>
-    <!-- Set the method to POST to avoid showing the username/password in the URL
-         The default action is disabled to allow your own implementation. -->
-    <form id="login_form" method="post" action="#">
-      <label><b>Username</b></label>
-      <label>
-        <input name="username" placeholder="Enter Username" type="text">
-      </label>
-      <br>
-      <label><b>Password</b></label>
-      <label>
-        <input name="password" placeholder="Enter Password" type="password">
-      </label>
-      <br>
-      <input type="submit" value="Login">
-    </form>
+    <main>
+      <div id="login-form-container" class="floating">
+        <h1 class="gradient-text">Fabflix</h1>
+        <h2>Login</h2>
+        <form id="login_form"  method="post" action="#">
+          <div class="login-field-container">
+            <b>Username</b>
+            <label class="login-label">
+              <input class="login-field" name="username" placeholder="Enter Username" type="text">
+            </label>
+          </div>
+          <div class="login-field-container">
+            <b>Password</b>
+            <label class="login-label">
+              <input class="login-field" name="password" placeholder="Enter Password" type="password">
+            </label>
+          </div>
+          <input id="login-submit" type="submit" value="Login">
+        </form>
+      </div>
 
-    <div id="login_error_message"></div>
+      <div id="login_error_message"></div>
+    </main>
+
 
     <!-- include jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

@@ -1,0 +1,86 @@
+main {
+    display: flex;
+    justify-content: center;
+}
+
+#login-form-container{
+    margin-top: 50px;
+    width: 30%;
+    height: 60vh;
+    background-color: #040112;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 50px;
+    border-radius: 10px;
+}
+
+#login-form-container h1 {
+    font-size: 9vw;
+    margin-bottom: 40px;
+}
+
+#login-form-container h2 {
+    font-size: 2vw;
+    margin-bottom: 25px;
+}
+
+
+#login_form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.login-field-container, .login-label {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-field-container b {
+    align-self: baseline;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+#login_form .login-field {
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #161127;
+    font-size: 15px;
+    color: white;
+    padding: 5px;
+}
+
+.login-field:focus {
+    border-color: #7d59ef; /* Change border color */
+    box-shadow: 0 0 5px rgba(125, 89, 239, 0.5); /* Add box shadow */
+    outline: none; /* Remove default outline */
+}
+
+#login-submit {
+    margin-top: 20px;
+    width: 100%;
+    background: linear-gradient(to bottom, #7d59ef, #9d93f3, #c2bbf4);
+    border-radius: 20px;
+    padding: 8px 10px;
+    border: none; /* Remove default border */
+    cursor: pointer; /* Change cursor to pointer */
+    outline: none; /* Remove default focus outline */
+    font-size: 18px;
+}
+
+#login-submit:hover {
+    background: linear-gradient(to bottom, #5b3cbb, #6f69cd, #9484d1);
+}
+
+

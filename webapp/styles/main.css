@@ -10,11 +10,11 @@ main {
 }
 
 h1 {
-    font-size: 5rem;
+    font-family: "Open Sans", sans-serif;
+    font-size: 9vw;
     font-weight: bold;
     text-align: center;
     margin: 40px;
-    font-style: oblique;
 }
 
 #genres-container {
