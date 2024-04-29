@@ -107,7 +107,6 @@ public class MovieListServlet extends HttpServlet {
         }
         if (starName != null) {
             preStmtSearch.setString(parameterIndex, "%" + starName + "%");
-            parameterIndex++;
         }
     
         JsonArray output = new JsonArray();
@@ -128,7 +127,7 @@ public class MovieListServlet extends HttpServlet {
         boolean whereAdded = false;
     
         if (title != null) {
-            query += (whereAdded ? "AND " : "WHERE ") + "m.title LIKE ?";
+            query += ("WHERE ") + "m.title LIKE ?";
             whereAdded = true;
         }
         if (year != null) {
