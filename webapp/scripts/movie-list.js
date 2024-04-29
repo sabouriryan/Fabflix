@@ -1,10 +1,19 @@
-/**
- * Before this .js is loaded, the html skeleton is created.
- *
- * This .js performs two steps:
- *      1. Use jQuery to talk to backend API to get the json data.
- *      2. Populate the data to correct html elements.
- */
+function getParameterByName(target) {
+    // Get request URL
+    let url = window.location.href;
+    // Encode target parameter name to url encoding
+    target = target.replace(/[\[\]]/g, "\\$&");
+
+    // Ues regular expression to find matched parameter value
+    let regex = new RegExp("[?&]" + target + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+
+    // Return the decoded parameter value
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 
 let cachedRecords = []; // array
 const recordsPerPage = 20;
@@ -63,30 +72,43 @@ function populateMovieTable(pageNumber) {
 /**
  * Once this .js is loaded, following scripts will be executed by the browser
  */
-let action = getParameterByName('action');
-let type;
-if (action === 'browse') {
-    let genre = getParameterByName('genre');
-    let title = getParameterByName('title');
 
-    if (genre !== null) {
-        type=genre;
-        console.log("Genre:", genre);
-    } else if (title !== null) {
-        type=title;
-        console.log("Title:", title);
-    } else {
-        console.log("Error - no genre or title given for browse")
-    }
-} else if (action === 'search') {
-    // Handle search parameters
-} else {
-    // Handle other actions or invalid actions
+let params = [];
+
+let genre = getParameterByName('genre');
+let title = getParameterByName('title');
+let firstChar = getParameterByName('firstChar');
+let page = getParameterByName('page');
+let pageLimit = getParameterByName('pageLimit');
+let year = getParameterByName('year');
+let director = getParameterByName('director');
+
+if (genre !== null) {
+    params.push('genre=' + genre);
 }
+if (title !== null) {
+    params.push('title=' + title);
+}
+if (firstChar !== null) {
+    params.push('firstChar=' + firstChar);
+}
+if (page !== null) {
+    params.push('page=' + page);
+}
+if (pageLimit !== null) {
+    params.push('pageLimit=' + pageLimit);
+}
+if (year !== null) {
+    params.push('year=' + year);
+}
+if (director !== null) {
+    params.push('director=' + director);
+}
+
 // Makes the HTTP GET request and registers on success callback function handleStarResult
 jQuery.ajax({
     dataType: "json", // Setting return data type
     method: "GET", // Setting request method
-    url: "api/movie-list?" + action + "&" + type, // Setting request url, which is mapped by MovieListServlet in MovieListServlet.java
+    url: "api/movie-list?" + params.join('&'), // Setting request url, which is mapped by MovieListServlet in MovieListServlet.java
     success: (resultData) => movieRecordHandler(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
 });
