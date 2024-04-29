@@ -1,7 +1,7 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Nunito", sans-serif;
 }
 html {
     height: 100%;
@@ -38,6 +38,10 @@ body {
     gap: 15px;
 }
 
+.left-nav {
+    margin-left: 40px;
+}
+
 .right-nav {
     margin-right: 40px;
 }
@@ -49,7 +53,7 @@ body {
 
 #home-button {
     color: #7d59ef;
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
     text-decoration: none;
 }
@@ -59,7 +63,7 @@ body {
 }
 
 .gradient-text {
-    background: linear-gradient(to right, #7d59ef, #9d93f3);
+    background: linear-gradient(to bottom, #7d59ef, #9d93f3, #c2bbf4);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
