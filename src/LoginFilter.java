@@ -30,8 +30,7 @@ public class LoginFilter implements Filter {
             System.out.println("Not allowed, redirecting...");
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/public/login.html");
         } else {
-            System.out.println("URI "+ httpRequest.getRequestURI() + " allowed")
-            ;
+            System.out.println("URI "+ httpRequest.getRequestURI() + " allowed");
             chain.doFilter(request, response);
         }
     }

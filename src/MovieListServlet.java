@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.sql.*;
 
 
-// Declaring a WebServlet called MoviesServlet, which maps to url "/api/movies"
+// Declaring a WebServlet called MovieListServlet, which maps to url "public/api/movie-list"
 @WebServlet(name = "MovieListServlet", urlPatterns = "/public/api/movie-list")
 public class MovieListServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -44,37 +44,23 @@ public class MovieListServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         response.setContentType("application/json"); // Response mime type
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
         try (Connection conn = dataSource.getConnection()) {
-            String action = request.getParameter("action");
-
-            if (action != null) {
-                // Handle search action
-                if (action.equals("search")) {
-                    handleSearchRequest(request, out, conn);
-                }
-                // Handle browse action
-                else if (action.equals("browse")) {
-                    handleBrowseRequest(request, out, conn);
-                }
-                // Invalid action
-                else {
-                    JsonObject errorObject = new JsonObject();
-                    errorObject.addProperty("errorMessage", "Invalid action");
-                    out.write(errorObject.toString());
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                }
+            if (request.getParameter("title") != null || request.getParameter("year") != null
+             || request.getParameter("director") != null || request.getParameter("starName") != null) {
+                System.out.println("Server received search request");
+                handleSearchRequest(request, out, conn);
+            } else if (request.getParameter("genre") != null || request.getParameter("firstChar") != null) {
+                System.out.println("Server received browse request");
+                handleBrowseRequest(request, out, conn);
             } else {
-                JsonObject errorObject = new JsonObject();
-                errorObject.addProperty("errorMessage", "Action parameter is required");
-                out.write(errorObject.toString());
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                System.out.println("Servlet received request to movie-list, but no parameters");
             }
+
         } catch (Exception e) {
             // Handle exceptions
             e.printStackTrace();
@@ -92,67 +78,61 @@ public class MovieListServlet extends HttpServlet {
 
     private void handleBrowseRequest(HttpServletRequest request, PrintWriter out, Connection conn) throws SQLException {
         String genre = request.getParameter("genre");
-        String startChar = request.getParameter("startChar");
+        String firstChar = request.getParameter("firstChar");
 
+        PreparedStatement preStmtBrowse = conn.prepareStatement(getBrowseQuery(genre, firstChar));
+        if (genre != null) {
+            preStmtBrowse.setString(1, genre);
+        } else if (firstChar != null && !firstChar.equals("*")) {
+            preStmtBrowse.setString(1, firstChar);
+        }
+        JsonArray output = new JsonArray();
+        try (ResultSet rs = preStmtBrowse.executeQuery()) {
+            while (rs.next()) {
+                output.add(getMovieObject(rs, conn));
+            }
+        }
+        preStmtBrowse.close();
+        out.write(output.toString());
+
+    }
+
+    // Method will change to support pagination and record limit
+    private static String getBrowseQuery(String genre, String firstChar) {
         String query;
         if (genre != null) {
-            query = "SELECT * FROM movies " +
+            query = "SELECT movies.id FROM movies " +
                     "JOIN genres_in_movies ON movies.id = genres_in_movies.movieId " +
                     "JOIN genres ON genres_in_movies.genreId = genres.id " +
                     "WHERE genres.name = ? " +
-                    "ORDER BY movies.title";
-        } else if (startChar != null) {
-            if (startChar.equals("*")) {
-                query = "SELECT * FROM movies WHERE title REGEXP '^[^a-zA-Z0-9]' ORDER BY title";
-            } else {
-                query = "SELECT * FROM movies WHERE title LIKE ? ORDER BY title";
-            }
+                    "ORDER BY movies.title"; // Need to change to support pagination/sort method stated in other params
+        } else if (firstChar != null && !firstChar.equals("*")) {
+            query = "SELECT movies.id FROM movies WHERE title LIKE ? ORDER BY title";
+        } else if (firstChar != null) {
+            query = "SELECT movies.id FROM movies WHERE title REGEXP '^[^a-zA-Z0-9]' ORDER BY title";
         } else {
-            System.out.println("No genre or starting character parameter found");
-            return;
+            query = "SELECT movies.id FROM movies ORDER BY title";
         }
-
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            if (genre != null) {
-                pstmt.setString(1, genre);
-            } else if (startChar != null && !startChar.equals("*")) {
-                pstmt.setString(1, startChar);
-            }
-            try (ResultSet rs = pstmt.executeQuery()) {
-                getRecordsGivenMovieIDs(rs, out, conn);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return query;
     }
 
-    private void getRecordsGivenMovieIDs(ResultSet rs, PrintWriter out, Connection conn) throws SQLException {
-        JsonArray output = new JsonArray();
-        while (rs.next()) {
-            String movieId = rs.getString("id");
-            JsonArray topGenresArray = getTopGenres(movieId, conn);
-            JsonArray topStarsArray = getTopStars(movieId, conn);
-
-            // Construct movie object
-            JsonObject movieObject = new JsonObject();
-            movieObject.addProperty("movie_id", movieId);
-            movieObject.addProperty("movie_title", rs.getString("title"));
-            movieObject.addProperty("movie_year", rs.getInt("year"));
-            movieObject.addProperty("movie_director", rs.getString("director"));
-            movieObject.add("movie_genres", topGenresArray);
-            movieObject.add("movie_stars", topStarsArray);
-            movieObject.addProperty("movie_rating", rs.getDouble("rating"));
-
-            output.add(movieObject);
-        }
-        out.write(output.toString());
+    private JsonObject getMovieObject(ResultSet rs, Connection conn) throws SQLException {
+        JsonObject movieObject = new JsonObject();
+        String movie_id = rs.getString("id");
+        movieObject.addProperty("movie_id", movie_id);
+        movieObject.addProperty("movie_title", rs.getString("title"));
+        movieObject.addProperty("movie_year", rs.getString("year"));
+        movieObject.addProperty("movie_director", rs.getString("director"));
+        movieObject.add("movie_genres", getTopGenres(movie_id, conn));
+        movieObject.add("movie_stars", getTopStars(movie_id, conn));
+        return movieObject;
     }
 
     private JsonArray getTopGenres(String movieId, Connection conn) throws SQLException {
         String query = "SELECT genres.name FROM genres_in_movies " +
                 "JOIN genres ON genres_in_movies.genreId = genres.id " +
                 "WHERE genres_in_movies.movieId = ? " +
-                "LIMIT 3";
+                "LIMIT 3 ORDER BY genres.name";
         JsonArray topGenresArray = new JsonArray();
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, movieId);
@@ -169,7 +149,7 @@ public class MovieListServlet extends HttpServlet {
         String query = "SELECT stars.name, stars.id FROM stars_in_movies " +
                 "JOIN stars ON stars_in_movies.starId = stars.id " +
                 "WHERE stars_in_movies.movieId = ? " +
-                "LIMIT 3";
+                "LIMIT 3 ORDER BY stars.name";
         JsonArray topStarsArray = new JsonArray();
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, movieId);
