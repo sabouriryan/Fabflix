@@ -61,7 +61,7 @@ function populateMovieTable(pageNumber) {
         }
         rowHTML += "</td>";
 
-        rowHTML += "<td><span class='rating-td'>" + recordsToDisplay[i]["movie_rating"] + "</span></td>";
+        rowHTML += "<td><span class='rating-td'><i class='fas fa-star'></i> " + recordsToDisplay[i]["movie_rating"] + "</span></td>";
         rowHTML += "</tr>";
 
         movieTableBodyElement.append(rowHTML); // refreshes page
