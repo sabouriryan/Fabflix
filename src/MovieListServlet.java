@@ -53,6 +53,7 @@ public class MovieListServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("ENTERED doGet in MOvieListServlet");
         response.setContentType("application/json"); // Response mime type
 
         printRequestURL(request);
@@ -111,9 +112,12 @@ public class MovieListServlet extends HttpServlet {
     
         JsonArray output = new JsonArray();
         try (ResultSet rs = preStmtSearch.executeQuery()) {
+            int counter = 0;
             while (rs.next()) {
+                counter++;
                 output.add(getMovieObject(rs, conn));
             }
+            System.out.println("COUNTERRRR: " + counter);
         }
         preStmtSearch.close();
         out.write(output.toString());
@@ -127,24 +131,24 @@ public class MovieListServlet extends HttpServlet {
         boolean whereAdded = false;
     
         if (title != null) {
-            query += "WHERE " + "m.title LIKE ?";
+            query += "WHERE " + "m.title LIKE ? ";
             whereAdded = true;
         }
         if (year != null) {
             // Assuming 'year' is exact match
-            query += (whereAdded ? "AND " : "WHERE ") + "m.year = ?";
+            query += (whereAdded ? " AND " : "WHERE ") + "m.year = ?";
             whereAdded = true;
         }
         if (director != null) {
-            query += (whereAdded ? "AND " : "WHERE ") + "m.director LIKE ?";
+            query += (whereAdded ? " AND " : "WHERE ") + "m.director LIKE ?";
             whereAdded = true;
         }
         if (starName != null) {
-            query += "JOIN moviedb.stars_in_movies sim ON m.id = sim.movieId " +
-                     "JOIN moviedb.stars s ON sim.starId = s.id " +
-                     (whereAdded ? "AND " : "WHERE ") + "LOWER(s.name) LIKE LOWER(%?%)";
+            query += (whereAdded ? "AND " : "WHERE ");
+            query += "m.id IN (SELECT sim.movieId FROM moviedb.stars_in_movies sim " +
+            " INNER JOIN moviedb.stars s ON sim.starId = s.id " +
+            " WHERE LOWER(s.name) LIKE LOWER(?))";
         }
-    
         query += " ORDER BY m.title";
     
         return query;

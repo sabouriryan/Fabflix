@@ -82,6 +82,7 @@ let page = getParameterByName('page');
 let pageLimit = getParameterByName('pageLimit');
 let year = getParameterByName('year');
 let director = getParameterByName('director');
+let starName = getParameterByName('starName');
 
 if (genre !== null) {
     params.push('genre=' + genre);
@@ -103,6 +104,9 @@ if (year !== null) {
 }
 if (director !== null) {
     params.push('director=' + director);
+}
+if (starName !== null) {
+    params.push('starName=' + starName);
 }
 
 // Makes the HTTP GET request and registers on success callback function handleStarResult
