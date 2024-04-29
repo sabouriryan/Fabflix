@@ -13,7 +13,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -24,14 +24,32 @@
     <title>Movie List</title>
 
     <link rel="stylesheet" href="../styles/style.css"/>
+    <link rel="stylesheet" href="../styles/movie-list.css"/>
+
+    <script src="https://kit.fontawesome.com/4d7e7da3eb.js" crossorigin="anonymous"></script>
+
   </head>
   <body>
     <header>
       <nav class="nav-bar">
+      <div class="left-nav">
         <div class="logo-container">
-          <a id="home-button" href="movie-list.html">Fabflix</a>
+          <a id="home-button" href="index.html">Fabflix</a>
         </div>
-      </nav>
+      </div>
+      <div class="right-nav">
+        <div class="search-dropdown">
+          <i class='fas fa-search'></i>
+          <form id="search-dropdown-form" class="floating">
+            <input type="text" class="search-bar" name="title" placeholder="Title">
+            <input type="text" class="search-bar" name="year" placeholder="Year">
+            <input type="text" class="search-bar" name="director" placeholder="Director">
+            <input type="text" class="search-bar" name="starName" placeholder="Star">
+            <input id="search-submit" type="submit" value="Submit">
+          </form>
+        </div>
+      </div>
+    </nav>
     </header>
     <main>
       <h1 id="search-result"></h1>
@@ -63,5 +81,6 @@
   <!-- Note the url does not contain a "/" in the beginning, which means the url is relative to current path
        otherwise the url is relative to the root path-->
   <script src="../scripts/movie-list.js"></script>
+  <script src="../scripts/search.js"></script>
   </body>
 </html>

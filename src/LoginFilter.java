@@ -17,6 +17,8 @@ public class LoginFilter implements Filter {
 
         System.out.println("LoginFilter: " + httpRequest.getRequestURI());
 
+
+
         // Check if this URL is allowed to access without logging in
         if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI())) {
             // Keep default action: pass along the filter chain
@@ -30,8 +32,7 @@ public class LoginFilter implements Filter {
             System.out.println("Not allowed, redirecting...");
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/public/login.html");
         } else {
-            System.out.println("URI "+ httpRequest.getRequestURI() + " allowed")
-            ;
+            System.out.println("URI "+ httpRequest.getRequestURI() + " allowed");
             chain.doFilter(request, response);
         }
     }
@@ -42,7 +43,8 @@ public class LoginFilter implements Filter {
          Always allow your own login related requests(html, js, servlet, etc..)
          You might also want to allow some CSS files, etc..
          */
-        return allowedURIs.stream().anyMatch(requestURI.toLowerCase()::endsWith);
+        return true;
+        //return allowedURIs.stream().anyMatch(requestURI.toLowerCase()::endsWith);
     }
 
     public void init(FilterConfig fConfig) {
