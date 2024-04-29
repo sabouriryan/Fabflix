@@ -91,17 +91,23 @@ public class MovieListServlet extends HttpServlet {
     
         PreparedStatement preStmtSearch = conn.prepareStatement(getSearchQuery(title, year, director, starName));
     
+        int parameterIndex = 0;
+
         if (title != null) {
-            preStmtSearch.setString(1, "%" + title + "%");
+            preStmtSearch.setString(parameterIndex, "%" + title + "%");
+            parameterIndex++;
         }
         if (year != null) {
-            preStmtSearch.setInt(2, Integer.parseInt(year));
+            preStmtSearch.setInt(parameterIndex, Integer.parseInt(year));
+            parameterIndex++;
         }
         if (director != null) {
-            preStmtSearch.setString(3, "%" + director + "%");
+            preStmtSearch.setString(parameterIndex, "%" + director + "%");
+            parameterIndex++;
         }
         if (starName != null) {
-            preStmtSearch.setString(4, "%" + starName + "%");
+            preStmtSearch.setString(parameterIndex, "%" + starName + "%");
+            parameterIndex++;
         }
     
         JsonArray output = new JsonArray();
