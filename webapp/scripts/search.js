@@ -15,7 +15,7 @@ function submitSearch(searchEvent) {
 
     // Construct the URL with the query string
     // Redirect to the constructed URL
-    window.location.href = "/Fabflix_war/public/movie-list.html" + queryString;
+    window.location.href = "/Fabflix/public/movie-list.html" + queryString;
 }
 
 search_form.submit(submitSearch);
