@@ -44,3 +44,15 @@ main {
 #movie_table .rating-td {
     color: #c284d7;
 }
+
+#movie_table .add-to-cart-btn {
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    background: #5b3cbb;
+    color: #040112;
+    border: none; /* Remove default border */
+    cursor: pointer; /* Change cursor to pointer */
+    outline: none; /* Remove default focus outline */
+    border-radius: 7px;
+}

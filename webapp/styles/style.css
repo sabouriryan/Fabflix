@@ -94,8 +94,8 @@ body {
     background-color: #040112;
     padding: 10px;
     border-radius: 5px;
-    top: 105%;
-    right: -10px;
+    top: 100%;
+    right: -20px;
 }
 
 .search-bar {
@@ -129,4 +129,9 @@ body {
     border-color: #7d59ef; /* Change border color */
     box-shadow: 0 0 5px rgba(125, 89, 239, 0.5); /* Add box shadow */
     outline: none; /* Remove default outline */
+}
+
+#checkout-button {
+    text-decoration: None;
+    color: white;
 }

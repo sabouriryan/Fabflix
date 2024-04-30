@@ -86,6 +86,10 @@ function handleResult(resultData) {
     }
 }
 
+function goBack() {
+    window.location.href = "api/return";
+}
+
 /**
  * Once this .js is loaded, following scripts will be executed by the browser\
  */

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <!-- Opens Sans -->
+    <!-- Nunito -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
@@ -38,6 +38,9 @@
         </div>
       </div>
       <div class="right-nav">
+        <div>
+          <a id="checkout-button" href="/Fabflix_war/public/shopping-cart.html">Checkout</a>
+        </div>
         <div class="search-dropdown">
           <i class='fas fa-search'></i>
           <form id="search-dropdown-form" class="floating">
@@ -48,11 +51,28 @@
             <input id="search-submit" type="submit" value="Submit">
           </form>
         </div>
+
       </div>
     </nav>
     </header>
     <main>
-      <h1 id="search-result"></h1>
+      <h1 id="search-result">Results</h1>
+      <select id="page-limit-dropdown">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+      <select id="sort-dropdown">
+        <option value="1">Title: asc Rating: asc</option>
+        <option value="2">Title: asc Rating: desc</option>
+        <option value="3">Title: desc Rating: asc</option>
+        <option value="4">Title: desc Rating: desc</option>
+        <option value="5">Rating: asc Title: asc</option>
+        <option value="6">Rating: asc Title: desc</option>
+        <option value="7">Rating: desc Title: asc</option>
+        <option value="8">Rating: desc Title: desc</option>
+      </select>
       <div class="movie-list-container">
         <table id=movie_table class="floating striped">
           <thead>
@@ -63,10 +83,16 @@
               <th>Genres</th>
               <th>Stars</th>
               <th>Rating</th>
+              <th>Cart</th>
             </tr>
           </thead>
           <tbody id=movie_table_body></tbody>
         </table>
+      </div>
+      <div class="pagination-buttons">
+        <button id="prev-page">Previous</button>
+        <span id="current-page">Page X</span>
+        <button id="next-page">Next</button>
       </div>
     </main>
 
