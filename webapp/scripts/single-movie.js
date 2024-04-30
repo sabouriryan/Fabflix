@@ -58,11 +58,23 @@ function handleResult(resultData) {
     
     let genreListElement = jQuery("#genre_list");
 
-    for (let i = 0; i < resultData['movie_genres'].length; ++i){
+    /*for (let i = 0; i < resultData['movie_genres'].length; ++i){
         genreListHTML = resultData['movie_genres'][i];
         if (i !== resultData['movie_genres'].length - 1) genreListHTML += ", "
         genreListElement.append(genreListHTML);
+    }*/
+
+    var genres = resultData["movie_genres"];
+    var genresHTML = "";
+    for (var j = 0; j < genres.length; j++) {
+        var genre = genres[j];
+        genresHTML = "<a href='movie-list.html?genre=" + genre +  "'>" +  genre + "</a>";
+        if (j !== genres.length - 1) {
+            genresHTML += ", ";
+        }
+        genreListElement.append(genresHTML);
     }
+    
 
     let starListElement = jQuery("#star_list");
     for (let i = 0; i < resultData['movie_stars'].length; ++i){

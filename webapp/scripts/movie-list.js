@@ -81,10 +81,21 @@ function populateMovieTable(movieResultData) {
     for (let i = 0; i < movieResultData.length; i++) {
         let rowHTML = "";
         rowHTML += "<tr>";
-        rowHTML += "<td>" + "<a href='single-movie.html?id=" + movieResultData[i]["movie_id"] + "'>" + movieResultData[i]["movie_title"] + "</a>";
-        rowHTML += "<td>" + movieResultData[i]["movie_year"] + "</td>";
-        rowHTML += "<td>" + movieResultData[i]["movie_director"] + "</td>";
-        rowHTML += "<td>" + movieResultData[i]["movie_genres"].join(", ") + "</td>";
+        rowHTML += "<td>" + "<a href='single-movie.html?id=" + recordsToDisplay[i]["movie_id"] + "'>" + recordsToDisplay[i]["movie_title"] + "</a>";
+        rowHTML += "<td>" + recordsToDisplay[i]["movie_year"] + "</td>";
+        rowHTML += "<td>" + recordsToDisplay[i]["movie_director"] + "</td>";
+        //rowHTML += "<td>" + recordsToDisplay[i]["movie_genres"].join(", ") + "</td>";
+        var genres = recordsToDisplay[i]["movie_genres"];
+        var genresHTML = "";
+        for (var j = 0; j < genres.length; j++) {
+            var genre = genres[j];
+            if (j > 0) {
+                genresHTML += ", ";
+            }
+            genresHTML += "<a href='movie-list.html?genre=" + genre +  "'>" +  genre + "</a>";
+        }
+        rowHTML += "<td>" + genresHTML + "</td>";
+
 
         rowHTML += "<td>";
         let stars = movieResultData[i]["movie_stars"];

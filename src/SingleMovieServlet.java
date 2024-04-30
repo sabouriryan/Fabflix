@@ -89,10 +89,14 @@ public class SingleMovieServlet extends HttpServlet {
             rsGenres.close();
             pstmtGenres.close();
 
-            // Get top 3 stars
-            String queryStars = "SELECT s.id, s.name FROM stars_in_movies sim " +
-                    "JOIN stars s ON sim.starId = s.id " +
-                    "WHERE sim.movieId = ?";
+            // Get ALL stars sorted by decreasing number of movies played
+            String queryStars = "SELECT s.id AS star_id, s.name AS star_name, COUNT(sim_all.starId) AS movie_count " +
+            "FROM stars_in_movies AS sim_movie " +
+            "JOIN stars AS s ON sim_movie.starId = s.id " +
+            "JOIN stars_in_movies AS sim_all ON sim_movie.starId = sim_all.starId " +
+            "WHERE sim_movie.movieId = ? " +
+            "GROUP BY sim_movie.starId, s.name " +
+            "ORDER BY movie_count DESC, s.name";
 
             PreparedStatement pstmtStars = conn.prepareStatement(queryStars);
             pstmtStars.setString(1, movie_id);
@@ -101,8 +105,8 @@ public class SingleMovieServlet extends HttpServlet {
             JsonArray starsArray = new JsonArray();
             while (rsStars.next()) {
                 JsonObject starObject = new JsonObject();
-                starObject.addProperty("star_name", rsStars.getString("name"));
-                starObject.addProperty("star_id", rsStars.getString("id"));
+                starObject.addProperty("star_name", rsStars.getString("star_name"));
+                starObject.addProperty("star_id", rsStars.getString("star_id"));
                 starsArray.add(starObject);
             }
             

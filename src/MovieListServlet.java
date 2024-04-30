@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
+import java.util.*;
 
 
 // Declaring a WebServlet called MovieListServlet, which maps to url "public/api/movie-list"
@@ -237,23 +238,58 @@ public class MovieListServlet extends HttpServlet {
         return topGenresArray;
     }
 
+    public String getStarIdFromName(String starName, Connection conn) throws SQLException {
+        String starId = null;
+        
+        // Prepare SQL query to retrieve star ID based on name
+        String query = "SELECT id FROM stars WHERE name = ?";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            // Set the star name parameter
+            stmt.setString(1, starName);
+            
+            // Execute the query
+            try (ResultSet rs = stmt.executeQuery()) {
+                // Check if a result is returned
+                if (rs.next()) {
+                    // Retrieve the star ID from the result set
+                    starId = rs.getString("id");
+                }
+            }
+        }
+        
+        return starId;
+    }
+    
+
     private JsonArray getTopStars(String movieId, Connection conn) throws SQLException {
-        String query = "SELECT stars.name, stars.id FROM stars_in_movies " +
-                "JOIN stars ON stars_in_movies.starId = stars.id " +
-                "WHERE stars_in_movies.movieId = ? " +
-                "ORDER BY stars.name LIMIT 3";
+        String query = "SELECT s.id AS star_id, s.name AS star_name, COUNT(sim_all.starId) AS movie_count " +
+               "FROM stars_in_movies AS sim_movie " +
+               "JOIN stars AS s ON sim_movie.starId = s.id " +
+               "JOIN stars_in_movies AS sim_all ON sim_movie.starId = sim_all.starId " +
+               "WHERE sim_movie.movieId = ? " +
+               "GROUP BY sim_movie.starId, s.name " +
+               "ORDER BY movie_count DESC, s.name LIMIT 3";
+
         JsonArray topStarsArray = new JsonArray();
+    
         try (PreparedStatement preStmtStars = conn.prepareStatement(query)) {
             preStmtStars.setString(1, movieId);
+    
             try (ResultSet rs = preStmtStars.executeQuery()) {
                 while (rs.next()) {
+                    String starId = rs.getString("star_id");
+                    String starName = rs.getString("star_name");
+    
                     JsonObject starObject = new JsonObject();
-                    starObject.addProperty("star_name", rs.getString("name"));
-                    starObject.addProperty("star_id", rs.getString("id"));
+                    starObject.addProperty("star_name", starName);
+                    starObject.addProperty("star_id", starId);
                     topStarsArray.add(starObject);
                 }
             }
         }
+    
         return topStarsArray;
     }
+    
 }
