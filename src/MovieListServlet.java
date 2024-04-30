@@ -150,12 +150,9 @@ public class MovieListServlet extends HttpServlet {
     
         JsonArray output = new JsonArray();
         try (ResultSet rs = preStmtSearch.executeQuery()) {
-            int counter = 0;
             while (rs.next()) {
-                counter++;
                 output.add(getMovieObject(rs, conn));
             }
-            System.out.println("COUNTERRRR: " + counter);
         }
         preStmtSearch.close();
         out.write(output.toString());
@@ -186,6 +183,7 @@ public class MovieListServlet extends HttpServlet {
             " INNER JOIN moviedb.stars s ON sim.starId = s.id " +
             " WHERE LOWER(s.name) LIKE LOWER(?))";
         }
+
         return query;
     }
     
