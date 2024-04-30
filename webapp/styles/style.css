@@ -94,8 +94,8 @@ body {
     background-color: #040112;
     padding: 10px;
     border-radius: 5px;
-    top: 105%;
-    right: -10px;
+    top: 100%;
+    right: -20px;
 }
 
 .search-bar {

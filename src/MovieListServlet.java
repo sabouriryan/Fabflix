@@ -186,8 +186,6 @@ public class MovieListServlet extends HttpServlet {
             " INNER JOIN moviedb.stars s ON sim.starId = s.id " +
             " WHERE LOWER(s.name) LIKE LOWER(?))";
         }
-        query += " ORDER BY m.title";
-    
         return query;
     }
     
