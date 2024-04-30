@@ -58,12 +58,13 @@ public class MovieListServlet extends HttpServlet {
         System.out.println("ENTERED doGet in MovieListServlet");
         response.setContentType("application/json"); // Response mime type
 
-        printRequestURL(request);
+        //printRequestURL(request);
 
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession(true);
         session.setAttribute("queryString", request.getQueryString());
+        System.out.println("Saved Query String: " + request.getQueryString());
 
         try (Connection conn = dataSource.getConnection()) {
             if (request.getParameter("title") != null || request.getParameter("year") != null
@@ -86,6 +87,29 @@ public class MovieListServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {
             out.close();
+        }
+    }
+
+    private static String getSortMethod(int sortMethod) {
+        switch (sortMethod) {
+            case 1:
+                return "ORDER BY m.title ASC, r.rating ASC ";
+            case 2:
+                return "ORDER BY m.title ASC, r.rating DESC ";
+            case 3:
+                return "ORDER BY m.title DESC, r.rating ASC ";
+            case 4:
+                return "ORDER BY m.title DESC, r.rating DESC ";
+            case 5:
+                return "ORDER BY r.rating ASC, m.title ASC ";
+            case 6:
+                return "ORDER BY r.rating ASC, m.title DESC ";
+            case 7:
+                return "ORDER BY r.rating DESC, m.title ASC ";
+            case 8:
+                return "ORDER BY r.rating DESC, m.title DESC ";
+            default:
+                return "";
         }
     }
 
@@ -128,7 +152,6 @@ public class MovieListServlet extends HttpServlet {
         out.write(output.toString());
     }
     
-    // Modify this method to support search parameters
     private static String getSearchQuery(String title, String year, String director, String starName) {
         String query = "SELECT m.*, r.rating FROM moviedb.movies m " +
                 "LEFT JOIN moviedb.ratings r ON m.id = r.movieId ";
@@ -159,18 +182,31 @@ public class MovieListServlet extends HttpServlet {
         return query;
     }
     
-    
     private void handleBrowseRequest(HttpServletRequest request, PrintWriter out, Connection conn) throws SQLException {
         String genre = request.getParameter("genre");
         String firstChar = request.getParameter("firstChar");
+        int page = Integer.parseInt(request.getParameter("page"));
+        int pageLimit = Integer.parseInt(request.getParameter("pageLimit"));
+        int sortMethod = Integer.parseInt(request.getParameter("sort"));
 
-        PreparedStatement preStmtBrowse = conn.prepareStatement(getBrowseQuery(genre, firstChar));
+        String browseQuery = getBrowseQuery(genre, firstChar);
+        browseQuery += getSortMethod(sortMethod);
+        browseQuery += "LIMIT ? OFFSET ?";
+
+        PreparedStatement preStmtBrowse = conn.prepareStatement(browseQuery);
         if (genre != null) {
             preStmtBrowse.setString(1, genre);
         } else if (firstChar != null && !firstChar.equals("*")) {
             preStmtBrowse.setString(1, firstChar + "%");
         }
+
+        int offset = (page - 1) * pageLimit;
+        preStmtBrowse.setInt(2, pageLimit);
+        preStmtBrowse.setInt(3, offset);
+
         JsonArray output = new JsonArray();
+        //System.out.println("Prepared SQL Statement: " + preStmtBrowse.toString());
+
         try (ResultSet rs = preStmtBrowse.executeQuery()) {
             while (rs.next()) {
                 output.add(getMovieObject(rs, conn));
@@ -180,7 +216,6 @@ public class MovieListServlet extends HttpServlet {
         out.write(output.toString());
     }
 
-    // Method will change to support pagination and record limit
     private static String getBrowseQuery(String genre, String firstChar) {
         String query;
         if (genre != null) {
@@ -188,22 +223,18 @@ public class MovieListServlet extends HttpServlet {
                     "JOIN moviedb.genres_in_movies gim ON m.id = gim.movieId " +
                     "JOIN moviedb.genres g ON gim.genreId = g.id " +
                     "LEFT JOIN moviedb.ratings r ON m.id = r.movieId " +
-                    "WHERE g.name = ? " +
-                    "ORDER BY m.title"; // Need to change to support pagination/sort method stated in other params
+                    "WHERE g.name = ? ";
         } else if (firstChar != null && !firstChar.equals("*")) {
             query = "SELECT m.*, r.rating FROM moviedb.movies m " +
                     "LEFT JOIN moviedb.ratings r ON m.id = r.movieId " +
-                    "WHERE m.title LIKE ? " +
-                    "ORDER BY m.title";
+                    "WHERE m.title LIKE ? ";
         } else if (firstChar != null) {
             query = "SELECT m.*, r.rating FROM moviedb.movies m " +
                     "LEFT JOIN moviedb.ratings r ON m.id = r.movieId " +
-                    "WHERE m.title REGEXP '^[^a-zA-Z0-9]' " +
-                    "ORDER BY m.title";
+                    "WHERE m.title REGEXP '^[^a-zA-Z0-9]' ";
         } else {
             query = "SELECT m.*, r.rating FROM moviedb.movies m " +
-                    "LEFT JOIN moviedb.ratings r ON m.id = r.movieId " +
-                    "ORDER BY m.title";
+                    "LEFT JOIN moviedb.ratings r ON m.id = r.movieId ";
         }
         return query;
     }
@@ -237,30 +268,6 @@ public class MovieListServlet extends HttpServlet {
         }
         return topGenresArray;
     }
-
-    public String getStarIdFromName(String starName, Connection conn) throws SQLException {
-        String starId = null;
-        
-        // Prepare SQL query to retrieve star ID based on name
-        String query = "SELECT id FROM stars WHERE name = ?";
-        
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            // Set the star name parameter
-            stmt.setString(1, starName);
-            
-            // Execute the query
-            try (ResultSet rs = stmt.executeQuery()) {
-                // Check if a result is returned
-                if (rs.next()) {
-                    // Retrieve the star ID from the result set
-                    starId = rs.getString("id");
-                }
-            }
-        }
-        
-        return starId;
-    }
-    
 
     private JsonArray getTopStars(String movieId, Connection conn) throws SQLException {
         String query = "SELECT s.id AS star_id, s.name AS star_name, COUNT(sim_all.starId) AS movie_count " +

@@ -14,8 +14,8 @@ $(document).ready(function() {
     fetchMovies();
 });
 
-$('#pageLimitDropdown').change(function() {
-    pageSize = $(this).val();
+$('#page-limit-dropdown').change(function() {
+    pageLimit = $(this).val();
     page = 1; // Reset page number when page size changes
     fetchMovies(); // Fetch data with updated page size
 });
@@ -51,6 +51,11 @@ function updatePaginationButtons(numRecords) {
     }
 }
 
+function updateDropdownMenus() {
+    $('#page-limit-dropdown').val(pageLimit);
+    $('#sort-dropdown').val(sort);
+}
+
 function getParameterByName(target) {
     // Get request URL
     let url = window.location.href;
@@ -73,6 +78,7 @@ function getParameterByName(target) {
  */
 function populateMovieTable(movieResultData) {
     console.log("populateMovieTable: populating movie table");
+    console.log("Result data: " + movieResultData);
 
     // Populate the movie table by id "star_table_body"
     let movieTableBodyElement = jQuery("#movie_table_body");
@@ -153,6 +159,7 @@ function fetchMovies() {
         success: (resultData) => { // Setting callback function to handle data returned
             populateMovieTable(resultData);
             updatePaginationButtons(resultData.length);
+            updateDropdownMenus();
         }
     });
 }
