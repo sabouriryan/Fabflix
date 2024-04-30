@@ -67,13 +67,17 @@ public class MovieListServlet extends HttpServlet {
         System.out.println("Saved Query String: " + request.getQueryString());
 
         try (Connection conn = dataSource.getConnection()) {
+            int page = Integer.parseInt(request.getParameter("page"));
+            int pageLimit = Integer.parseInt(request.getParameter("pageLimit"));
+            int sortMethod = Integer.parseInt(request.getParameter("sort"));
+
             if (request.getParameter("title") != null || request.getParameter("year") != null
              || request.getParameter("director") != null || request.getParameter("starName") != null) {
                 System.out.println("Server received search request");
-                handleSearchRequest(request, out, conn);
+                handleSearchRequest(request, out, conn, page, pageLimit, sortMethod);
             } else if (request.getParameter("genre") != null || request.getParameter("firstChar") != null) {
                 System.out.println("Server received browse request");
-                handleBrowseRequest(request, out, conn);
+                handleBrowseRequest(request, out, conn, page, pageLimit, sortMethod);
             } else {
                 System.out.println("Servlet received request to movie-list, but no parameters");
             }
@@ -113,31 +117,36 @@ public class MovieListServlet extends HttpServlet {
         }
     }
 
-    private void handleSearchRequest(HttpServletRequest request, PrintWriter out, Connection conn) throws SQLException {
+    private void handleSearchRequest(HttpServletRequest request, PrintWriter out, Connection conn, int page, int pageLimit, int sortMethod) throws SQLException {
         String title = request.getParameter("title");
         String year = request.getParameter("year");
         String director = request.getParameter("director");
         String starName = request.getParameter("starName");
-    
-        PreparedStatement preStmtSearch = conn.prepareStatement(getSearchQuery(title, year, director, starName));
+
+        String searchQuery = getSearchQuery(title, year, director, starName);
+        searchQuery += getSortMethod(sortMethod);
+        searchQuery += "LIMIT ? OFFSET ?";
+
+        PreparedStatement preStmtSearch = conn.prepareStatement(searchQuery);
     
         int parameterIndex = 1;
 
         if (title != null) {
-            preStmtSearch.setString(parameterIndex, "%" + title + "%");
-            parameterIndex++;
+            preStmtSearch.setString(parameterIndex++, "%" + title + "%");
         }
         if (year != null) {
-            preStmtSearch.setInt(parameterIndex, Integer.parseInt(year));
-            parameterIndex++;
+            preStmtSearch.setInt(parameterIndex++, Integer.parseInt(year));
         }
         if (director != null) {
-            preStmtSearch.setString(parameterIndex, "%" + director + "%");
-            parameterIndex++;
+            preStmtSearch.setString(parameterIndex++, "%" + director + "%");
         }
         if (starName != null) {
-            preStmtSearch.setString(parameterIndex, "%" + starName + "%");
+            preStmtSearch.setString(parameterIndex++, "%" + starName + "%");
         }
+
+        int offset = (page - 1) * pageLimit;
+        preStmtSearch.setInt(parameterIndex++, pageLimit);
+        preStmtSearch.setInt(parameterIndex, offset);
     
         JsonArray output = new JsonArray();
         try (ResultSet rs = preStmtSearch.executeQuery()) {
@@ -182,12 +191,9 @@ public class MovieListServlet extends HttpServlet {
         return query;
     }
     
-    private void handleBrowseRequest(HttpServletRequest request, PrintWriter out, Connection conn) throws SQLException {
+    private void handleBrowseRequest(HttpServletRequest request, PrintWriter out, Connection conn, int page, int pageLimit, int sortMethod) throws SQLException {
         String genre = request.getParameter("genre");
         String firstChar = request.getParameter("firstChar");
-        int page = Integer.parseInt(request.getParameter("page"));
-        int pageLimit = Integer.parseInt(request.getParameter("pageLimit"));
-        int sortMethod = Integer.parseInt(request.getParameter("sort"));
 
         String browseQuery = getBrowseQuery(genre, firstChar);
         browseQuery += getSortMethod(sortMethod);
