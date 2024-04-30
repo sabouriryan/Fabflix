@@ -64,10 +64,18 @@ public class SingleStarServlet extends HttpServlet {
             pstmtStar.close();
             rs.close();
 
-            String queryMovies = "SELECT m.id, m.title, m.year, m.director " +
+            /*String queryMovies = "SELECT m.id, m.title, m.year, m.director " +
                                  "FROM movies AS m JOIN stars_in_movies sim ON m.id = sim.movieId " +
                                  "JOIN stars s ON s.id = sim.starId " +
-                                 "WHERE s.id = ?";
+                                 "WHERE s.id = ?";*/
+            
+            String queryMovies = "SELECT m.id, m.title, m.year, m.director " +
+            "FROM movies AS m " +
+            "JOIN stars_in_movies sim ON m.id = sim.movieId " +
+            "JOIN stars s ON s.id = sim.starId " +
+            "WHERE s.id = ? " +
+            "ORDER BY m.year DESC, m.title";
+            
 
             PreparedStatement pstmtMovies = conn.prepareStatement(queryMovies);
             pstmtMovies.setString(1, star_id);
