@@ -53,7 +53,7 @@ public class MovieListServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("ENTERED doGet in MOvieListServlet");
+        System.out.println("ENTERED doGet in MovieListServlet");
         response.setContentType("application/json"); // Response mime type
 
         printRequestURL(request);

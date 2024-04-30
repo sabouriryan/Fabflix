@@ -52,7 +52,12 @@
     </nav>
     </header>
     <main>
-      <h1 id="search-result"></h1>
+      <h1 id="search-result">Results</h1>
+      <select id="page-limit-dropdown">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="100">100</option>
+      </select>
       <div class="movie-list-container">
         <table id=movie_table class="floating striped">
           <thead>
@@ -67,6 +72,11 @@
           </thead>
           <tbody id=movie_table_body></tbody>
         </table>
+      </div>
+      <div class="pagination-buttons">
+        <button id="prev-page">Previous</button>
+        <span id="current-page">Page X</span>
+        <button id="next-page">Next</button>
       </div>
     </main>
 

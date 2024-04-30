@@ -1,3 +1,50 @@
+let page = 1;
+let pageLimit = 25;
+let sort = 1;
+
+$(document).ready(function() {
+    let urlPage = getParameterByName('page');
+    let urlPageLimit = getParameterByName('pageLimit');
+    let urlSort = getParameterByName('sort');
+
+    if (urlPage) { page = parseInt(urlPage); }
+    if (urlPageLimit) { pageLimit = parseInt(urlPageLimit); }
+    if (urlSort) { sort = parseInt(urlSort); }
+
+    fetchMovies();
+});
+
+$('#pageLimitDropdown').change(function() {
+    pageSize = $(this).val();
+    page = 1; // Reset page number when page size changes
+    fetchMovies(); // Fetch data with updated page size
+});
+
+// Event listener for previous page button
+$('#prev-page').click(function() {
+    if (page > 1) {
+        page--;
+        fetchMovies(); // Fetch previous page
+    }
+});
+
+// Event listener for next page button
+$('#next-page').click(function() {
+    page++;
+    fetchMovies(); // Fetch next page
+});
+
+function updatePaginationButtons(numRecords) {
+    $('#prev-page').prop('disabled', page === 1); // Disable previous button if on the first page
+    $('#current-page').text("Page " + page);
+
+    if (numRecords < pageLimit) {
+        $('#next-page').prop('disabled', true); // Disable next button if no more pages
+    } else {
+        $('#next-page').prop('disabled', false); // Enable next button if more pages
+    }
+}
+
 function getParameterByName(target) {
     // Get request URL
     let url = window.location.href;
@@ -14,105 +61,79 @@ function getParameterByName(target) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-
-let cachedRecords = []; // array
-const recordsPerPage = 20;
-
-/**
- * Handles the data returned by the API, read the jsonObject and copy records into cache
- * @param resultData jsonObject
- */
-function movieRecordHandler(resultData) {
-    console.log("movieRecordHandler: Uploading top 100 records to cache");
-    cachedRecords = []; // clear the cache
-
-    cachedRecords = resultData;
-    //cachedRecords = resultData.slice(0, 100); // If more than 100 records, cache only 100
-    console.log("Logged " + cachedRecords.length + " records")
-    console.log(cachedRecords);
-    populateMovieTable(1);
-}
-
 /**
  * Populates data into html elements from cache
- * @param pageNumber the current page number
+ * @param movieResultData the movie data fetched
  */
-function populateMovieTable(pageNumber) {
+function populateMovieTable(movieResultData) {
     console.log("populateMovieTable: populating movie table");
-    const startIndex = (pageNumber - 1) * recordsPerPage;
-    const endIndex = Math.min(startIndex + recordsPerPage, cachedRecords.length);
-    const recordsToDisplay = cachedRecords.slice(startIndex, endIndex);
 
     // Populate the movie table by id "star_table_body"
     let movieTableBodyElement = jQuery("#movie_table_body");
-    for (let i = 0; i < recordsToDisplay.length; i++) {
+    for (let i = 0; i < movieResultData.length; i++) {
         let rowHTML = "";
         rowHTML += "<tr>";
-        rowHTML += "<td>" + "<a href='single-movie.html?id=" + recordsToDisplay[i]["movie_id"] + "'>" + recordsToDisplay[i]["movie_title"] + "</a>";
-        rowHTML += "<td>" + recordsToDisplay[i]["movie_year"] + "</td>";
-        rowHTML += "<td>" + recordsToDisplay[i]["movie_director"] + "</td>";
-        rowHTML += "<td>" + recordsToDisplay[i]["movie_genres"].join(", ") + "</td>";
+        rowHTML += "<td>" + "<a href='single-movie.html?id=" + movieResultData[i]["movie_id"] + "'>" + movieResultData[i]["movie_title"] + "</a>";
+        rowHTML += "<td>" + movieResultData[i]["movie_year"] + "</td>";
+        rowHTML += "<td>" + movieResultData[i]["movie_director"] + "</td>";
+        rowHTML += "<td>" + movieResultData[i]["movie_genres"].join(", ") + "</td>";
 
         rowHTML += "<td>";
-        let stars = recordsToDisplay[i]["movie_stars"];
+        let stars = movieResultData[i]["movie_stars"];
         for (let i = 0; i < stars.length; ++i) {
             rowHTML += "<a href='single-star.html?id=" + stars[i]["star_id"] + "'>" + stars[i]["star_name"] + "</a>";
             if (i !== stars.length - 1) rowHTML += ", ";
         }
         rowHTML += "</td>";
-
-        rowHTML += "<td><span class='rating-td'><i class='fas fa-star'></i> " + recordsToDisplay[i]["movie_rating"] + "</span></td>";
+        rowHTML += "<td><span class='rating-td'><i class='fas fa-star'></i> " + movieResultData[i]["movie_rating"] + "</span></td>";
         rowHTML += "</tr>";
 
         movieTableBodyElement.append(rowHTML); // refreshes page
     }
 }
-    // implement pagination here later
 
 /**
- * Once this .js is loaded, following scripts will be executed by the browser
+ * Fetches movie data through an HTTP request
  */
+function fetchMovies() {
+    let params = [];
 
-let params = [];
+    let genre = getParameterByName('genre');
+    let firstChar = getParameterByName('firstChar');
+    let title = getParameterByName('title');
+    let year = getParameterByName('year');
+    let director = getParameterByName('director');
+    let starName = getParameterByName('starName')
 
-let genre = getParameterByName('genre');
-let firstChar = getParameterByName('firstChar');
-let title = getParameterByName('title');
-let year = getParameterByName('year');
-let director = getParameterByName('director');
-let starName = getParameterByName('starName')
-let page = getParameterByName('page');
-let pageLimit = getParameterByName('pageLimit');
+    if (genre !== null) {
+        params.push('genre=' + genre);
+    }
+    if (firstChar !== null) {
+        params.push('firstChar=' + firstChar);
+    }
+    if (title !== null) {
+        params.push('title=' + title);
+    }
+    if (year !== null) {
+        params.push('year=' + year);
+    }
+    if (director !== null) {
+        params.push('director=' + director);
+    }
+    if (starName !== null) {
+        params.push('starName=' + starName);
+    }
 
+    let pageSetupURL = "page=" + page + "&pageLimit=" + pageLimit + "&sort=" + sort + "&";
 
-if (genre !== null) {
-    params.push('genre=' + genre);
+    // Makes the HTTP GET request and registers on success callback function
+    jQuery.ajax({
+        dataType: "json", // Setting return data type
+        method: "GET", // Setting request method
+        url: "api/movie-list?" + pageSetupURL + params.join('&'), // Setting request url, which is mapped by MovieListServlet in MovieListServlet.java
+        success: (resultData) => { // Setting callback function to handle data returned
+            populateMovieTable(resultData);
+            updatePaginationButtons(resultData.length);
+        }
+    });
 }
-if (firstChar !== null) {
-    params.push('firstChar=' + firstChar);
-}
-if (title !== null) {
-    params.push('title=' + title);
-}
-if (year !== null) {
-    params.push('year=' + year);
-}
-if (director !== null) {
-    params.push('director=' + director);
-}
-if (starName !== null) {
-    params.push('starName=' + starName);
-}
-if (page !== null) {
-    params.push('page=' + page);
-}
-if (pageLimit !== null) {
-    params.push('pageLimit=' + pageLimit);
-}
-// Makes the HTTP GET request and registers on success callback function handleStarResult
-jQuery.ajax({
-    dataType: "json", // Setting return data type
-    method: "GET", // Setting request method
-    url: "api/movie-list?" + params.join('&'), // Setting request url, which is mapped by MovieListServlet in MovieListServlet.java
-    success: (resultData) => movieRecordHandler(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
-});
