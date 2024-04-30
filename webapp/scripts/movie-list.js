@@ -112,7 +112,7 @@ function populateMovieTable(movieResultData) {
         rowHTML += "</td>";
         rowHTML += "<td><span class='rating-td'><i class='fas fa-star'></i> " + movieResultData[i]["movie_rating"] + "</span></td>";
 
-        rowHTML += "<td><button  class='add-to-cart-btn' data-movie-id='" + movieResultData[i]["movie_id"] + "'>Add To Cart</button></td>";
+        rowHTML += "<td><button  class='add-to-cart-btn' data-movie-id='" + movieResultData[i]["movie_id"] + "'>Add</button></td>";
         rowHTML += "</tr>";
 
         movieTableBodyElement.append(rowHTML); // refreshes page
@@ -173,7 +173,7 @@ jQuery(document).on("click", ".add-to-cart-btn", function() {
 
     // Send AJAX request to servlet
     jQuery.ajax({
-        url: "api/shopping-cart?cart-add=" + movieId,
+        url: "api/shopping-cart?action=add&movie-id=" + movieId,
         type: "GET",
         success: function(response) {
             // Handle success response if needed

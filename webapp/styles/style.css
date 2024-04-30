@@ -130,3 +130,8 @@ body {
     box-shadow: 0 0 5px rgba(125, 89, 239, 0.5); /* Add box shadow */
     outline: none; /* Remove default outline */
 }
+
+#checkout-button {
+    text-decoration: None;
+    color: white;
+}

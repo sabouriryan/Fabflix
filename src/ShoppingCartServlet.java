@@ -48,13 +48,19 @@ public class ShoppingCartServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession(true);
-        String movie_id = request.getParameter("cart-add");
+        String action = request.getParameter("action");
+        String movieId = request.getParameter("movie-id");
+
         try (Connection conn = dataSource.getConnection()) {
-            if (movie_id != null) {
-                addItemToCart(session, movie_id);
-            } else {
-                getShoppingCart(conn, out);
+            if ("increment".equals(action)) {
+                incrementCartItem(session, movieId);
+            } else if ("decrement".equals(action)) {
+                decrementCartItem(session, movieId);
+            } else if ("delete".equals(action)) {
+                deleteCartItem(session, movieId);
             }
+
+
 
         } catch (Exception e) {
             // Handle exceptions
@@ -68,7 +74,7 @@ public class ShoppingCartServlet extends HttpServlet {
         }
     }
 
-    private void addItemToCart(HttpSession session, String movie_id) {
+    private void incrementCartItem(HttpSession session, String movieId) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             session.setAttribute("user", new User("test"));
@@ -76,17 +82,50 @@ public class ShoppingCartServlet extends HttpServlet {
         }
 
         Map<String, Integer> cartItems = user.getShoppingCartItems();
-        if (cartItems.containsKey(movie_id)) {
-            // If the movie ID already exists in the cart, increment its count
-            int count = cartItems.get(movie_id);
-            cartItems.put(movie_id, count + 1);
+        if (cartItems.containsKey(movieId)) {
+            int count = cartItems.get(movieId);
+            cartItems.put(movieId, count + 1);
         } else {
-            // Otherwise, add the movie ID to the cart with count 1
-            cartItems.put(movie_id, 1);
+            cartItems.put(movieId, 1);
         }
     }
 
-    private void getShoppingCart(Connection conn, PrintWriter out) {
+    private void decrementCartItem(HttpSession session, String movieId) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            // User not logged in, handle accordingly
+            return;
+        }
 
+        Map<String, Integer> cartItems = user.getShoppingCartItems();
+        if (cartItems.containsKey(movieId)) {
+            int count = cartItems.get(movieId);
+            if (count > 1) {
+                cartItems.put(movieId, count - 1);
+            } else {
+                cartItems.remove(movieId);
+            }
+        }
+    }
+
+    private void deleteCartItem(HttpSession session, String movieId) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            // User not logged in, handle accordingly
+            return;
+        }
+
+        Map<String, Integer> cartItems = user.getShoppingCartItems();
+        cartItems.remove(movieId);
+    }
+
+    private Map<String, Integer> getShoppingCart(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            // User not logged in, handle accordingly
+            return new HashMap<>();
+        }
+
+        return user.getShoppingCartItems();
     }
 }
