@@ -76,6 +76,8 @@ function populateMovieTable(movieResultData) {
 
     // Populate the movie table by id "star_table_body"
     let movieTableBodyElement = jQuery("#movie_table_body");
+    movieTableBodyElement.empty();
+
     for (let i = 0; i < movieResultData.length; i++) {
         let rowHTML = "";
         rowHTML += "<tr>";
