@@ -111,6 +111,8 @@ function populateMovieTable(movieResultData) {
         }
         rowHTML += "</td>";
         rowHTML += "<td><span class='rating-td'><i class='fas fa-star'></i> " + movieResultData[i]["movie_rating"] + "</span></td>";
+
+        rowHTML += "<td><button  class='add-to-cart-btn' data-movie-id='" + movieResultData[i]["movie_id"] + "'>Add To Cart</button></td>";
         rowHTML += "</tr>";
 
         movieTableBodyElement.append(rowHTML); // refreshes page
@@ -163,3 +165,19 @@ function fetchMovies() {
         }
     });
 }
+
+// Add event listener for Add to Cart buttons
+jQuery(document).on("click", ".add-to-cart-btn", function() {
+    // Extract movie ID from data attribute
+    let movieId = jQuery(this).data("movie-id");
+
+    // Send AJAX request to servlet
+    jQuery.ajax({
+        url: "api/shopping-cart?cart-add=" + movieId,
+        type: "GET",
+        success: function(response) {
+            // Handle success response if needed
+            console.log("Item added to cart successfully.");
+        }
+    });
+});
