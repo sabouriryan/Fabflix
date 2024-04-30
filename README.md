@@ -1,15 +1,16 @@
-Demo: https://youtu.be/bzPq-a75s8M
+Demo: [https://youtu.be/bzPq-a75s8M](https://youtu.be/TKVYnrEsj7Y)
 
 
 CONTRIBUTIONS FOR EACH MEMBER
 
 Ryan:
-    singleMovieServlet HTML,JS and Java files, set up AWS, demo video
+    Extension of project1 + helped w/ search and browse, set up AWS, demo video
 
 Wilberth:
-    singleStarServlet HTML,JS and Java files, also wrote all CSS files
+    Drop down menus for search and browse + main page also wrote all CSS files
 
 Both:
-    MovieServlet HTML, JS, and Java files, resolved all github issues
+    LoginPage, resolved all github issues
     
     
+We used LIKE for substring matching in search
