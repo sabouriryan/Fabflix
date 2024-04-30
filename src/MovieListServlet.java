@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -59,6 +60,9 @@ public class MovieListServlet extends HttpServlet {
         printRequestURL(request);
 
         PrintWriter out = response.getWriter();
+
+        HttpSession session = request.getSession(true);
+        session.setAttribute("queryString", request.getQueryString());
 
         try (Connection conn = dataSource.getConnection()) {
             if (request.getParameter("title") != null || request.getParameter("year") != null

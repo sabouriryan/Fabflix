@@ -20,6 +20,12 @@ $('#pageLimitDropdown').change(function() {
     fetchMovies(); // Fetch data with updated page size
 });
 
+$('#sort-dropdown').change(function() {
+    sort = $(this).val();
+    page = 1; // Reset page number when sort changes
+    fetchMovies(); // Fetch data with updated page size
+});
+
 // Event listener for previous page button
 $('#prev-page').click(function() {
     if (page > 1) {
