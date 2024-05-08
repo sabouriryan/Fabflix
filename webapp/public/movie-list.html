@@ -51,23 +51,31 @@
       </nav>
     </header>
     <main>
-      <h1 id="search-result">Results</h1>
-      <select id="page-limit-dropdown">
-        <option value="10">10</option>
-        <option value="25">25</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-      </select>
-      <select id="sort-dropdown">
-        <option value="1">Title &uarr; Rating &uarr;</option>
-        <option value="2">Title &uarr; Rating &darr;</option>
-        <option value="3">Title &darr; Rating &uarr;</option>
-        <option value="4">Title &darr; Rating &darr;</option>
-        <option value="5">Rating &uarr; Title &uarr;</option>
-        <option value="6">Rating &uarr; Title &darr;</option>
-        <option value="7">Rating &darr; Title &uarr;</option>
-        <option value="8">Rating &darr; Title &darr;</option>
-      </select>
+      <div class="above-movie-table">
+        <h1 id="search-result">Results</h1>
+        <div class="table-dropdowns">
+          <label for="page-limit-dropdown">Movies Per Page
+            <select id="page-limit-dropdown">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+          <label for="sort-dropdown">Sort By
+            <select id="sort-dropdown">
+              <option value="1">Title &uarr; Rating &uarr;</option>
+              <option value="2">Title &uarr; Rating &darr;</option>
+              <option value="3">Title &darr; Rating &uarr;</option>
+              <option value="4">Title &darr; Rating &darr;</option>
+              <option value="5">Rating &uarr; Title &uarr;</option>
+              <option value="6">Rating &uarr; Title &darr;</option>
+              <option value="7">Rating &darr; Title &uarr;</option>
+              <option value="8">Rating &darr; Title &darr;</option>
+            </select>
+          </label>
+        </div>
+      </div>
       <div class="movie-list-container table-container">
         <table id=movie_table class="table floating">
           <thead class="table-head">

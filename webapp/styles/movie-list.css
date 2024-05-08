@@ -5,8 +5,26 @@ main {
     align-items: center;
 }
 
+.above-movie-table {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    align-items: baseline;
+}
+
+#search-result {
+    font-size: 3rem;
+    margin-left: 10px;
+}
+
+.table-dropdowns {
+    display: flex;
+    gap: 10px;
+    margin-right: 10px;
+}
+
 .movie-list-container {
-    margin-top: 40px;
     width: 80%;
 }
 
