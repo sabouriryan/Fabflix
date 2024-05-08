@@ -41,3 +41,8 @@ main {
 .btn-delete:hover, .btn-increase:hover, .btn-decrease:hover {
     color: #c284d7;
 }
+
+#empty-table-text {
+    margin: 5px;
+    font-size: 15px;
+}

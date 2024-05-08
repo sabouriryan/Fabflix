@@ -13,6 +13,11 @@ function populateShoppingCartTable(cartItems) {
     let cartTableBodyElement = $("#cart-items-table-body");
     cartTableBodyElement.empty();
 
+    if (cartItems.length === 0) {
+        let emptyTableElement = $("#empty-table-text");
+        emptyTableElement.append("No movies added to cart")
+    }
+
     // Loop through the cart items
     for (let cartItem of cartItems) {
         let rowHTML = "<tr>";
