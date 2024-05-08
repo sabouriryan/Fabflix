@@ -148,6 +148,7 @@ body {
 }
 
 .table .table-head{
+    text-align: left;
     color: #040112;
     font-weight: bold;
     background-color: #9d93f3;

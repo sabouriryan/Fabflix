@@ -53,20 +53,22 @@
       <button id="back-button" onclick=goBack()>Go Back</button>
       <div class="star-card floating">
         <div class="star-info">
-          <h1 id="star_name"></h1>
-          <span id="star_dob"></span>
+          <h1 id="star-name" class="gradient-text"></h1>
+          <span id="star-dob"></span>
         </div>
-
-        <table id=movie_table class="striped">
-            <thead>
-              <tr>
-                <th>Movie Title</th>
-                <th>Release Year</th>
-                <th>Director</th>
-              </tr>
-            </thead>
-            <tbody id=movie_table_body></tbody>
-        </table>
+        <h3 class="movie-table-header">Movies</h3>
+        <div class="table-container">
+          <table id=movie_table class="table">
+              <thead class="table-head">
+                <tr>
+                  <th>Movie Title</th>
+                  <th>Release Year</th>
+                  <th>Director</th>
+                </tr>
+              </thead>
+              <tbody id="movie_table_body" class="table-body"></tbody>
+          </table>
+        </div>
       </div>
     </main>
 

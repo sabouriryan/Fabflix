@@ -3,11 +3,6 @@ body {
     flex-direction: column;
 }
 
-h1 {
-    margin-top: 30px;
-    font-style: oblique;
-}
-
 main {
     display: flex;
     justify-content: center;
@@ -20,17 +15,41 @@ main {
     margin: 50px;
     border-radius: 10px;
     overflow: hidden;
+    background-color: #040112;
 }
 
 .star-info {
     display: flex;
     align-items: baseline;
-    margin: 0 0 15px 30px;
+    margin: 30px;
 }
 
-#star_dob {
+.star-info #star-name {
+    margin: 15px 0;
+    font-style: oblique;
+    font-size: 3em;
+}
+
+#star-dob {
     margin-left: 10px;
 }
 
+.movie-table-header {
+    margin-left: 2%;
+    border-left: 2px solid white;
+    padding-left: 7px;
+}
 
+.table-container {
+    width: 96%;
+    margin: 2%;
+    display: flex;
+    border: 1px solid #161127;
+}
+
+.table .table-head {
+    background-color: #040112;
+    color: #9d93f3;
+    border-bottom: 2px solid #9d93f3;
+}
 
