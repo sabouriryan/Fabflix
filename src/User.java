@@ -1,4 +1,4 @@
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class User {
@@ -7,7 +7,7 @@ public class User {
 
     public User(String username) {
         this.username = username;
-        shoppingCart = new HashMap<>();
+        shoppingCart = new LinkedHashMap<>(); // Using LinkedHashMap to preserve insertion order
     }
 
     public void addItemToCart(String movieId) {
