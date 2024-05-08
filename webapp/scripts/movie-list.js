@@ -102,7 +102,6 @@ function populateMovieTable(movieResultData) {
         }
         rowHTML += "<td>" + genresHTML + "</td>";
 
-
         rowHTML += "<td>";
         let stars = movieResultData[i]["movie_stars"];
         for (let i = 0; i < stars.length; ++i) {
@@ -168,8 +167,7 @@ function fetchMovies() {
 
 // Add event listener for Add to Cart buttons
 jQuery(document).on("click", ".add-to-cart-btn", function() {
-    // Extract movie ID from data attribute
-    let movieId = jQuery(this).data("movie-id");
+    let movieId = $(this).data("movie-id");
 
     // Send AJAX request to servlet
     jQuery.ajax({
