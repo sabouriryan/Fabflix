@@ -71,3 +71,10 @@ CREATE TABLE moviedb.ratings (
     FOREIGN KEY (movieId) REFERENCES movies(id)
 );
 
+CREATE TABLE moviedb.movie_prices (
+    movieId VARCHAR(10) PRIMARY KEY,
+    price INT NOT NULL,
+    FOREIGN KEY (movieId) REFERENCES movies(id)
+);
+
+
