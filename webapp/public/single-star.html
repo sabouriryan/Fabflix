@@ -13,9 +13,10 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Nunito Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../styles/style.css"/>
     <link rel="stylesheet" href="../styles/single-star-style.css"/>
@@ -28,15 +29,15 @@
       <nav class="nav-bar">
         <div class="left-nav">
           <div class="logo-container">
-            <a id="home-button" href="../index.html">Fabflix</a>
+            <a id="home-button" href="../index.html" class="gradient-text">Fabflix</a>
           </div>
         </div>
         <div class="right-nav">
           <div>
-            <a id="checkout-button" href="shopping-cart.html">Checkout</a>
+            <a id="checkout-button" href="shopping-cart.html">Cart <i class="fas fa-shopping-cart"></i></a>
           </div>
           <div class="search-dropdown">
-            <i class='fas fa-search'></i>
+            Search <i class='fas fa-search'></i>
             <form id="search-dropdown-form" class="floating">
               <input type="text" class="search-bar" name="title" placeholder="Title">
               <input type="text" class="search-bar" name="year" placeholder="Year">
@@ -72,15 +73,9 @@
 
 
 
-  <!-- Load jQuery and Bootstrap JS -->
+  <!-- Load jQuery JS -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-  <!-- Load our own JS file -->
-  <!-- The path is relative to single-star.html, since these two files are in the same directory -->
-  <!-- Note the url does not contain a "/" in the beginning, which means the url is relative to current path
-       otherwise the url is relative to the root path-->
   <script src="../scripts/single-star.js"></script>
   </body>
 

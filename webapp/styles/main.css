@@ -33,6 +33,7 @@ h1 {
 }
 
 .genre-item:hover {
+    box-shadow: 0 0 5px rgba(125, 89, 239, 0.5);
     background-color: #9da6eb;
     color: #040112;
 }
@@ -48,12 +49,12 @@ h1 {
 
 #letters-container a, #numbers-container a {
     text-decoration: None;
-    color: #9da6eb;
+    color: white;
     font-size: 24px;
 }
 
 #letters-container a:hover, #numbers-container a:hover{
-    color: #745cb2;
+    color: #c284d7;
 }
 
 .main-page-header {

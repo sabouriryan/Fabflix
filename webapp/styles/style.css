@@ -35,7 +35,7 @@ body {
 .left-nav, .right-nav {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 25px;
 }
 
 .left-nav {
@@ -43,7 +43,7 @@ body {
 }
 
 .right-nav {
-    margin-right: 40px;
+    margin-right: 70px;
 }
 
 
@@ -52,7 +52,6 @@ body {
 }
 
 #home-button {
-    color: #7d59ef;
     font-size: 30px;
     font-weight: bold;
     text-decoration: none;
@@ -70,7 +69,6 @@ body {
 }
 
 .search-dropdown {
-    margin-right: 60px;
     position: relative;
 }
 
@@ -82,8 +80,8 @@ body {
     gap: 10px;
 }
 
-.search-dropdown:hover {
-    color: #9da6eb;
+.search-dropdown:hover, #checkout-button:hover {
+    color: #c284d7;
 }
 
 
@@ -109,10 +107,11 @@ body {
 }
 
 #search-submit {
-    width: 40%;
-    background-color: #7d59ef;
-    color: #12122b;
-    border-radius: 5px;
+    width: 50%;
+    background-color: #9da6eb;
+    color: #040112;
+    font-weight: bold;
+    border-radius: 6px;
     padding: 5px 10px;
     border: none; /* Remove default border */
     cursor: pointer; /* Change cursor to pointer */
@@ -127,11 +126,55 @@ body {
 
 .search-bar:focus {
     border-color: #7d59ef; /* Change border color */
-    box-shadow: 0 0 5px rgba(125, 89, 239, 0.5); /* Add box shadow */
+    box-shadow: 0 0 5px rgba(125, 89, 239, 0.5);
     outline: none; /* Remove default outline */
 }
 
 #checkout-button {
     text-decoration: None;
     color: white;
+}
+
+.table-container {
+    border-radius: 15px 15px 15px 15px;
+    overflow: hidden;
+}
+
+.table {
+    width: 100%;
+    font-size: 13px;
+    background-color: #040112;
+    border-collapse: collapse;
+}
+
+.table .table-head{
+    color: #040112;
+    font-weight: bold;
+    background-color: #9d93f3;
+    font-size: 17px;
+}
+
+.table th, td {
+    padding: 10px 15px;
+}
+
+.table .table-body td a {
+    text-decoration: none;
+    color: white;
+}
+
+.table .table-body a:hover {
+    color: #c284d7;
+}
+
+.table .table-body tr:not(:last-child) {
+    border-bottom: 1px solid #161127; /* Apply border color between rows */
+}
+
+.table .table-body .rating-td {
+    color: #c284d7;
+}
+
+.center-text {
+    text-align: center;
 }

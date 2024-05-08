@@ -13,10 +13,6 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
     <!-- Nunito -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,28 +28,27 @@
   <body>
     <header>
       <nav class="nav-bar">
-      <div class="left-nav">
-        <div class="logo-container">
-          <a id="home-button" href="../index.html">Fabflix</a>
+        <div class="left-nav">
+          <div class="logo-container">
+            <a id="home-button" href="../index.html" class="gradient-text">Fabflix</a>
+          </div>
         </div>
-      </div>
-      <div class="right-nav">
-        <div>
-          <a id="checkout-button" href="shopping-cart.html">Checkout</a>
+        <div class="right-nav">
+          <div>
+            <a id="checkout-button" href="shopping-cart.html">Cart <i class="fas fa-shopping-cart"></i></a>
+          </div>
+          <div class="search-dropdown">
+            Search <i class='fas fa-search'></i>
+            <form id="search-dropdown-form" class="floating">
+              <input type="text" class="search-bar" name="title" placeholder="Title">
+              <input type="text" class="search-bar" name="year" placeholder="Year">
+              <input type="text" class="search-bar" name="director" placeholder="Director">
+              <input type="text" class="search-bar" name="starName" placeholder="Star">
+              <input id="search-submit" type="submit" value="Submit">
+            </form>
+          </div>
         </div>
-        <div class="search-dropdown">
-          <i class='fas fa-search'></i>
-          <form id="search-dropdown-form" class="floating">
-            <input type="text" class="search-bar" name="title" placeholder="Title">
-            <input type="text" class="search-bar" name="year" placeholder="Year">
-            <input type="text" class="search-bar" name="director" placeholder="Director">
-            <input type="text" class="search-bar" name="starName" placeholder="Star">
-            <input id="search-submit" type="submit" value="Submit">
-          </form>
-        </div>
-
-      </div>
-    </nav>
+      </nav>
     </header>
     <main>
       <h1 id="search-result">Results</h1>
@@ -73,9 +68,9 @@
         <option value="7">Rating: desc Title: asc</option>
         <option value="8">Rating: desc Title: desc</option>
       </select>
-      <div class="movie-list-container">
-        <table id=movie_table class="floating striped">
-          <thead>
+      <div class="movie-list-container table-container">
+        <table id=movie_table class="table floating">
+          <thead class="table-head">
             <tr>
               <th>Title</th>
               <th>Year</th>
@@ -86,7 +81,7 @@
               <th>Cart</th>
             </tr>
           </thead>
-          <tbody id=movie_table_body></tbody>
+          <tbody id=movie_table_body class="table-body"></tbody>
         </table>
       </div>
       <div class="pagination-buttons">
@@ -97,15 +92,9 @@
     </main>
 
 
-  <!-- Load jQuery and Bootstrap JS -->
+  <!-- Load jQuery JS -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-  <!-- Load our own JS file -->
-  <!-- The path is relative to index.html, since these two files are in the same directory -->
-  <!-- Note the url does not contain a "/" in the beginning, which means the url is relative to current path
-       otherwise the url is relative to the root path-->
   <script src="../scripts/movie-list.js"></script>
   <script src="../scripts/search.js"></script>
   </body>
