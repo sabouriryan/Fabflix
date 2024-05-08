@@ -3,31 +3,20 @@ main {
     justify-content: center;
 }
 
-#login-form-container{
+#payment-form-container {
     margin-top: 50px;
-    width: 20%;
-    height: 70vh;
+    width: 25%;
     background-color: #040112;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 50px;
+    padding: 30px;
     border-radius: 10px;
+    gap: 15px;
 }
 
-#login-form-container h1 {
-    font-size: 7vw;
-    margin-bottom: 40px;
-}
-
-#login-form-container h2 {
-    font-size: 2vw;
-    margin-bottom: 25px;
-}
-
-
-#login_form {
+#payment-form {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -36,21 +25,7 @@ main {
     gap: 15px;
 }
 
-.login-field-container, .login-label {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.login-field-container b {
-    align-self: baseline;
-    display: block;
-    margin-bottom: 5px;
-    font-size: 12px;
-}
-
-#login_form .login-field {
+#payment-form .payment-field {
     display: block;
     width: 100%;
     background: transparent;
@@ -61,13 +36,13 @@ main {
     padding: 5px;
 }
 
-.login-field:focus {
+.payment-field:focus {
     border-color: #7d59ef; /* Change border color */
     box-shadow: 0 0 5px rgba(125, 89, 239, 0.5); /* Add box shadow */
     outline: none; /* Remove default outline */
 }
 
-#login-submit {
+#payment-submit {
     margin-top: 20px;
     width: 100%;
     background: linear-gradient(to bottom, #7d59ef, #9d93f3, #c2bbf4);
@@ -79,13 +54,11 @@ main {
     font-size: 18px;
 }
 
-#payment-submit:hover {
+#login-submit:hover {
     background: linear-gradient(to bottom, #5b3cbb, #6f69cd, #9484d1);
 }
 
-#payment-error-message {
+#payment_error_message {
     color: red;
     font-size: 12px;
 }
-
-
