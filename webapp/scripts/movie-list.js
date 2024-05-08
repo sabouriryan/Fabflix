@@ -42,7 +42,7 @@ $('#next-page').click(function() {
 
 function updatePaginationButtons(numRecords) {
     $('#prev-page').prop('disabled', page === 1); // Disable previous button if on the first page
-    $('#current-page').text("Page " + page);
+    $('#current-page').text(" Page " + page + " ");
 
     if (numRecords < pageLimit) {
         $('#next-page').prop('disabled', true); // Disable next button if no more pages

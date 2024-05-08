@@ -45,3 +45,23 @@ main {
     background-color: #9da6eb;
     color: #040112;
 }
+
+.pagination-buttons {
+    margin: 15px 0;
+}
+
+.page-btn {
+    cursor: pointer;
+    outline: none;
+    border: none;
+    color: #040112;
+    background-color: #9d93f3;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 3px 5px;
+    border-radius: 5px;
+}
+
+.page-btn:disabled {
+    background-color: #36247e;
+}
