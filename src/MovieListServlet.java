@@ -194,17 +194,18 @@ public class MovieListServlet extends HttpServlet {
         String browseQuery = getBrowseQuery(genre, firstChar);
         browseQuery += getSortMethod(sortMethod);
         browseQuery += "LIMIT ? OFFSET ?";
-
         PreparedStatement preStmtBrowse = conn.prepareStatement(browseQuery);
+
+        int parameterIndex = 1;
         if (genre != null) {
-            preStmtBrowse.setString(1, genre);
+            preStmtBrowse.setString(parameterIndex++, genre);
         } else if (firstChar != null && !firstChar.equals("*")) {
-            preStmtBrowse.setString(1, firstChar + "%");
+            preStmtBrowse.setString(parameterIndex++, firstChar + "%");
         }
 
         int offset = (page - 1) * pageLimit;
-        preStmtBrowse.setInt(2, pageLimit);
-        preStmtBrowse.setInt(3, offset);
+        preStmtBrowse.setInt(parameterIndex++, pageLimit);
+        preStmtBrowse.setInt(parameterIndex, offset);
 
         JsonArray output = new JsonArray();
         //System.out.println("Prepared SQL Statement: " + preStmtBrowse.toString());
