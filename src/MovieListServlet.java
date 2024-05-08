@@ -55,7 +55,6 @@ public class MovieListServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("ENTERED doGet in MovieListServlet");
         response.setContentType("application/json"); // Response mime type
 
         //printRequestURL(request);
@@ -64,7 +63,6 @@ public class MovieListServlet extends HttpServlet {
 
         HttpSession session = request.getSession(true);
         session.setAttribute("queryString", request.getQueryString());
-        System.out.println("Saved Query String: " + request.getQueryString());
 
         try (Connection conn = dataSource.getConnection()) {
             int page = Integer.parseInt(request.getParameter("page"));
@@ -72,11 +70,11 @@ public class MovieListServlet extends HttpServlet {
             int sortMethod = Integer.parseInt(request.getParameter("sort"));
 
             if (request.getParameter("title") != null || request.getParameter("year") != null
-             || request.getParameter("director") != null || request.getParameter("starName") != null) {
-                System.out.println("Server received search request");
+                || request.getParameter("director") != null || request.getParameter("starName") != null) {
+                System.out.println("Server received search request for " + request.getQueryString());
                 handleSearchRequest(request, out, conn, page, pageLimit, sortMethod);
             } else if (request.getParameter("genre") != null || request.getParameter("firstChar") != null) {
-                System.out.println("Server received browse request");
+                System.out.println("Server received browse request for " +request.getQueryString());
                 handleBrowseRequest(request, out, conn, page, pageLimit, sortMethod);
             } else {
                 System.out.println("Servlet received request to movie-list, but no parameters");
@@ -301,5 +299,4 @@ public class MovieListServlet extends HttpServlet {
     
         return topStarsArray;
     }
-    
 }

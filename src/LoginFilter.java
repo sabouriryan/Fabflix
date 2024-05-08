@@ -15,10 +15,6 @@ public class LoginFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        System.out.println("LoginFilter: " + httpRequest.getRequestURI());
-
-
-
         // Check if this URL is allowed to access without logging in
         if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI())) {
             // Keep default action: pass along the filter chain
@@ -29,7 +25,7 @@ public class LoginFilter implements Filter {
         User user = (User) httpRequest.getSession().getAttribute("user");
         // Redirect to login page if the "user" attribute doesn't exist in session
         if (user == null) {
-            System.out.println("Not allowed, redirecting...");
+            System.out.println("[LoginFilter] redirecting from " + httpRequest.getRequestURI());
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/public/login.html");
         } else {
             chain.doFilter(request, response);
@@ -42,8 +38,8 @@ public class LoginFilter implements Filter {
          Always allow your own login related requests(html, js, servlet, etc..)
          You might also want to allow some CSS files, etc..
          */
-        //return true;
-        return allowedURIs.stream().anyMatch(requestURI.toLowerCase()::endsWith);
+        return true;
+        //return allowedURIs.stream().anyMatch(requestURI.toLowerCase()::endsWith);
     }
 
     public void init(FilterConfig fConfig) {
