@@ -32,11 +32,23 @@ function submitLoginForm(formSubmitEvent) {
     console.log("submit login form");
     formSubmitEvent.preventDefault();
 
+    // Get the reCAPTCHA response
+    let recaptchaResponse = grecaptcha.getResponse();
+
+    // Check if reCAPTCHA response is empty
+    if (!recaptchaResponse) {
+        console.log("reCAPTCHA not completed");
+        $("#login_error_message").text("Please complete the reCAPTCHA");
+        return;
+    }
+
+    // Include reCAPTCHA response in data sent with AJAX request
+    let formData = login_form.serialize() + "&g-recaptcha-response=" + recaptchaResponse;
+
     $.ajax(
         "api/login", {
             method: "POST",
-            // Serialize the login form to the data sent by POST request
-            data: login_form.serialize(),
+            data: formData,
             success: handleLoginResult
         }
     );
@@ -44,4 +56,3 @@ function submitLoginForm(formSubmitEvent) {
 
 // Bind the submit action of the form to a handler function
 login_form.submit(submitLoginForm);
-

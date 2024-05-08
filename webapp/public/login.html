@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,14 +8,13 @@
     <link rel="stylesheet" href="../styles/style.css"/>
     <link rel="stylesheet" href="../styles/login.css"/>
     <script src="https://kit.fontawesome.com/4d7e7da3eb.js" crossorigin="anonymous"></script>
-
   </head>
   <body>
     <main>
       <div id="login-form-container" class="floating">
         <h1 class="gradient-text">Fabflix</h1>
         <h2>Login</h2>
-        <form id="login_form"  method="post" action="#">
+        <form id="login_form" method="post" action="#">
           <div class="login-field-container">
             <b>Username</b>
             <label class="login-label">
@@ -28,16 +28,17 @@
             </label>
           </div>
           <div id="login_error_message"></div>
+          <!-- Add reCAPTCHA widget -->
+          <div class="g-recaptcha" data-sitekey="6LcuU9UpAAAAAMguB6M3Ha9T-uIB3caOy8ZJrAnV"></div>
           <input id="login-submit" type="submit" value="Login">
         </form>
       </div>
-
     </main>
 
-
+    <!-- include reCAPTCHA script -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <!-- include jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
     <script src="../scripts/login.js"></script>
   </body>
 </html>
