@@ -1,3 +1,4 @@
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,13 +13,19 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.Random;
 
 @WebServlet(name = "ShoppingCartServlet", urlPatterns = "/public/api/shopping-cart")
 public class ShoppingCartServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private DataSource dataSource; // Create a dataSource which registered in web.
+    private DataSource dataSource;
+    private static final int MAX_PRICE = 100;
+    private static final int MIN_PRICE = 10;
+
 
     public void init(ServletConfig config) {
         try {
@@ -49,32 +56,65 @@ public class ShoppingCartServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json"); // Response mime type
 
-        printRequestURL(request);
-
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession(true);
         User user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User("");
+            session.setAttribute("user",user);
         }
 
-        String action = request.getParameter("action");
-        String movieId = request.getParameter("movie-id");
-
         try (Connection conn = dataSource.getConnection()) {
-            if ("add".equals(action)) {
-                user.addItemToCart(movieId);
-            } else if ("remove".equals(action)) {
-                user.removeItemFromCart(movieId);
-            } else if ("delete".equals(action)) {
-                user.deleteItemFromCart(movieId);
+            String action = request.getParameter("action");
+            String movieId = request.getParameter("movie-id");
+
+            if (action != null && movieId != null) {
+                System.out.println("action: " + action);
+                System.out.println("movieId: " + movieId);
+                updateMoviePrice(conn, movieId);
+                switch (action) {
+                    case "add":
+                        System.out.println("Adding " + movieId + " to shopping cart");
+                        user.addItemToCart(movieId); break;
+                    case "remove":
+                        System.out.println("Removing " + movieId + " from shopping cart");
+                        user.removeItemFromCart(movieId); break;
+                    case "delete":
+                        System.out.println("Deleting " + movieId + " from shopping cart");
+                        user.deleteItemFromCart(movieId); break;
+                }
             }
 
-            printShoppingCart(user);
+            JsonArray output = new JsonArray();
+            for (Map.Entry<String, Integer> entry : user.getShoppingCart().entrySet()) {
+                String cartMovieId = entry.getKey();
+                int quantity = entry.getValue();
+                String query = "SELECT m.title, mp.price " +
+                               "FROM movies m " +
+                               "JOIN movie_prices mp ON m.id = mp.movieId " +
+                               "WHERE m.id = ?";
+
+                PreparedStatement pstmtMovie = conn.prepareStatement(query);
+                pstmtMovie.setString(1, cartMovieId);
+                ResultSet rsMovie = pstmtMovie.executeQuery();
+
+                JsonObject movieObject = new JsonObject();
+                if (rsMovie.next()) {
+                    movieObject.addProperty("movie_id", cartMovieId);
+                    movieObject.addProperty("movie_title", rsMovie.getString("title"));
+                    movieObject.addProperty("movie_quantity", quantity);
+                    movieObject.addProperty("movie_price", rsMovie.getDouble("price"));
+                    output.add(movieObject);
+                }
+                pstmtMovie.close();
+                rsMovie.close();
+            }
+
+            if (!user.getShoppingCart().isEmpty()) printShoppingCart(user);
+            out.write(output.toString());
 
         } catch (Exception e) {
-            // Handle exceptions
             e.printStackTrace();
             JsonObject errorObject = new JsonObject();
             errorObject.addProperty("errorMessage", e.getMessage());
@@ -83,5 +123,26 @@ public class ShoppingCartServlet extends HttpServlet {
         } finally {
             out.close();
         }
+    }
+
+    private void updateMoviePrice(Connection conn, String movieId) throws SQLException {
+        String queryCheck = "SELECT * FROM movie_prices WHERE movieId = ?";
+        PreparedStatement pstmtCheck = conn.prepareStatement(queryCheck);
+        pstmtCheck.setString(1, movieId);
+        ResultSet rsCheck = pstmtCheck.executeQuery();
+
+        if (!rsCheck.next()) {
+            System.out.println("Giving " + movieId + " a price");
+            String insertQuery = "INSERT INTO movie_prices (movieId, price) VALUES (?, ?)";
+            PreparedStatement pstmtInsert = conn.prepareStatement(insertQuery);
+            pstmtInsert.setString(1, movieId);
+            pstmtInsert.setInt(2, generatePrice(MIN_PRICE, MAX_PRICE));
+            pstmtInsert.executeUpdate();
+        }
+    }
+
+    public static int generatePrice(int min, int max) {
+        Random rand = new Random();
+        return rand.nextInt((max - min) + 1) + min;
     }
 }
