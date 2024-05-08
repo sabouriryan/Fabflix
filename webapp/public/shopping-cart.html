@@ -44,8 +44,12 @@
   </nav>
 </header>
 <main>
-  <div class="shopping-cart-container">
-    <h1>Shopping Cart</h1>
+  <div class="shopping-cart-container floating">
+    <div class="shopping-cart-head">
+      <h1>Shopping Cart</h1>
+      <h3 id="item-count"></h3>
+    </div>
+
     <div class="table-container">
       <table id="shopping-cart-table" class="table floating">
         <thead class="table-head">
@@ -53,12 +57,21 @@
             <th>Movie</th>
             <th>Quantity</th>
             <th>Price</th>
+            <th>Total</th>
           </tr>
         </thead>
         <tbody id="cart-items-table-body" class="table-body"></tbody>
       </table>
     </div>
-    <div id="empty-table-text"></div>
+
+    <table class="below-cart-table">
+      <tr>
+        <td><a href="payment.html" id="payment-btn">Proceed to Payment</a></td>
+        <td></td>
+        <td></td>
+        <td><div id="total-price"></div></td>
+      </tr>
+    </table>
   </div>
 </main>
 

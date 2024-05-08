@@ -1,7 +1,9 @@
+let total_price = 0;
+let total_items = 0;
+
 function goBack() {
     window.location.href = "api/return";
 }
-
 /**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param cartItems jsonObject
@@ -12,11 +14,8 @@ function populateShoppingCartTable(cartItems) {
 
     let cartTableBodyElement = $("#cart-items-table-body");
     cartTableBodyElement.empty();
-
-    if (cartItems.length === 0) {
-        let emptyTableElement = $("#empty-table-text");
-        emptyTableElement.append("No movies added to cart")
-    }
+    total_price = 0;
+    total_items = 0;
 
     // Loop through the cart items
     for (let cartItem of cartItems) {
@@ -24,16 +23,29 @@ function populateShoppingCartTable(cartItems) {
         rowHTML += "<td><div class='movie-title-container'>" + cartItem["movie_title"] +
             "<button class='cart-btn btn-delete' data-id='" + cartItem["movie_id"] + "'><i class='fas fa-trash-alt'></i></button>" +
         "</div></td>";
-        rowHTML += "<td class='center-text'>";
+        rowHTML += "<td>";
         rowHTML += "<button class='cart-btn btn-decrease' data-id='" + cartItem["movie_id"] + "'><i class='fas fa-plus-square'></i></button>";
         rowHTML += "   <span class='quantity'>" + cartItem["movie_quantity"] + "</span>   ";
         rowHTML += "<button class='cart-btn btn-increase' data-id='" + cartItem["movie_id"] + "'><i class='fas fa-minus-square'></i></button>";
         rowHTML += "</td>";
-        rowHTML += "<td class='center-text'>$" + cartItem["movie_price"] + "</td>";
+        total_items += cartItem["movie_quantity"];
+        rowHTML += "<td>$" + cartItem["movie_price"] + "</td>";
+        total_price += cartItem["movie_price"] * cartItem["movie_quantity"]
+        rowHTML += "<td>$" + cartItem["movie_price"] * cartItem["movie_quantity"] + "</td>";
         rowHTML += "</tr>";
 
         cartTableBodyElement.append(rowHTML);
     }
+
+    let itemCountElement = $("#item-count");
+    itemCountElement.empty();
+    itemCountElement.append(total_items + " Items")
+
+    let totalPriceElement = $("#total-price");
+    totalPriceElement.empty();
+    totalPriceElement.append("$" + total_price);
+
+
 }
 
 // Event listener for decreasing quantity

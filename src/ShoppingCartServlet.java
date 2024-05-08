@@ -70,18 +70,13 @@ public class ShoppingCartServlet extends HttpServlet {
             String movieId = request.getParameter("movie-id");
 
             if (action != null && movieId != null) {
-                System.out.println("action: " + action);
-                System.out.println("movieId: " + movieId);
                 updateMoviePrice(conn, movieId);
                 switch (action) {
                     case "add":
-                        System.out.println("Adding " + movieId + " to shopping cart");
                         user.addItemToCart(movieId); break;
                     case "remove":
-                        System.out.println("Removing " + movieId + " from shopping cart");
                         user.removeItemFromCart(movieId); break;
                     case "delete":
-                        System.out.println("Deleting " + movieId + " from shopping cart");
                         user.deleteItemFromCart(movieId); break;
                 }
             }
