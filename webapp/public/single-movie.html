@@ -50,14 +50,20 @@
       </nav>
     </header>
     <main>
-      <button id="back-button" onclick=goBack()>Go Back</button>
       <div class="movie-card floating">
-        <h1 id="movie_title"></h1>
-        <p id="movie_year">Production Year: </p>
-        <p id="movie_director">Director: </p>
-        <p id="movie_rating">Rating: </p>
-        <p id="genre_list">Genres: </p>
-        <p id="star_list">Stars: </p>
+        <div class="movie-card-head">
+          <h1 id="movie_title" class="gradient-text"></h1>
+          <h3 id="movie_rating"></h3>
+        </div>
+        <div id="genre_list" class="genre-bubbles"></div>
+        <div class="movie-card-body">
+          <h3 class="movie-card-header">About</h3>
+          <p id="movie_year"><span class="bullet-text">Production Year  </span> </p>
+          <p id="movie_director"><span class="bullet-text">Director  </span></p>
+          <h3 class="movie-card-header">Stars</h3>
+          <p id="star_list"></p>
+        </div>
+        <button id="back-button" onclick=goBack()><i class='fas fa-angle-left'></i> Go Back</button>
       </div>
     </main>
 

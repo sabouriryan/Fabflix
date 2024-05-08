@@ -1,16 +1,4 @@
 /**
- * This example is following frontend and backend separation.
- *
- * Before this .js is loaded, the html skeleton is created.
- *
- * This .js performs three steps:
- *      1. Get parameter from request URL so it know which id to look for
- *      2. Use jQuery to talk to backend API to get the json data.
- *      3. Populate the data to correct html elements.
- */
-
-
-/**
  * Retrieve parameter from request URL, matching by parameter name
  * @param target String
  * @returns {*}
@@ -54,33 +42,23 @@ function handleResult(resultData) {
     movieDirectorElement.append(resultData["movie_director"])
     
     let movieRatingElement = jQuery("#movie_rating");
-    movieRatingElement.append(resultData["movie_rating"])
-    
-    let genreListElement = jQuery("#genre_list");
+    movieRatingElement.append("<i class='fas fa-star'></i> " + resultData["movie_rating"] + "/10")
 
-    /*for (let i = 0; i < resultData['movie_genres'].length; ++i){
-        genreListHTML = resultData['movie_genres'][i];
-        if (i !== resultData['movie_genres'].length - 1) genreListHTML += ", "
-        genreListElement.append(genreListHTML);
-    }*/
+    let genreListElement = jQuery("#genre_list");
 
     var genres = resultData["movie_genres"];
     var genresHTML = "";
     for (var j = 0; j < genres.length; j++) {
         var genre = genres[j];
-        genresHTML = "<a href='movie-list.html?genre=" + genre +  "'>" +  genre + "</a>";
-        if (j !== genres.length - 1) {
-            genresHTML += ", ";
-        }
+        genresHTML = "<a class='genre-bubble' href='movie-list.html?genre=" + genre +  "'>" +  genre + "</a>";
         genreListElement.append(genresHTML);
     }
-    
 
     let starListElement = jQuery("#star_list");
     for (let i = 0; i < resultData['movie_stars'].length; ++i){
         starListHTML = "<a href='single-star.html?id=" + resultData["movie_stars"][i]["star_id"] + "'>" + resultData["movie_stars"][i]["star_name"] + "</a>";
         if (i < resultData['movie_stars'].length - 1) {
-            starListHTML+= ", ";
+            starListHTML+= "<i class='fas fa-circle star-delimiter'></i>";
         }
         starListElement.append(starListHTML);
     }

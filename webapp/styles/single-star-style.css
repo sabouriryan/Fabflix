@@ -18,6 +18,12 @@ main {
     background-color: #040112;
 }
 
+.star-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
 .star-info {
     display: flex;
     align-items: baseline;
@@ -53,3 +59,13 @@ main {
     border-bottom: 2px solid #9d93f3;
 }
 
+#back-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+    color: #9d93f3;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 20px 25px 0 0;
+}

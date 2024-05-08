@@ -1,20 +1,102 @@
+main {
+    display: flex;
+    justify-content: center;
+}
+
 .movie-card {
-    border-radius: 10px;
+    border-radius: 15px;
+    background-color: #040112;
     margin-top: 50px;
     padding: 20px;
     min-width: 60%;
     max-width: 70%;
+    display: flex;
+    flex-direction: column;
 }
 
-.movie-card h1 {
-    color: #553eb0;
+.movie-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.movie-card a {
+#movie_title {
+    font-size: 3.5em;
+}
+
+#movie_rating {
+    color: #c284d7;
+    font-size: 20px;
+}
+
+.movie-card .genre-bubble:hover {
+    box-shadow: 0 0 5px rgba(125, 89, 239, 0.5);
+    background-color: #9da6eb;
+    color: #040112;
+}
+.movie-card-header {
+    border-left: 2px solid white;
+    padding-left: 7px;
+    font-size: 22px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+.genre-bubbles {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.genre-bubble{
+    display: block;
     text-decoration: none;
     color: white;
+    border: 1px #9da6eb solid;
+    background-color: transparent;
+    padding: 2px 10px;
+    border-radius: 15px;
+    font-size: 15px;
 }
 
-.movie-card a:hover {
-    color: #745cb2;
+.bullet-text {
+    font-size: 19px;
+    font-weight: bolder;
+    color: #9da6eb;
+}
+
+#movie_year, #movie_director, #star_list {
+    margin-left: 3%;
+}
+
+#star_list {
+    margin-bottom: 15px;
+}
+
+#star_list a{
+    text-decoration: None;
+    color: white;
+    font-size: 17px;
+}
+
+#star_list a:hover{
+    color: #c284d7;
+}
+
+.star-delimiter {
+    font-size: 3px;
+    margin: 0 10px;
+    vertical-align: middle;
+}
+
+#back-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+    color: #9d93f3;
+    font-size: 16px;
+    font-weight: bold;
+    align-self: flex-end;
 }

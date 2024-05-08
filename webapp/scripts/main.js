@@ -7,13 +7,13 @@ function getGenres(resultData) {
 
     console.log("handleResult: populating genres into dropdown menu");
 
-    let genresMenuElement = jQuery("#genres-container");
+    let genresElement = jQuery("#genres-container");
     for (let i = 0; i < resultData.length; i++) {
-        let genresMenuHTML = "";
-        genresMenuHTML += "<a class='genre-item' href='public/movie-list.html?genre=" + resultData[i] + "'>" + resultData[i] + "</a>";
+        let genresHTML = "";
+        genresHTML += "<a class='genre-item' href='public/movie-list.html?genre=" + resultData[i] + "'>" + resultData[i] + "</a>";
 
         // Append the row created to the table body, which will refresh the page
-        genresMenuElement.append(genresMenuHTML);
+        genresElement.append(genresHTML);
     }
 }
 
