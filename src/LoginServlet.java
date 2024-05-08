@@ -19,6 +19,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 
+import org.jasypt.util.password.StrongPasswordEncryptor;
+
 @WebServlet(name = "LoginServlet", urlPatterns = "/public/api/login")
 public class LoginServlet extends HttpServlet {
     private DataSource dataSource;
@@ -46,36 +48,28 @@ public class LoginServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter();
 
-        // Verify reCAPTCHA
-        /*try {
-            verifyRecaptcha(recaptchaResponse);
-            
-        } catch (Exception e){
-            JsonObject output = new JsonObject();
-            output.addProperty("status", "fail");
-            output.addProperty("message", "reCAPTCHA verification failed");
-            out.print(output.toString());
-            return;
-        }*/
-
         try (Connection conn = dataSource.getConnection()) {
-
-
             verifyRecaptcha(recaptchaResponse);
-            String loginQuery = "SELECT * FROM customers WHERE email = ? AND password = ?";
+
+            String loginQuery = "SELECT * FROM customers WHERE email = ?";
 
             PreparedStatement pstmtLogin = conn.prepareStatement(loginQuery);
             pstmtLogin.setString(1, username);
-            pstmtLogin.setString(2, password);
             ResultSet rs = pstmtLogin.executeQuery();
 
-            /* This example only allows username/password to be test/test
-            /  in the real project, you should talk to the database to verify username/password
-            */
             JsonObject output = new JsonObject();
             if (rs.next()) {
-                request.getSession().setAttribute("user", new User(username));
-                output.addProperty("status", "success");
+                String encryptedPassword = rs.getString("password");
+                boolean success = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
+
+                if (success) {
+                    System.out.println("Successful user login");
+                    request.getSession().setAttribute("user", new User(username));
+                    output.addProperty("status", "success");
+                } else {
+                    output.addProperty("status", "fail");
+                    output.addProperty("message", "Invalid email or password");
+                }
             } else {
                 output.addProperty("status", "fail");
                 output.addProperty("message", "Invalid email or password");
@@ -83,6 +77,7 @@ public class LoginServlet extends HttpServlet {
 
             rs.close();
             pstmtLogin.close();
+
             out.print(output.toString());
 
         } catch (Exception e) {
@@ -92,9 +87,7 @@ public class LoginServlet extends HttpServlet {
             jsonObject.addProperty("errorMessage", e.getMessage());
             out.write(jsonObject.toString());
 
-            // Log error to localhost log
             request.getServletContext().log("Error:", e);
-            // Set response status to 500 (Internal Server Error)
             response.setStatus(500);
         } finally {
             out.close();
@@ -141,8 +134,5 @@ public class LoginServlet extends HttpServlet {
 
         throw new Exception("recaptcha verification failed: response is " + jsonObject);
     }
-
-
-
 }
 

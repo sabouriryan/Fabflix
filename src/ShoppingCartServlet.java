@@ -37,9 +37,15 @@ public class ShoppingCartServlet extends HttpServlet {
         System.out.println("Shopping URL: " + initialUrl);
     }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
+    private void printShoppingCart(User user) {
+        StringBuilder mapAsString = new StringBuilder("{");
+        for (Map.Entry<String, Integer> entry : user.getShoppingCart().entrySet()) {
+            mapAsString.append(entry.getKey()).append("=").append(entry.getValue()).append(", ");
+        }
+        mapAsString = new StringBuilder(mapAsString.substring(0, mapAsString.length() - 2) + "}");
+        System.out.println(mapAsString);
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json"); // Response mime type
 
@@ -48,19 +54,24 @@ public class ShoppingCartServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession(true);
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User("");
+        }
+
         String action = request.getParameter("action");
         String movieId = request.getParameter("movie-id");
 
         try (Connection conn = dataSource.getConnection()) {
-            if ("increment".equals(action)) {
-                incrementCartItem(session, movieId);
-            } else if ("decrement".equals(action)) {
-                decrementCartItem(session, movieId);
+            if ("add".equals(action)) {
+                user.addItemToCart(movieId);
+            } else if ("remove".equals(action)) {
+                user.removeItemFromCart(movieId);
             } else if ("delete".equals(action)) {
-                deleteCartItem(session, movieId);
+                user.deleteItemFromCart(movieId);
             }
 
-
+            printShoppingCart(user);
 
         } catch (Exception e) {
             // Handle exceptions
@@ -72,60 +83,5 @@ public class ShoppingCartServlet extends HttpServlet {
         } finally {
             out.close();
         }
-    }
-
-    private void incrementCartItem(HttpSession session, String movieId) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            session.setAttribute("user", new User("test"));
-            user = (User) session.getAttribute("user");
-        }
-
-        Map<String, Integer> cartItems = user.getShoppingCartItems();
-        if (cartItems.containsKey(movieId)) {
-            int count = cartItems.get(movieId);
-            cartItems.put(movieId, count + 1);
-        } else {
-            cartItems.put(movieId, 1);
-        }
-    }
-
-    private void decrementCartItem(HttpSession session, String movieId) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            // User not logged in, handle accordingly
-            return;
-        }
-
-        Map<String, Integer> cartItems = user.getShoppingCartItems();
-        if (cartItems.containsKey(movieId)) {
-            int count = cartItems.get(movieId);
-            if (count > 1) {
-                cartItems.put(movieId, count - 1);
-            } else {
-                cartItems.remove(movieId);
-            }
-        }
-    }
-
-    private void deleteCartItem(HttpSession session, String movieId) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            // User not logged in, handle accordingly
-            return;
-        }
-
-        Map<String, Integer> cartItems = user.getShoppingCartItems();
-        cartItems.remove(movieId);
-    }
-
-    private Map<String, Integer> getShoppingCart(HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            // User not logged in, handle accordingly
-            return new HashMap<>();
-        }
-
-        return user.getShoppingCartItems();
     }
 }
