@@ -16,14 +16,15 @@ function populateShoppingCartTable(cartItems) {
     // Loop through the cart items
     for (let cartItem of cartItems) {
         let rowHTML = "<tr>";
-        rowHTML += "<td>" + cartItem["movie_title"] + "</td>";
-        rowHTML += "<td>$" + cartItem["movie_price"] + "</td>";
-        rowHTML += "<td>";
-        rowHTML += "<button class='btn-decrease' data-id='" + cartItem["movie_id"] + "'>+</button>";
-        rowHTML += "<span class='quantity'>" + cartItem["movie_quantity"] + "</span>";
-        rowHTML += "<button class='btn-increase' data-id='" + cartItem["movie_id"] + "'>-</button>";
+        rowHTML += "<td><div class='movie-title-container'>" + cartItem["movie_title"] +
+            "<button class='cart-btn btn-delete' data-id='" + cartItem["movie_id"] + "'><i class='fas fa-trash-alt'></i></button>" +
+        "</div></td>";
+        rowHTML += "<td class='center-text'>";
+        rowHTML += "<button class='cart-btn btn-decrease' data-id='" + cartItem["movie_id"] + "'><i class='fas fa-plus-square'></i></button>";
+        rowHTML += "   <span class='quantity'>" + cartItem["movie_quantity"] + "</span>   ";
+        rowHTML += "<button class='cart-btn btn-increase' data-id='" + cartItem["movie_id"] + "'><i class='fas fa-minus-square'></i></button>";
         rowHTML += "</td>";
-        rowHTML += "<td><button class='btn-delete' data-id='" + cartItem["movie_id"] + "'>Delete</button></td>";
+        rowHTML += "<td class='center-text'>$" + cartItem["movie_price"] + "</td>";
         rowHTML += "</tr>";
 
         cartTableBodyElement.append(rowHTML);

@@ -1,0 +1,43 @@
+main {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.shopping-cart-container {
+    width: 70%;
+    margin-top: 40px;
+}
+
+.shopping-cart-container h1 {
+    margin-bottom: 10px;
+}
+
+.table-body {
+    font-size: 15px;
+}
+
+.movie-title-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cart-btn {
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    color: white;
+    font-size: 18px;
+    margin: 3px;
+}
+
+.btn-delete {
+    font-size: 16px;
+}
+
+.btn-delete:hover, .btn-increase:hover, .btn-decrease:hover {
+    color: #c284d7;
+}

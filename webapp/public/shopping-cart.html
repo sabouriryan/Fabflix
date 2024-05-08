@@ -6,15 +6,11 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Bootstrap CSS-->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-  <!-- Nunito -->
+  <!-- Nunito Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-  <title>Movie List</title>
+  <title>Shopping Cart</title>
 
   <link rel="stylesheet" href="../styles/style.css"/>
   <link rel="stylesheet" href="../styles/shopping-cart.css"/>
@@ -27,15 +23,15 @@
   <nav class="nav-bar">
     <div class="left-nav">
       <div class="logo-container">
-        <a id="home-button" href="../index.html">Fabflix</a>
+        <a id="home-button" href="../index.html" class="gradient-text">Fabflix</a>
       </div>
     </div>
     <div class="right-nav">
       <div>
-        <a id="checkout-button" href="shopping-cart.html">Checkout</a>
+        <a id="checkout-button" href="shopping-cart.html">Cart <i class="fas fa-shopping-cart"></i></a>
       </div>
       <div class="search-dropdown">
-        <i class='fas fa-search'></i>
+        Search <i class='fas fa-search'></i>
         <form id="search-dropdown-form" class="floating">
           <input type="text" class="search-bar" name="title" placeholder="Title">
           <input type="text" class="search-bar" name="year" placeholder="Year">
@@ -48,26 +44,26 @@
   </nav>
 </header>
 <main>
-  <h1 id="search-result">Shopping Cart</h1>
-  <div class="cart-items-container">
-    <table id="cart-items-table" class="floating">
-      <thead>
-      <tr>
-        <th>Movie</th>
-        <th>Price</th>
-        <th>Quantity</th>
-      </tr>
-      </thead>
-      <tbody id="cart-items-table-body"></tbody>
-    </table>
+  <div class="shopping-cart-container">
+    <h1>Shopping Cart</h1>
+    <div class="table-container">
+      <table id="shopping-cart-table" class="table floating">
+        <thead class="table-head">
+          <tr>
+            <th>Movie</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody id="cart-items-table-body" class="table-body"></tbody>
+      </table>
+    </div>
   </div>
 </main>
 
 
 <!-- Load jQuery and Bootstrap JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 <script src="../scripts/shopping-cart.js"></script>
 <script src="../scripts/search.js"></script>
