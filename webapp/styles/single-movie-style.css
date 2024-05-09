@@ -90,6 +90,29 @@ main {
     vertical-align: middle;
 }
 
+.movie-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.movie-card-bottom #add-to-cart-btn {
+    width: fit-content;
+    padding: 7px 14px;
+    color: white;
+    border: 1px #9da6eb solid;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.movie-card-bottom #add-to-cart-btn:hover {
+    background-color: #9da6eb;
+    color: #040112;
+}
+
 #back-button {
     border: none;
     background-color: transparent;
@@ -100,3 +123,4 @@ main {
     font-weight: bold;
     align-self: flex-end;
 }
+

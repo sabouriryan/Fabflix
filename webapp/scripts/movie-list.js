@@ -72,13 +72,8 @@ function getParameterByName(target) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-/**
- * Populates data into html elements from cache
- * @param movieResultData the movie data fetched
- */
 function populateMovieTable(movieResultData) {
     console.log("populateMovieTable: populating movie table");
-    console.log("Result data: " + movieResultData);
 
     // Populate the movie table by id "star_table_body"
     let movieTableBodyElement = jQuery("#movie_table_body");
@@ -118,9 +113,6 @@ function populateMovieTable(movieResultData) {
     }
 }
 
-/**
- * Fetches movie data through an HTTP request
- */
 function fetchMovies() {
     let params = [];
 

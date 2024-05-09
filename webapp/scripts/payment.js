@@ -16,10 +16,6 @@ function getParameterByName(target) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-/**
- * Handle the data returned by PaymentServlet
- * @param resultDataString jsonObject
- */
 function handleLoginResult(resultDataString) {
     let resultDataJson = JSON.parse(resultDataString);
 
@@ -33,10 +29,6 @@ function handleLoginResult(resultDataString) {
     }
 }
 
-/**
- * Submit the form content with POST method
- * @param formSubmitEvent
- */
 function submitPaymentForm(formSubmitEvent) {
     formSubmitEvent.preventDefault();
     let formData = payment_form.serialize();

@@ -40,7 +40,7 @@ function handleResult(resultData) {
 
     let movieDirectorElement = jQuery("#movie_director");
     movieDirectorElement.append(resultData["movie_director"])
-    
+
     let movieRatingElement = jQuery("#movie_rating");
     movieRatingElement.append("<i class='fas fa-star'></i> " + resultData["movie_rating"] + "/10")
 
@@ -50,32 +50,45 @@ function handleResult(resultData) {
     var genresHTML = "";
     for (var j = 0; j < genres.length; j++) {
         var genre = genres[j];
-        genresHTML = "<a class='genre-bubble' href='movie-list.html?genre=" + genre +  "'>" +  genre + "</a>";
+        genresHTML = "<a class='genre-bubble' href='movie-list.html?genre=" + genre + "'>" + genre + "</a>";
         genreListElement.append(genresHTML);
     }
 
     let starListElement = jQuery("#star_list");
-    for (let i = 0; i < resultData['movie_stars'].length; ++i){
+    for (let i = 0; i < resultData['movie_stars'].length; ++i) {
         starListHTML = "<a href='single-star.html?id=" + resultData["movie_stars"][i]["star_id"] + "'>" + resultData["movie_stars"][i]["star_name"] + "</a>";
         if (i < resultData['movie_stars'].length - 1) {
-            starListHTML+= "<i class='fas fa-circle star-delimiter'></i>";
+            starListHTML += "<i class='fas fa-circle star-delimiter'></i>";
         }
         starListElement.append(starListHTML);
     }
+
+    let addToCartHTML = "<button id='add-to-cart-btn' data-movie-id='" + movieId + "' onclick=addToCart(this)><i class=\"fa fa-cart-plus\"></i> Add To Cart</button>"
+    $("#add-to-cart-container").append(addToCartHTML);
 }
 
 function goBack() {
     window.location.href = "api/return";
 }
 
-/**
- * Once this .js is loaded, following scripts will be executed by the browser\
- */
+function addToCart(button) {
+    let movieId = $(button).data("movie-id");
 
-// Get id from URL
+    $.ajax({
+        url: "api/shopping-cart?action=insert&movie-id=" + movieId,
+        type: "GET",
+        success: function(response) {
+            if (response.status === "success") {
+                alert("Added to shopping cart successfully!");
+            } else {
+                alert("Failed to add to shopping cart. Please try again.");
+            }
+        }
+    });
+}
+
 let movieId = getParameterByName('id');
 
-// Makes the HTTP GET request and registers on success callback function handleResult
 jQuery.ajax({
     dataType: "json",  // Setting return data type
     method: "GET",// Setting request method
