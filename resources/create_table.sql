@@ -77,4 +77,9 @@ CREATE TABLE moviedb.movie_prices (
     FOREIGN KEY (movieId) REFERENCES movies(id)
 );
 
+CREATE TABLE moviedb.employees (
+    email varchar(50) primary key,
+    password varchar(20) not null,
+    fullname varchar(100)
+);
 

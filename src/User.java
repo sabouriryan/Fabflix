@@ -3,13 +3,17 @@ import java.util.Map;
 
 public class User {
     private final String username;
-    private final int customerId;
-    private final Map<String, Integer> shoppingCart;
+    private int customerId;
+    private Map<String, Integer> shoppingCart;
 
     public User(String username, int customerId) {
         this.username = username;
         this.customerId = customerId;
         this.shoppingCart = new LinkedHashMap<>(); // Using LinkedHashMap to preserve insertion order
+    }
+
+    public User(String username){
+        this.username = username;
     }
 
     public void addItemToCart(String movieId) {
