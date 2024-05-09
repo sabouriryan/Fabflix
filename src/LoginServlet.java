@@ -60,11 +60,12 @@ public class LoginServlet extends HttpServlet {
             JsonObject output = new JsonObject();
             if (rs.next()) {
                 String encryptedPassword = rs.getString("password");
+                int customerId = rs.getInt("id");
                 boolean success = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
 
                 if (success) {
                     System.out.println("Successful user login");
-                    request.getSession().setAttribute("user", new User(username));
+                    request.getSession().setAttribute("user", new User(username, customerId));
                     output.addProperty("status", "success");
                 } else {
                     output.addProperty("status", "fail");

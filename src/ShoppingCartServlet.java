@@ -61,7 +61,7 @@ public class ShoppingCartServlet extends HttpServlet {
         HttpSession session = request.getSession(true);
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            user = new User("");
+            user = new User("", 0);
             session.setAttribute("user",user);
         }
 
