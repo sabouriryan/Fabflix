@@ -45,11 +45,11 @@ public class ShoppingCartServlet extends HttpServlet {
     }
 
     private void printShoppingCart(User user) {
-        StringBuilder mapAsString = new StringBuilder("{");
+        StringBuilder mapAsString = new StringBuilder("[");
         for (Map.Entry<String, Integer> entry : user.getShoppingCart().entrySet()) {
             mapAsString.append(entry.getKey()).append("=").append(entry.getValue()).append(", ");
         }
-        mapAsString = new StringBuilder(mapAsString.substring(0, mapAsString.length() - 2) + "}");
+        mapAsString = new StringBuilder(mapAsString.substring(0, mapAsString.length() - 2) + "]");
         System.out.println(mapAsString);
     }
 
@@ -69,9 +69,15 @@ public class ShoppingCartServlet extends HttpServlet {
             String action = request.getParameter("action");
             String movieId = request.getParameter("movie-id");
 
+            JsonObject output = new JsonObject();
+
             if (action != null && movieId != null) {
                 updateMoviePrice(conn, movieId);
                 switch (action) {
+                    case "insert":
+                        user.addItemToCart(movieId);
+                        output.addProperty("status", "success");
+                        break;
                     case "add":
                         user.addItemToCart(movieId); break;
                     case "remove":
@@ -81,7 +87,7 @@ public class ShoppingCartServlet extends HttpServlet {
                 }
             }
 
-            JsonArray output = new JsonArray();
+            JsonArray data = new JsonArray();
             for (Map.Entry<String, Integer> entry : user.getShoppingCart().entrySet()) {
                 String cartMovieId = entry.getKey();
                 int quantity = entry.getValue();
@@ -100,18 +106,21 @@ public class ShoppingCartServlet extends HttpServlet {
                     movieObject.addProperty("movie_title", rsMovie.getString("title"));
                     movieObject.addProperty("movie_quantity", quantity);
                     movieObject.addProperty("movie_price", rsMovie.getDouble("price"));
-                    output.add(movieObject);
+                    data.add(movieObject);
                 }
                 pstmtMovie.close();
                 rsMovie.close();
             }
+            output.add("data", data);
 
             if (!user.getShoppingCart().isEmpty()) printShoppingCart(user);
             out.write(output.toString());
+            response.setStatus(HttpServletResponse.SC_OK);
 
         } catch (Exception e) {
             e.printStackTrace();
             JsonObject errorObject = new JsonObject();
+            errorObject.addProperty("status", "fail");
             errorObject.addProperty("errorMessage", e.getMessage());
             out.write(errorObject.toString());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

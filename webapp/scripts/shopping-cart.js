@@ -79,7 +79,9 @@ function fetchCart(update) {
         dataType: "json",  // Setting return data type
         method: "GET",// Setting request method
         url: "api/shopping-cart" + update,
-        success: (resultData) => populateShoppingCartTable(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
+        success: function (resultData) {
+            populateShoppingCartTable(resultData["data"]);
+        }
     });
 }
 

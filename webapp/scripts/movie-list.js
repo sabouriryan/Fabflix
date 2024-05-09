@@ -171,11 +171,14 @@ jQuery(document).on("click", ".add-to-cart-btn", function() {
 
     // Send AJAX request to servlet
     jQuery.ajax({
-        url: "api/shopping-cart?action=add&movie-id=" + movieId,
+        url: "api/shopping-cart?action=insert&movie-id=" + movieId,
         type: "GET",
         success: function(response) {
-            // Handle success response if needed
-            console.log("Item added to cart successfully.");
+            if (response["status"] === "success") {
+                alert("Added to shopping cart successfully!");
+            } else {
+                alert("Failed to add to shopping cart. Please try again.");
+            }
         }
     });
 });
