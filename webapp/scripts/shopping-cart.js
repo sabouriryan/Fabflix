@@ -1,8 +1,12 @@
 let total_price = 0;
 let total_items = 0;
 
-function goBack() {
-    window.location.href = "api/return";
+function updatePaymentButton() {
+    $('#payment-btn').prop('disabled', total_items === 0); // Disable payment button if on the no items in cart
+}
+
+function checkout() {
+    window.location.href = "payment.html?total=" + total_price;
 }
 /**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
@@ -37,15 +41,20 @@ function populateShoppingCartTable(cartItems) {
         cartTableBodyElement.append(rowHTML);
     }
 
+    cartTableBodyElement.append(
+        "<tr>" +
+        "<td><button id='payment-btn' onclick=checkout()>Proceed to Payment</button></td>" +
+        "<td></td>" +
+        "<td></td>" +
+        "<td>$" + total_price + "</td>" +
+        "</tr>"
+    );
+
     let itemCountElement = $("#item-count");
     itemCountElement.empty();
     itemCountElement.append(total_items + " Items")
 
-    let totalPriceElement = $("#total-price");
-    totalPriceElement.empty();
-    totalPriceElement.append("$" + total_price);
-
-
+    updatePaymentButton();
 }
 
 // Event listener for decreasing quantity
@@ -71,7 +80,7 @@ function fetchCart(update) {
         method: "GET",// Setting request method
         url: "api/shopping-cart" + update,
         success: (resultData) => populateShoppingCartTable(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
-    })
+    });
 }
 
 fetchCart("");

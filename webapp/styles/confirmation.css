@@ -1,0 +1,17 @@
+main {
+    display: flex;
+    justify-content: center;
+}
+
+.conf-container {
+    margin-top: 100px;
+    text-align: center;
+}
+
+.conf-container h1 {
+    font-size: 4rem;
+}
+
+.conf-container h2 {
+    font-size: 2rem;
+}

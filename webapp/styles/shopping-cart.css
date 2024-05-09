@@ -24,8 +24,10 @@ main {
 
 .table-container {
     border-radius: 0;
-    border-top: 2px solid #9d93f3;
-    border-bottom: 2px solid #9d93f3;
+}
+
+#shopping-cart-table tr:last-child {
+    border-top: 3px solid #9d93f3;
 }
 
 #shopping-cart-table .table-head {
@@ -64,22 +66,24 @@ main {
     color: #c284d7;
 }
 
-.below-cart-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.below-cart-table td {
-    padding: 10px 0;
-}
-
-.below-cart-table #payment-btn {
+#shopping-cart-table #payment-btn {
+    border: none;
+    cursor: pointer;
     display: block;
-    text-decoration: none;
+    outline: none;
     color: #040112;
+    font-size: 15px;
     background-color: #c284d7;
     border-radius: 8px;
     padding: 5px 10px;
     width: fit-content;
+}
+
+#shopping-cart-table #payment-btn:disabled {
+    background-color: #7d508a;
+}
+
+#shopping-cart-table tr:last-child td:first-child {
+    padding: 10px 0;
 }
 

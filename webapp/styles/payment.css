@@ -23,6 +23,12 @@ main {
     justify-content: center;
     align-items: center;
     gap: 15px;
+    margin-top: 20px;
+}
+
+#payment-form .payment-section {
+    width: 90%;
+    border-bottom: 2px solid #161127;
 }
 
 #payment-form .payment-field {
@@ -30,7 +36,6 @@ main {
     width: 100%;
     background: transparent;
     border: none;
-    border-bottom: 2px solid #161127;
     font-size: 15px;
     color: white;
     padding: 5px;
@@ -58,7 +63,18 @@ main {
     background: linear-gradient(to bottom, #5b3cbb, #6f69cd, #9484d1);
 }
 
-#payment_error_message {
+#payment-error-message {
     color: red;
     font-size: 12px;
+}
+
+.total-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: none;
+}
+
+.total-section h3, #total-price{
+
 }
