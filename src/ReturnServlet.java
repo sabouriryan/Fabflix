@@ -27,7 +27,7 @@ public class ReturnServlet extends HttpServlet {
         String queryString = (String) session.getAttribute("queryString");
         System.out.println("Query String received from session: " + queryString);
         if (queryString != null) {
-            response.sendRedirect("/Fabflix/public/movie-list.html?" + queryString);
+            response.sendRedirect(request.getContextPath() + "/public/movie-list.html?" + queryString);
         } else {
             // Handle case where query string is not found
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);

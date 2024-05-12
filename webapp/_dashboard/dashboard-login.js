@@ -27,7 +27,7 @@ function submitLoginForm(formSubmitEvent) {
     let formData = login_form.serialize();
 
     $.ajax(
-        "api/_dashboard", {
+        "api/login", {
             method: "POST",
             data: formData,
             success: handleLoginResult
