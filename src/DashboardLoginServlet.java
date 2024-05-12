@@ -22,11 +22,8 @@ import java.net.URL;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
 @WebServlet(name = "DashBoardServlet", urlPatterns = "/public/api/_dashboard")
-public class DashBoardServlet extends HttpServlet {
+public class DashboardLoginServlet extends HttpServlet {
     private DataSource dataSource;
-    private static final String SECRET_KEY = "6LcuU9UpAAAAAGUbPlxd5EoEPytuJGNQRTOnA3MT";
-    private static final String SITE_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
-
 
     @Override
     public void init(ServletConfig config) {
@@ -44,13 +41,10 @@ public class DashBoardServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String recaptchaResponse = request.getParameter("g-recaptcha-response"); // Get reCAPTCHA response
 
         PrintWriter out = response.getWriter();
 
         try (Connection conn = dataSource.getConnection()) {
-            verifyRecaptcha(recaptchaResponse);
-
             // employees table for the dashboard instead of customers
             String loginQuery = "SELECT * FROM employees WHERE email = ?";
 
@@ -64,14 +58,16 @@ public class DashBoardServlet extends HttpServlet {
                 boolean success = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
 
                 if (success) {
-                    System.out.println("Successful user login");
-                    request.getSession().setAttribute("user", new User(username));
+                    System.out.println("Successful Employee login");
+                    request.getSession().setAttribute("employee", new Employee(username));
                     output.addProperty("status", "success");
                 } else {
+                    System.out.println("Unsuccessful Employee login");
                     output.addProperty("status", "fail");
                     output.addProperty("message", "Invalid email or password");
                 }
             } else {
+                System.out.println("Employee email not found");
                 output.addProperty("status", "fail");
                 output.addProperty("message", "Invalid email or password");
             }
@@ -93,47 +89,6 @@ public class DashBoardServlet extends HttpServlet {
         } finally {
             out.close();
         }
-    }
-
-    public static void verifyRecaptcha(String gRecaptchaResponse) throws Exception {
-        URL verifyUrl = new URL(SITE_VERIFY_URL);
-
-        // Open Connection to URL
-        HttpsURLConnection conn = (HttpsURLConnection) verifyUrl.openConnection();
-
-        // Add Request Header
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("User-Agent", "Mozilla/5.0");
-        conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-        // Data will be sent to the server.
-        String postParams = "secret=" + SECRET_KEY + "&response=" + gRecaptchaResponse;
-
-        // Send Request
-        conn.setDoOutput(true);
-
-        // Get the output stream of Connection
-        // Write data in this stream, which means to send data to Server.
-        OutputStream outStream = conn.getOutputStream();
-        outStream.write(postParams.getBytes());
-
-        outStream.flush();
-        outStream.close();
-
-        // Get the InputStream from Connection to read data sent from the server.
-        InputStream inputStream = conn.getInputStream();
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-
-        JsonObject jsonObject = new Gson().fromJson(inputStreamReader, JsonObject.class);
-
-        inputStreamReader.close();
-
-        if (jsonObject.get("success").getAsBoolean()) {
-            // verification succeed
-            return;
-        }
-
-        throw new Exception("recaptcha verification failed: response is " + jsonObject);
     }
 }
 

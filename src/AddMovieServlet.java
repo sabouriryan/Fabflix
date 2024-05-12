@@ -18,8 +18,6 @@ import javax.sql.DataSource;
 
 // change path later
 @WebServlet("/AddMovieServlet")
-
-
 public class AddMovieServlet extends HttpServlet {
     private DataSource dataSource;
 

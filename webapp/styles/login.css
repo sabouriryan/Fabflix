@@ -6,6 +6,7 @@ main {
 #login-form-container{
     margin-top: 50px;
     width: 20%;
+    min-width: 260px;
     height: 70vh;
     background-color: #040112;
     display: flex;
@@ -17,12 +18,12 @@ main {
 }
 
 #login-form-container h1 {
-    font-size: 7vw;
+    font-size: 5rem;
     margin-bottom: 40px;
 }
 
 #login-form-container h2 {
-    font-size: 2vw;
+    font-size: 2rem;
     margin-bottom: 25px;
 }
 
@@ -87,5 +88,3 @@ main {
     color: red;
     font-size: 12px;
 }
-
-

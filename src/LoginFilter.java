@@ -9,6 +9,7 @@ import java.util.ArrayList;
 @WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
 public class LoginFilter implements Filter {
     private final ArrayList<String> allowedURIs = new ArrayList<>();
+    private final ArrayList<String> dashboardURIs = new ArrayList<>();
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -22,6 +23,18 @@ public class LoginFilter implements Filter {
             return;
         }
 
+        Employee employee = (Employee) httpRequest.getSession().getAttribute("employee");
+        // Redirect to dashboard login page if the "employee" attribute doesn't exist in session
+        if(this.isDashboardURL(httpRequest.getRequestURI())) {
+            if (employee == null) {
+                System.out.println("[LoginFilter] redirecting from " + httpRequest.getRequestURI());
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/public/_dashboard.html");
+                return;
+            } else {
+                chain.doFilter(request, response);
+            }
+        }
+
         User user = (User) httpRequest.getSession().getAttribute("user");
         // Redirect to login page if the "user" attribute doesn't exist in session
         if (user == null) {
@@ -32,12 +45,11 @@ public class LoginFilter implements Filter {
         }
     }
 
+    private boolean isDashboardURL(String requestURI) {
+        return dashboardURIs.stream().anyMatch(requestURI.toLowerCase()::endsWith);
+    }
+
     private boolean isUrlAllowedWithoutLogin(String requestURI) {
-        /*
-         Setup your own rules here to allow accessing some resources without logging in
-         Always allow your own login related requests(html, js, servlet, etc..)
-         You might also want to allow some CSS files, etc..
-         */
         //return true;
         return allowedURIs.stream().anyMatch(requestURI.toLowerCase()::endsWith);
     }
@@ -55,8 +67,20 @@ public class LoginFilter implements Filter {
         allowedURIs.add("../scripts/login.js");
         allowedURIs.add("../styles/style.css");
 
-        // Api endpoint relative to login.html
+        // Paths relative to _dashboard.html
+        allowedURIs.add("/public/_dashboard.html");
+        allowedURIs.add("../scripts/dashboard-login.js");
+        allowedURIs.add("_dashboard.html");
+
+        dashboardURIs.add("/public/dashboard.html");
+        dashboardURIs.add("/public/dashboard.css");
+        dashboardURIs.add("/public/dashboard.js");
+        dashboardURIs.add("/public/api/_dashboard");
+
+        // Api endpoints for login and dashboard login
         allowedURIs.add("/public/api/login");
+        allowedURIs.add("/public/api/_dashboard");
+
     }
 
     public void destroy() {

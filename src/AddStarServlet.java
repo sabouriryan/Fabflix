@@ -17,8 +17,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-//import com.mysql.cj.xdevapi.Statement;
-
 
 // change path later
 @WebServlet("/addStar")
@@ -97,16 +95,9 @@ public class AddStarServlet extends HttpServlet {
 
             // Close resources
             statement.close();
-            conn.close();
         } catch (SQLException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println("Database error: " + e.getMessage());
         }
-    }
-
-    // Generate a unique star ID (e.g., using UUID)
-    private String generateStarId() {
-        // Implement your own logic to generate a unique ID
-        return java.util.UUID.randomUUID().toString();
     }
 }
