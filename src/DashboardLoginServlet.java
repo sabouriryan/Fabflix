@@ -21,7 +21,7 @@ import java.net.URL;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
-@WebServlet(name = "DashBoardServlet", urlPatterns = "/public/api/_dashboard")
+@WebServlet(name = "DashboardLoginServlet", urlPatterns = "/_dashboard/api/login")
 public class DashboardLoginServlet extends HttpServlet {
     private DataSource dataSource;
 

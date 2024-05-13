@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabflix Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css"/>
+    <link rel="stylesheet" href="../styles/style.css"/>
+  </head>
+  <body>
+    <h1 id="dashboard-title" class="gradient-text">Fabflix Dashboard</h1>
+    <main>
+      <section id="metadata-section">
+        <h2 class="section-header">Database Metadata</h2>
+        <div id="db-table-card-container"></div>
+      </section>
+
+      <section id="update-db-section">
+        <div class="update-db-card">
+          <h2 class="section-header">Add New Star</h2>
+          <form id="add-star-form">
+            <label>Star Name:
+              <input type="text" id="star-name" name="star-name" required>
+            </label>
+            <label>Birth Year (Optional):
+              <input type="number" id="birth-year" name="birth-year">
+            </label>
+            <input id="add-star-submit" type="submit" value="Add Star">
+          </form>
+        </div>
+        <div class="update-db-card">
+          <h2 class="section-header">Add New Movie</h2>
+          <form id="add-movie-form">
+            <label>Title:
+              <input type="text" id="movie-title" name="title" required>
+            </label>
+            <label>Year:
+              <input type="text" id="movie-year" name="year" required>
+            </label>
+            <label>Director:
+              <input type="text" id="movie-director" name="director" required>
+            </label>
+            <label>Star name:
+              <input type="text" id="movie-star-name" name="star-name" required>
+            </label>
+            <label>Genre:
+              <input type="text" id="movie-genre" name="genre" required>
+            </label>
+            <input id="add-movie-submit" type="submit" value="Add Movie">
+          </form>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p>&copy; 2024 Fabflix</p>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="dashboard.js"></script>
+  </body>
+</html>
