@@ -125,8 +125,8 @@ public class MovieListServlet extends HttpServlet {
         searchQuery += getSortMethod(sortMethod);
         searchQuery += "LIMIT ? OFFSET ?";
 
+        //System.out.println("Search query: " + searchQuery);
         PreparedStatement preStmtSearch = conn.prepareStatement(searchQuery);
-    
         int parameterIndex = 1;
 
         if (title != null) {
@@ -163,20 +163,20 @@ public class MovieListServlet extends HttpServlet {
         boolean whereAdded = false;
     
         if (title != null) {
-            query += "WHERE " + "m.title LIKE ? ";
+            query += "WHERE m.title LIKE ? ";
             whereAdded = true;
         }
         if (year != null) {
             // Assuming 'year' is exact match
-            query += (whereAdded ? " AND " : "WHERE ") + "m.year = ?";
+            query += (whereAdded ? " AND " : "WHERE ") + "m.year = ? ";
             whereAdded = true;
         }
         if (director != null) {
-            query += (whereAdded ? " AND " : "WHERE ") + "m.director LIKE ?";
+            query += (whereAdded ? " AND " : "WHERE ") + "m.director LIKE ? ";
             whereAdded = true;
         }
         if (starName != null) {
-            query += (whereAdded ? "AND " : "WHERE ");
+            query += (whereAdded ? " AND " : "WHERE ");
             query += "m.id IN (SELECT sim.movieId FROM moviedb.stars_in_movies sim " +
             " INNER JOIN moviedb.stars s ON sim.starId = s.id " +
             " WHERE LOWER(s.name) LIKE LOWER(?))";
@@ -249,8 +249,24 @@ public class MovieListServlet extends HttpServlet {
         movieObject.addProperty("movie_director", rs.getString("director"));
         movieObject.add("movie_genres", getTopGenres(movie_id, conn));
         movieObject.add("movie_stars", getTopStars(movie_id, conn));
-        movieObject.addProperty("movie_rating", rs.getDouble("rating"));
+        movieObject.addProperty("movie_rating", getMovieRating(movie_id, conn));
         return movieObject;
+    }
+
+    private double getMovieRating(String movie_id, Connection conn) throws SQLException {
+        // Get movie rating
+        double movie_rating = 0;
+        String movieRatingQuery = "SELECT r.rating FROM ratings r WHERE r.movieId = ?";
+        PreparedStatement pstmtMovieRating = conn.prepareStatement(movieRatingQuery);
+        pstmtMovieRating.setString(1, movie_id);
+        ResultSet rsRating = pstmtMovieRating.executeQuery();
+
+        if (rsRating.next()) {
+            movie_rating = rsRating.getDouble("rating");
+        }
+        rsRating.close();
+        pstmtMovieRating.close();
+        return movie_rating;
     }
 
     private JsonArray getTopGenres(String movieId, Connection conn) throws SQLException {
