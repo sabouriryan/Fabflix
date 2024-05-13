@@ -1,0 +1,63 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#dashboard-title {
+    font-size: 3rem;
+}
+
+main {
+    padding: 40px;
+}
+
+.section-header {
+    margin: 15px 0;
+    font-size: 2rem;
+}
+
+#db-table-card-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#db-table-card-container p {
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #9d93f3;
+    color: #040112;
+    padding: 0 5px;
+}
+
+.db-table-card {
+    width: 15%;
+    background-color: #040112;
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.db-table-card-content {
+    text-align: left;
+}
+
+.db-table-card-content td {
+    padding: 5px 10px;
+}
+
+#update-db-section {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#add-movie-form, #add-star-form {
+    display: flex;
+    flex-direction: column;
+}
