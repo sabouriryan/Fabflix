@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -6,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import com.google.gson.JsonObject;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,7 +21,7 @@ import javax.sql.DataSource;
 
 
 // change path later
-@WebServlet("/addStar")
+@WebServlet(name = "AddStarServlet", urlPatterns = "/_dashboard/api/addStar")
 public class AddStarServlet extends HttpServlet {
     private DataSource dataSource;
 
@@ -33,71 +35,64 @@ public class AddStarServlet extends HttpServlet {
         }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String starName = request.getParameter("starName");
-        String birthYearStr = request.getParameter("birthYear");
-        
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+
+        JsonObject output = new JsonObject();
+
+        String starName = request.getParameter("star-name");
+        String birthYear = request.getParameter("birth-year");
+
         // Validate star name
         if (starName == null || starName.isEmpty()) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().println("Star name is required.");
+            output.addProperty("status", "fail");
+            output.addProperty("message", "Invalid star name.");
+            out.write(output.toString());
             return;
-        }
-        
-        // Parse birth year
-        Integer birthYear = null;
-        if (birthYearStr != null && !birthYearStr.isEmpty()) {
-            try {
-                birthYear = Integer.parseInt(birthYearStr);
-            } catch (NumberFormatException e) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().println("Invalid birth year format.");
-                return;
-            }
         }
 
         // Perform database insertion
-        try (Connection conn = dataSource.getConnection()){
-            String idQuery = "SELECT COALESCE(MAX(CAST(SUBSTRING(id, 3) AS UNSIGNED)) + 1, 1) FROM stars";
+        try (Connection conn = dataSource.getConnection()) {
+            String idNumQuery = "SELECT COALESCE(MAX(CAST(SUBSTRING(id, 3) AS UNSIGNED)) + 1, 1) FROM stars";
 
-            // Execute the ID query
-            int starId = 1; // Default value if no stars exist yet
-            try (Statement idStatement = conn.createStatement();
-                ResultSet resultSet = idStatement.executeQuery(idQuery)) {
-                if (resultSet.next()) {
-                   starId = resultSet.getInt(1);
-                }
-            
-            } catch (SQLException e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().println("Database error: " + e.getMessage());
-                return;
-            }
-            
+            Statement idStatement = conn.createStatement();
+            ResultSet rs = idStatement.executeQuery(idNumQuery);
+            rs.next();
+            String starId = "nm" + rs.getInt(1);
+
+            System.out.println("Star name is: " + starName + ", birth year is: " + birthYear + ", id is: " + starId);
 
             // Prepare SQL statement
             String sql = "INSERT INTO stars (id, name, birthYear) VALUES (?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             //statement.setString(1, generateStarId());
-            statement.setString(1, "nm" + starId);
+            statement.setString(1, starId);
             statement.setString(2, starName);
-            statement.setObject(3, birthYear, java.sql.Types.INTEGER);
+            if (birthYear != null) {
+                statement.setObject(3, birthYear); // Set birthYear if not null
+            } else {
+                statement.setNull(3, java.sql.Types.INTEGER); // Set NULL if birthYear is null
+            }
 
             // Execute the statement
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().println("Star added successfully.");
+                output.addProperty("status", "success");
             } else {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().println("Failed to add star.");
+                output.addProperty("status", "fail");
+                output.addProperty("message", "Failed to add star.");
             }
-
-            // Close resources
             statement.close();
+            out.write(output.toString());
+
         } catch (SQLException e) {
+            e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Database error: " + e.getMessage());
+            output.addProperty("status", "fail");
+            output.addProperty("message", e.getMessage());
+            out.write(output.toString());
+        } finally {
+            out.close();
         }
     }
 }
