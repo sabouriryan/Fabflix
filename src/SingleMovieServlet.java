@@ -36,12 +36,8 @@ public class SingleMovieServlet extends HttpServlet {
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         response.setContentType("application/json"); // Response mime type
-
-        // Retrieve parameter id from url request.
         String movie_id = request.getParameter("id");
-
         // The log message can be found in localhost log
         request.getServletContext().log("getting id: " + movie_id);
 
@@ -50,34 +46,41 @@ public class SingleMovieServlet extends HttpServlet {
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
-            // Get a connection from dataSource
-            
+            String movie_title = "";
+            int movie_year = 0;
+            String movie_director = "";
+            double movie_rating = 0;
 
-            String movieInfoQuery = "SELECT m.title, m.year, m.director, r.rating " + 
-            "FROM movies m " +
-            "JOIN ratings r ON m.id = r.movieId WHERE m.id = ?";
-            //SELECT m.title, m.year, m.director, r.rating FROM movies m JOIN ratings r ON m.id = r.movieId WHERE m.id = ?
-
+            // Get movie info
+            String movieInfoQuery = "SELECT m.title, m.year, m.director FROM movies m WHERE m.id = ?";
             PreparedStatement pstmtMovie = conn.prepareStatement(movieInfoQuery);
             pstmtMovie.setString(1, movie_id);
             ResultSet rs = pstmtMovie.executeQuery();
 
-            rs.next();
-            String movie_title = rs.getString("title");
-            int movie_year = rs.getInt("year");
-            String movie_director = rs.getString("director");
-            double movie_rating = rs.getDouble("rating");
-
+            if (rs.next()) {
+                movie_title = rs.getString("title");
+                movie_year = rs.getInt("year");
+                movie_director = rs.getString("director");
+            }
             rs.close();
             pstmtMovie.close();
 
+            // Get movie rating
+            String movieRatingQuery = "SELECT r.rating FROM ratings r WHERE r.movieId = ?";
+            PreparedStatement pstmtMovieRating = conn.prepareStatement(movieRatingQuery);
+            pstmtMovieRating.setString(1, movie_id);
+            ResultSet rsRating = pstmtMovieRating.executeQuery();
+
+            if (rsRating.next()) {
+                movie_rating = rsRating.getDouble("rating");
+            }
+            rsRating.close();
+            pstmtMovieRating.close();
+
+            // Get all genres for this movie
             String queryGenres = "SELECT g.name FROM genres_in_movies gim " +
-            "JOIN genres g ON gim.genreId = g.id " +
-            "WHERE gim.movieId = ?";
-
-
-            //SELECT g.name FROM genres_in_movies gim JOIN genres g ON gim.genreId = g.id WHERE gim.movieId = 'tt0498362';
-
+                                 "JOIN genres g ON gim.genreId = g.id " +
+                                 "WHERE gim.movieId = ?";
             PreparedStatement pstmtGenres = conn.prepareStatement(queryGenres);
             pstmtGenres.setString(1, movie_id);
             ResultSet rsGenres = pstmtGenres.executeQuery();
@@ -91,12 +94,12 @@ public class SingleMovieServlet extends HttpServlet {
 
             // Get ALL stars sorted by decreasing number of movies played
             String queryStars = "SELECT s.id AS star_id, s.name AS star_name, COUNT(sim_all.starId) AS movie_count " +
-            "FROM stars_in_movies AS sim_movie " +
-            "JOIN stars AS s ON sim_movie.starId = s.id " +
-            "JOIN stars_in_movies AS sim_all ON sim_movie.starId = sim_all.starId " +
-            "WHERE sim_movie.movieId = ? " +
-            "GROUP BY sim_movie.starId, s.name " +
-            "ORDER BY movie_count DESC, s.name";
+                                "FROM stars_in_movies AS sim_movie " +
+                                "JOIN stars AS s ON sim_movie.starId = s.id " +
+                                "JOIN stars_in_movies AS sim_all ON sim_movie.starId = sim_all.starId " +
+                                "WHERE sim_movie.movieId = ? " +
+                                "GROUP BY sim_movie.starId, s.name " +
+                                "ORDER BY movie_count DESC, s.name";
 
             PreparedStatement pstmtStars = conn.prepareStatement(queryStars);
             pstmtStars.setString(1, movie_id);
@@ -109,10 +112,9 @@ public class SingleMovieServlet extends HttpServlet {
                 starObject.addProperty("star_id", rsStars.getString("star_id"));
                 starsArray.add(starObject);
             }
-            
             rsStars.close();
             pstmtStars.close();
-            //System.out.println(movie_title + movie_year + movie_director + " " + starsArray.toString() + genresArray.toString());
+
             JsonObject output = new JsonObject();
             output.addProperty("movie_title", movie_title);
             output.addProperty("movie_year", movie_year);
@@ -120,13 +122,11 @@ public class SingleMovieServlet extends HttpServlet {
             output.add("movie_genres", genresArray);
             output.add("movie_stars", starsArray);
             output.addProperty("movie_rating", movie_rating);
-            
-            JsonArray jsonArrayOutput = new JsonArray();
+
             // Write JSON string to output
             out.write(output.toString());
             // Set response status to 200 (OK)
             response.setStatus(200);
-
         } catch (Exception e) {
             // Write error message JSON object to output
             e.printStackTrace();
@@ -141,9 +141,5 @@ public class SingleMovieServlet extends HttpServlet {
         } finally {
             out.close();
         }
-
-        // Always remember to close db connection after usage. Here it's done by try-with-resources
-
     }
-
 }
