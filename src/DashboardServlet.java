@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 
-@WebServlet(name = "DashboardServlet", urlPatterns = "_dashboard/api/dashboard")
+@WebServlet(name = "DashboardServlet", urlPatterns = "/_dashboard/api/dashboard")
 public class DashboardServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private DataSource dataSource;
@@ -32,32 +32,21 @@ public class DashboardServlet extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 
-        String updateParam = request.getParameter("update");
-
         try (Connection conn = dataSource.getConnection()) {
-            if (updateParam != null) {
-                if (updateParam.equals("movie")) {
-                    addMovie(request, conn);
-                } else if (updateParam.equals("star")) {
-                    addStar(request, conn);
-                }
-                return;
-            }
-
             DatabaseMetaData metadata = conn.getMetaData();
-            ResultSet tablesResultSet = metadata.getTables(null, null, "%", null);
+            ResultSet tablesResultSet = metadata.getTables("moviedb", null, "%", null);
 
             JsonArray tablesArray = new JsonArray();
             while (tablesResultSet.next()) {
-                String tableName = tablesResultSet.getString(3);
+                String tableName = tablesResultSet.getString("TABLE_NAME");
                 JsonObject tableObject = new JsonObject();
                 tableObject.addProperty("table_name", tableName);
 
-                ResultSet columnsResultSet = metadata.getColumns(null, null, tableName, null);
+                ResultSet columnsResultSet = metadata.getColumns("moviedb", null, tableName, null);
                 JsonArray columnsArray = new JsonArray();
                 while (columnsResultSet.next()) {
-                    String columnName = columnsResultSet.getString(4);
-                    String columnType = columnsResultSet.getString(6);
+                    String columnName = columnsResultSet.getString("COLUMN_NAME");
+                    String columnType = columnsResultSet.getString("TYPE_NAME");
                     JsonObject columnObject = new JsonObject();
                     columnObject.addProperty("column_name", columnName);
                     columnObject.addProperty("column_type", columnType);
@@ -66,7 +55,6 @@ public class DashboardServlet extends HttpServlet {
                 tableObject.add("columns", columnsArray);
                 tablesArray.add(tableObject);
             }
-            System.out.println(tablesArray);
             out.write(tablesArray.toString());
             response.setStatus(200);
 
@@ -79,11 +67,5 @@ public class DashboardServlet extends HttpServlet {
         } finally {
             out.close();
         }
-    }
-
-    private void addStar(HttpServletRequest request, Connection conn) {
-    }
-
-    private void addMovie(HttpServletRequest request, Connection conn) {
     }
 }
