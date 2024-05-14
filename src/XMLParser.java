@@ -74,6 +74,7 @@ public class XMLParser extends DefaultHandler {
                 try {
                     movieYear = Integer.parseInt(data.toString());
                 } catch (NumberFormatException e) {
+                    incompleteTags.add(new IncompleteTag(currentElement, data.toString()));
                     movieYear = 0; // Set to NULL if not a valid integer
                 }
                 break;
@@ -156,7 +157,7 @@ public class XMLParser extends DefaultHandler {
 
             // Parse the XML file
             XMLParser xmlParser = new XMLParser();
-            saxParser.parse("../resources/mains243.xml", xmlParser);
+            saxParser.parse("./resources/mains243.xml", xmlParser);
             xmlParser.printIncompleteTags();
             System.out.println("Total movies:" + xmlParser.movies_visited);
 
