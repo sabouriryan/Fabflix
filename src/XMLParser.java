@@ -9,20 +9,20 @@ import javax.xml.parsers.SAXParserFactory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 public class XMLParser extends DefaultHandler {
     private StringBuilder data;
     private String currentElement;
-    private String dirId;
     private String dirName;
-    private String filmId;
-    private String filmTitle;
-    private String filmYear;
-    private List<String> categories;
+    private String movieId;
+    private String movieTitle;
+    private int movieYear;
+    private List<String> genres;
+    public int movies_visited = 0;
+    private final List<IncompleteTag> incompleteTags;
 
 
     // Database connection parameters
@@ -30,105 +30,125 @@ public class XMLParser extends DefaultHandler {
     private static final String DB_USER = "mytestuser";
     private static final String DB_PASSWORD = "My6$Password";
 
-
+    public XMLParser() {
+        incompleteTags = new ArrayList<>();
+    }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        /*
+        if (movies_visited > 3) {
+            System.exit(0);
+        }
+
+         */
+
         currentElement = qName;
         if (qName.equals("director")) {
-            // Initialize director details
-            dirId = "";
+            // flush director details
             dirName = "";
-        } else if (qName.equals("films")) {
-            // Initialize film details
-            filmId = "";
-            filmTitle = "";
-            filmYear = "";
-            categories = new ArrayList<>();
+        } else if (qName.equals("film")) {
+            movies_visited++;
+            // flush movie details
+            movieId = "";
+            movieTitle = "";
+            movieYear = 0;
+            genres = new ArrayList<>();
         }
         data = new StringBuilder();
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        if (qName.equals("dirid")) {
-            dirId = data.toString();
-        } else if (qName.equals("dirname")) {
-            dirName = data.toString();
-        } else if (qName.equals("fid")) {
-            filmId = data.toString();
-        } else if (qName.equals("t")) {
-            filmTitle = data.toString();
-        } else if (qName.equals("year")) {
-            filmYear = data.toString();
-        } else if (qName.equals("cat")) {
-            categories.add(data.toString());
-        } else if (qName.equals("directorfilms")) {
-            // Insert director and film data into the database
-            insertDirectorIntoDatabase(dirId, dirName);
-            insertFilmIntoDatabase(filmId, filmTitle, filmYear, dirId);
-            insertCategoriesIntoDatabase(filmId, categories);
+        switch (qName) {
+            case "dirname":
+                dirName = data.toString();
+                break;
+            case "fid":
+                movieId = data.toString();
+                break;
+            case "t":
+                movieTitle = data.toString();
+                break;
+            case "year":
+                try {
+                    movieYear = Integer.parseInt(data.toString());
+                } catch (NumberFormatException e) {
+                    movieYear = 0; // Set to NULL if not a valid integer
+                }
+                break;
+            case "cat":
+                genres.add(data.toString());
+                break;
+            case "film":
+                // Insert director and movie data into the database
+                insertMovieIntoDatabase(movieId, movieTitle, movieYear, dirName);
+                insertGenresIntoDatabase(movieId, genres);
+                break;
         }
     }
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         data.append(new String(ch, start, length).trim());
-    }
 
-    private void insertDirectorIntoDatabase(String dirId, String dirName) {
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            String query = "INSERT INTO director (dirid, dirname) VALUES (?, ?)";
-            System.out.println(query);
-            /*PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, dirId);
-            statement.setString(2, dirName);
-            statement.executeUpdate();*/
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Check for incomplete or malformed tags
+        if (currentElement != null && !currentElement.isEmpty() && data.length() == 0) {
+            incompleteTags.add(new IncompleteTag(currentElement, new String(ch, start, length).trim()));
         }
     }
 
-    private void insertFilmIntoDatabase(String filmId, String filmTitle, String filmYear, String dirId) {
+
+    private void insertMovieIntoDatabase(String movieId, String movieTitle, int movieYear, String dirId) {
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            String query = "INSERT INTO movie (fid, title, year, directorid) VALUES (?, ?, ?, ?)";
-            System.out.println(query);
-            /*PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, filmId);
-            statement.setString(2, filmTitle);
-            statement.setString(3, filmYear);
+            String query = "INSERT INTO movies (id, title, year, director) VALUES (?, ?, ?, ?)";
+            System.out.println(query + " (" + movieId + ", " + movieTitle + ", " + movieYear + ", " + dirId + ")");
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, movieId);
+            statement.setString(2, movieTitle);
+            statement.setInt(3, movieYear);
             statement.setString(4, dirId);
-            statement.executeUpdate();*/
+            statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void insertCategoriesIntoDatabase(String filmId, List<String> categories) {
+    private void insertGenresIntoDatabase(String movieId, List<String> genres) {
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            for (String category : categories) {
-                // Check if category exists in the database, if not, insert it
-                String query = "INSERT INTO genres (name) VALUES (?) ON DUPLICATE KEY UPDATE name = name";
-                System.out.println(query);
-                /*PreparedStatement statement = connection.prepareStatement(query);
-                statement.setString(1, category);
-                statement.executeUpdate();*/
+            for (String genre : genres) {
+                try {
+                    // Check if category exists in the database, if not, insert it
+                    String insertGenreQuery = "INSERT IGNORE INTO genres (name) SELECT ? WHERE NOT EXISTS (SELECT 1 FROM genres WHERE name = ?)";
+                    PreparedStatement statement = connection.prepareStatement(insertGenreQuery);
+                    statement.setString(1, genre);
+                    statement.setString(2, genre);
+                    statement.executeUpdate();
 
-                // Associate film with category in genres_in_movies table
-                query = "INSERT INTO genres_in_movies (genreid, movieid) VALUES ((SELECT id FROM genres WHERE name = ?), ?)";
-                System.out.println(query);
-                /*statement = connection.prepareStatement(query);
-                statement.setString(1, category);
-                statement.setString(2, filmId);
-                statement.executeUpdate();*/
+                    // Associate movie with category in genres_in_movies table
+                    String movieGenreQuery = "INSERT INTO genres_in_movies (genreId, movieId) VALUES ((SELECT id FROM genres WHERE name = ?), ?)";
+                    statement = connection.prepareStatement(movieGenreQuery);
+                    statement.setString(1, genre);
+                    statement.setString(2, movieId);
+                    statement.executeUpdate();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public void printIncompleteTags() {
+        for (IncompleteTag incompleteTag : incompleteTags) {
+            System.out.println("Incomplete tag: " + incompleteTag.getTagName() + " Value: " + incompleteTag.getTagValue());
+        }
+    }
+
     public static void main(String[] args) {
         try {
+            System.setProperty("file.encoding", "ISO-8859-1");
             // Create a SAXParser instance
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
@@ -136,6 +156,9 @@ public class XMLParser extends DefaultHandler {
             // Parse the XML file
             XMLParser xmlParser = new XMLParser();
             saxParser.parse("../resources/mains243.xml", xmlParser);
+            //xmlParser.printIncompleteTags();
+            System.out.println("Total movies:" + xmlParser.movies_visited);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
