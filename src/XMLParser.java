@@ -155,8 +155,8 @@ public class XMLParser extends DefaultHandler {
 
             // Parse the XML file
             XMLParser xmlParser = new XMLParser();
-            saxParser.parse("/Users/wilberthgonzalez/Downloads/stanford-movies/mains243.xml", xmlParser);
-            xmlParser.printIncompleteTags();
+            saxParser.parse("../resources/mains243.xml", xmlParser);
+            //xmlParser.printIncompleteTags();
             System.out.println("Total movies:" + xmlParser.movies_visited);
 
         } catch (Exception e) {
