@@ -74,7 +74,7 @@ public class AddMovieServlet extends HttpServlet {
 
             if (status.equals("fail")) {
                 output.addProperty("status", "fail");
-                output.addProperty("message", "Duplicate movie detected.");
+                output.addProperty("message", "Duplicate movie detected for star = " + starName + ", year = " + year + ", director = " + director); ;
             } else {
                 output.addProperty("status", "success");
             }
