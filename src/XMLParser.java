@@ -34,7 +34,7 @@ public class XMLParser extends DefaultHandler {
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        if (movies_visited >= 3) {
+        if (movies_visited > 3) {
             System.exit(0);
         }
 
@@ -87,14 +87,14 @@ public class XMLParser extends DefaultHandler {
 
     private void insertMovieIntoDatabase(String movieId, String movieTitle, String movieYear, String dirId) {
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            String query = "INSERT INTO movie (fid, title, year, directorid) VALUES (?, ?, ?, ?)";
-            System.out.println(query);
-            /*PreparedStatement statement = connection.prepareStatement(query);
+            String query = "INSERT INTO movie (id, title, year, director) VALUES (?, ?, ?, ?)";
+            System.out.println(query + " (" + movieId + ", " + movieTitle + ", " + movieYear + ", " + dirId + ")");
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, movieId);
             statement.setString(2, movieTitle);
             statement.setString(3, movieYear);
             statement.setString(4, dirId);
-            statement.executeUpdate();*/
+            statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -104,15 +104,15 @@ public class XMLParser extends DefaultHandler {
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
             for (String genre : genres) {
                 // Check if category exists in the database, if not, insert it
-                String query = "INSERT INTO genres (name) VALUES (?) ON DUPLICATE KEY UPDATE name = name";
-                System.out.println(query);
+                String insertGenreQuery = "INSERT IGNORE INTO genres (name) SELECT ? WHERE NOT EXISTS (SELECT 1 FROM genres WHERE name = ?)";
+                //System.out.println(insertGenreQuery+ " (" + genre + ")");
                 /*PreparedStatement statement = connection.prepareStatement(query);
                 statement.setString(1, genre);
                 statement.executeUpdate();*/
 
                 // Associate movie with category in genres_in_movies table
-                query = "INSERT INTO genres_in_movies (genreId, movieId) VALUES ((SELECT id FROM genres WHERE name = ?), ?)";
-                System.out.println(query);
+                String movieGenreQuery = "INSERT INTO genres_in_movies (genreId, movieId) VALUES ((SELECT id FROM genres WHERE name = ?), ?)";
+                //System.out.println(movieGenreQuery + " (" + genre + ", " + movieId + ")");
                 /*statement = connection.prepareStatement(query);
                 statement.setString(1, genre);
                 statement.setString(2, movieId);
