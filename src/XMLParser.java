@@ -90,11 +90,12 @@ public class XMLParser extends DefaultHandler {
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
-        data.append(new String(ch, start, length).trim());
+        String content = new String(ch, start, length).trim();
+        data.append(content);
 
         // Check for incomplete or malformed tags
-        if (currentElement != null && !currentElement.isEmpty() && data.length() == 0) {
-            incompleteTags.add(new IncompleteTag(currentElement, new String(ch, start, length).trim()));
+        if (currentElement != null && !currentElement.isEmpty() && !content.isEmpty()) {
+            incompleteTags.add(new IncompleteTag(currentElement, content));
         }
     }
 

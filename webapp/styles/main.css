@@ -57,6 +57,10 @@ h1 {
     color: #c284d7;
 }
 
+#numbers-container {
+    margin-bottom: 200px;
+}
+
 .main-page-header {
     width: 100%;
     display: flex;
