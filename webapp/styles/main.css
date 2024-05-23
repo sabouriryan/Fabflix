@@ -3,14 +3,35 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #040112;
+    border-top: 2px solid #161127;
 }
 
 h1 {
     font-family: "Open Sans", sans-serif;
-    font-size: 9vw;
+    font-size: 8vw;
     font-weight: bold;
     text-align: center;
-    margin: 37px;
+    margin-bottom: 50px;
+}
+
+#search-bar-container {
+    height: 40%;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#main-search-bar {
+    width: 60%;
+    font-size: 20px;
+    padding: 7px 14px;
+    border: 1px solid #b2baef;
+    border-radius: 20px;
+    background-color: transparent;
+    color: white;
 }
 
 #genres-container {
@@ -19,7 +40,6 @@ h1 {
     flex-wrap: wrap;
     gap: 13px;
     justify-content: center;
-    margin-bottom: 40px;
 }
 
 .genre-item{
@@ -28,7 +48,7 @@ h1 {
     color: white;
     border: 1px #9da6eb solid;
     background-color: #120b35;
-    padding: 10px;
+    padding: 4px 10px;
     border-radius: 20px;
 }
 
@@ -67,6 +87,7 @@ h1 {
     justify-content: center;
     align-items: center;
     margin-bottom: 15px;
+    margin-top: 40px;
 }
 
 .custom-hr {

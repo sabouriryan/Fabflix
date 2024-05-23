@@ -10,17 +10,20 @@ html {
 body {
     color: white;
     height: 100%;
-    background: linear-gradient(to bottom left,
-    #050112 0%,
-    #050112 10%,
-    #110b27 15%,
-    #160b35 30%,
-    #1a0c3f 45%,
-    #160b35 55%,
-    #110b27 70%,
-    #050112 90%,
-    #050112 100%
-    ) fixed top right;
+}
+
+.gradient-background {
+    background: linear-gradient(to bottom right,
+    #040112 0%,
+    #050112 15%,
+    #110b27 25%,
+    #160b35 40%,
+    #1a0c3f 50%,
+    #160b35 60%,
+    #110b27 75%,
+    #050112 85%,
+    #040112 100%
+    ) fixed top left;
 }
 
 .nav-bar {

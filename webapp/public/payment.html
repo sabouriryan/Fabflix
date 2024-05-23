@@ -7,60 +7,60 @@
     <link rel="stylesheet" href="../styles/style.css"/>
     <link rel="stylesheet" href="../styles/payment.css"/> <!-- Assuming you have a payment.css file for styling -->
   </head>
-  <body>
-  <header>
-    <nav class="nav-bar">
-      <div class="left-nav">
-        <div class="logo-container">
-          <a id="home-button" href="../index.html" class="gradient-text">Fabflix</a>
+  <body class="gradient-background">
+    <header>
+      <nav class="nav-bar">
+        <div class="left-nav">
+          <div class="logo-container">
+            <a id="home-button" href="../index.html" class="gradient-text">Fabflix</a>
+          </div>
         </div>
-      </div>
-      <div class="right-nav">
-        <div>
-          <a id="checkout-button" href="shopping-cart.html">Cart <i class="fas fa-shopping-cart"></i></a>
+        <div class="right-nav">
+          <div>
+            <a id="checkout-button" href="shopping-cart.html">Cart <i class="fas fa-shopping-cart"></i></a>
+          </div>
+          <div class="search-dropdown">
+            Search <i class='fas fa-search'></i>
+            <form id="search-dropdown-form" class="floating">
+              <input type="text" class="search-bar" name="title" placeholder="Title">
+              <input type="text" class="search-bar" name="year" placeholder="Year">
+              <input type="text" class="search-bar" name="director" placeholder="Director">
+              <input type="text" class="search-bar" name="starName" placeholder="Star">
+              <input id="search-submit" type="submit" value="Submit">
+            </form>
+          </div>
         </div>
-        <div class="search-dropdown">
-          Search <i class='fas fa-search'></i>
-          <form id="search-dropdown-form" class="floating">
-            <input type="text" class="search-bar" name="title" placeholder="Title">
-            <input type="text" class="search-bar" name="year" placeholder="Year">
-            <input type="text" class="search-bar" name="director" placeholder="Director">
-            <input type="text" class="search-bar" name="starName" placeholder="Star">
-            <input id="search-submit" type="submit" value="Submit">
+      </nav>
+    </header>
+      <main>
+        <div id="payment-form-container" class="floating">
+          <h1 class="gradient-text">Payment Page</h1>
+          <form id="payment-form" action="#" method="post">
+            <div class="payment-section">
+              <label for="first-name"><b>First Name</b></label>
+              <input type="text" id="first-name" class="payment-field" name="first-name" placeholder="Enter First Name of Card Holder" required>
+            </div>
+            <div class="payment-section">
+              <label for="last-name"><b>Last Name</b></label>
+              <input type="text" id="last-name" class="payment-field" name="last-name" placeholder="Enter Last Name of Card Holder" required>
+            </div>
+            <div class="payment-section">
+              <label for="credit-card-number"><b>Credit Card Number</b></label>
+              <input type="text" id="credit-card-number" class="payment-field" name="credit-card-number" placeholder="Enter Credit Card Number" required>
+            </div>
+            <div class="payment-section">
+              <label for="expiration-date"><b>Expiration Date</b></label>
+              <input type="text" id="expiration-date" class="payment-field" name="expiration-date" placeholder="YYYY-MM-DD" required>
+            </div>
+            <div id="payment-error-message"></div>
+            <div class="payment-section total-section">
+              <h3>Order Total</h3>
+              <div id="total-price"></div>
+            </div>
+            <input id="payment-submit" type="submit" value="Place Order">
           </form>
         </div>
-      </div>
-    </nav>
-  </header>
-    <main>
-      <div id="payment-form-container" class="floating">
-        <h1 class="gradient-text">Payment Page</h1>
-        <form id="payment-form" action="#" method="post">
-          <div class="payment-section">
-            <label for="first-name"><b>First Name</b></label>
-            <input type="text" id="first-name" class="payment-field" name="first-name" placeholder="Enter First Name of Card Holder" required>
-          </div>
-          <div class="payment-section">
-            <label for="last-name"><b>Last Name</b></label>
-            <input type="text" id="last-name" class="payment-field" name="last-name" placeholder="Enter Last Name of Card Holder" required>
-          </div>
-          <div class="payment-section">
-            <label for="credit-card-number"><b>Credit Card Number</b></label>
-            <input type="text" id="credit-card-number" class="payment-field" name="credit-card-number" placeholder="Enter Credit Card Number" required>
-          </div>
-          <div class="payment-section">
-            <label for="expiration-date"><b>Expiration Date</b></label>
-            <input type="text" id="expiration-date" class="payment-field" name="expiration-date" placeholder="YYYY-MM-DD" required>
-          </div>
-          <div id="payment-error-message"></div>
-          <div class="payment-section total-section">
-            <h3>Order Total</h3>
-            <div id="total-price"></div>
-          </div>
-          <input id="payment-submit" type="submit" value="Place Order">
-        </form>
-      </div>
-    </main>
+      </main>
     <!-- include jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="../scripts/payment.js"></script>

@@ -14,50 +14,42 @@
   <script src="https://kit.fontawesome.com/4d7e7da3eb.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<header>
-  <nav class="nav-bar">
-    <div class="left-nav">
-      <div class="logo-container">
-        <a id="home-button" href="index.html" class="gradient-text">Fabflix</a>
+  <header>
+    <nav class="nav-bar">
+      <div class="left-nav">
+        <div class="logo-container">
+          <a id="home-button" href="index.html" class="gradient-text">Fabflix</a>
+        </div>
       </div>
+      <div class="right-nav">
+        <div>
+          <a id="checkout-button" href="public/shopping-cart.html">Cart <i class="fas fa-shopping-cart"></i></a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <div id="search-bar-container" class="gradient-background">
+    <h1 class="gradient-text">FABFLIX</h1>
+    <input type="text" id="main-search-bar" placeholder="Search...">
+  </div>
+  <main>
+    <div class="main-page-header">
+      <div class="custom-hr"></div>
+      <div class="main-page-header-text">Browse by<span class="gradient-text gradient-header">Genre</span></div>
+      <div class="custom-hr"></div>
     </div>
-    <div class="right-nav">
-      <div>
-        <a id="checkout-button" href="public/shopping-cart.html">Cart <i class="fas fa-shopping-cart"></i></a>
-      </div>
-      <div class="search-dropdown">
-        Search <i class='fas fa-search'></i>
-        <form id="search-dropdown-form" class="floating">
-          <input type="text" class="search-bar" name="title" placeholder="Title">
-          <input type="text" class="search-bar" name="year" placeholder="Year">
-          <input type="text" class="search-bar" name="director" placeholder="Director">
-          <input type="text" class="search-bar" name="starName" placeholder="Star">
-          <input id="search-submit" type="submit" value="Submit">
-        </form>
-      </div>
+    <div id="genres-container"></div>
+
+    <div class="main-page-header">
+      <div class="custom-hr"></div>
+      <div class="main-page-header-text">Browse by<span class="gradient-text gradient-header">Title</span></div>
+      <div class="custom-hr"></div>
     </div>
-  </nav>
-</header>
-<h1 class="gradient-text">FABFLIX</h1>
-<main>
-
-  <div class="main-page-header">
-    <div class="custom-hr"></div>
-    <div class="main-page-header-text">Browse by<span class="gradient-text gradient-header">Genre</span></div>
-    <div class="custom-hr"></div>
-  </div>
-  <div id="genres-container"></div>
-
-  <div class="main-page-header">
-    <div class="custom-hr"></div>
-    <div class="main-page-header-text">Browse by<span class="gradient-text gradient-header">Title</span></div>
-    <div class="custom-hr"></div>
-  </div>
-  <div class="browse-by-title-options">
-    <div id="letters-container"></div>
-    <div id="numbers-container"></div>
-  </div>
-</main>
+    <div class="browse-by-title-options">
+      <div id="letters-container"></div>
+      <div id="numbers-container"></div>
+    </div>
+  </main>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="scripts/main.js"></script>
