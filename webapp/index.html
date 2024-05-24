@@ -24,6 +24,18 @@
         </div>
       </div>
       <div class="right-nav">
+        <form id="nav-search-form" class="search-form">
+          <div class="nav-title-search-bar-container">
+            <button type="button" onclick="showAdvanced()" id="adv-search-toggle" class="hidden"><i class='fas fa-ellipsis-h'></i></button>
+            <input type="text" class="nav-title-search-bar" name="title" placeholder="Search for movie titles">
+            <button id="nav-search-submit" type="submit"><i class='fas fa-search'></i></button>
+          </div>
+          <div id="adv-search-dropdown" class="floating hidden">
+            <input type="text" class="adv-search-bar search-bar" name="year" placeholder="Year">
+            <input type="text" class="adv-search-bar search-bar" name="director" placeholder="Director">
+            <input type="text" class="adv-search-bar search-bar" name="starName" placeholder="Star">
+          </div>
+        </form>
         <div>
           <a id="checkout-button" href="public/shopping-cart.html">Cart <i class="fas fa-shopping-cart"></i></a>
         </div>
@@ -32,8 +44,8 @@
   </header>
   <div id="search-bar-container">
     <h1 class="gradient-text">FABFLIX</h1>
-    <form id="search-bar-form" class="floating">
-      <input type="text" id="main-search-bar" placeholder="Search...">
+    <form id="main-search-form" class="search-form floating">
+      <input type="text" id="main-search-bar" class="search-bar" name="title" placeholder="Search...">
       <button id="main-search-submit" type="submit"><i class='fas fa-search'></i></button>
     </form>
   </div>
