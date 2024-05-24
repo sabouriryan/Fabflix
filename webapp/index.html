@@ -7,10 +7,12 @@
   <link rel="stylesheet" type="text/css" href="styles/style.css">
   <link rel="stylesheet" type="text/css" href="styles/main.css">
 
+  <!-- Nunito Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
 
+  <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/4d7e7da3eb.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -28,9 +30,12 @@
       </div>
     </nav>
   </header>
-  <div id="search-bar-container" class="gradient-background">
+  <div id="search-bar-container">
     <h1 class="gradient-text">FABFLIX</h1>
-    <input type="text" id="main-search-bar" placeholder="Search...">
+    <form id="search-bar-form" class="floating">
+      <input type="text" id="main-search-bar" placeholder="Search...">
+      <button id="main-search-submit" type="submit"><i class='fas fa-search'></i></button>
+    </form>
   </div>
   <main>
     <div class="main-page-header">

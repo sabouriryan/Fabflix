@@ -8,7 +8,7 @@ main {
 }
 
 h1 {
-    font-family: "Open Sans", sans-serif;
+
     font-size: 8vw;
     font-weight: bold;
     text-align: center;
@@ -22,16 +22,53 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background: linear-gradient(to bottom left,
+        #050112 0%,
+        #110b27 15%,
+        #160b35 40%,
+        #1a0c3f 50%,
+        #160b35 60%,
+        #110b27 85%,
+        #050112 100%
+    ) top right;
 }
 
-#main-search-bar {
-    width: 60%;
-    font-size: 20px;
+#search-bar-form {
+    width: 50%;
     padding: 7px 14px;
     border: 1px solid #b2baef;
     border-radius: 20px;
     background-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+#search-bar-form:focus-within {
+    border-color: #c284d7;
+    box-shadow: 0 0 5px rgb(125, 80, 138);
+}
+
+#main-search-bar {
+    background-color: transparent;
+    font-size: 17px;
+    width: 100%;
     color: white;
+}
+
+#main-search-bar:focus {
+    outline: none;
+}
+
+#main-search-submit {
+    background-color: transparent;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    font-size: 17px;
 }
 
 #genres-container {

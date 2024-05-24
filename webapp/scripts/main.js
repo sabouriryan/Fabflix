@@ -2,11 +2,7 @@
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
  */
-
 function getGenres(resultData) {
-
-    console.log("handleResult: populating genres into dropdown menu");
-
     let genresElement = jQuery("#genres-container");
     for (let i = 0; i < resultData.length; i++) {
         let genresHTML = "";
@@ -16,10 +12,6 @@ function getGenres(resultData) {
         genresElement.append(genresHTML);
     }
 }
-
-/**
- * Once this .js is loaded, following scripts will be executed by the browser\
- */
 
 let letters = $("#letters-container");
 for (let i = 97; i <= 122; i++) {
@@ -33,10 +25,9 @@ for (let i = 0; i <= 9; i++) {
 }
 numbers.append("<div><a href='public/movie-list.html?firstChar=*'>*</a></div>")
 
-// Makes the HTTP GET request and registers on success callback function handleResult
 jQuery.ajax({
     dataType: "json",  // Setting return data type
     method: "GET",// Setting request method
     url: "api/main",
-    success: (resultData) => getGenres(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
+    success: (resultData) => getGenres(resultData)
 });
