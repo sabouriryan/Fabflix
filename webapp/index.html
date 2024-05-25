@@ -27,7 +27,7 @@
         <form id="nav-search-form" class="search-form">
           <div class="nav-title-search-bar-container">
             <button type="button" onclick="showAdvanced()" id="adv-search-toggle" class="hidden"><i class='fas fa-ellipsis-h'></i></button>
-            <input type="text" class="nav-title-search-bar" name="title" placeholder="Search for movie titles">
+            <input type="text" class="nav-title-search-bar full-text-search-bar" name="title" placeholder="Search for movie titles">
             <button id="nav-search-submit" type="submit"><i class='fas fa-search'></i></button>
           </div>
           <div id="adv-search-dropdown" class="floating hidden">
@@ -45,7 +45,7 @@
   <div id="search-bar-container">
     <h1 class="gradient-text">FABFLIX</h1>
     <form id="main-search-form" class="search-form floating">
-      <input type="text" id="main-search-bar" class="search-bar" name="title" placeholder="Search...">
+      <input type="text" id="main-search-bar" class="search-bar full-text-search-bar" name="title" placeholder="Search...">
       <button id="main-search-submit" type="submit"><i class='fas fa-search'></i></button>
     </form>
   </div>
@@ -68,9 +68,9 @@
     </div>
   </main>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="scripts/main.js"></script>
-<script src="scripts/search.js"></script>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.11/jquery.autocomplete.min.js"></script>
+  <script src="scripts/main.js"></script>
+  <script src="scripts/search.js"></script>
 </body>
 </html>

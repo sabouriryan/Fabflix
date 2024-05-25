@@ -47,6 +47,8 @@ body {
 
 .right-nav {
     margin-right: 70px;
+    width: 40%;
+    justify-content: flex-end;
 }
 
 
@@ -76,6 +78,7 @@ body {
 }
 
 #nav-search-form {
+    width: 60%;
     position: relative;
     border-radius: 6px;
     background-color: transparent;
@@ -222,3 +225,16 @@ body {
 .center-text {
     text-align: center;
 }
+
+.autocomplete-suggestions {
+    border: 1px solid #161127;
+    width: fit-content;
+    background: #040112;
+    overflow: auto;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    top: 115%;
+}
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-selected { background: #161127; }
+.autocomplete-suggestions strong { font-weight: normal; color: #c284d7; }
