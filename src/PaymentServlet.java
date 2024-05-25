@@ -44,7 +44,7 @@ public class PaymentServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter();
 
-        try (Connection conn = dataSource.getConnection()) {
+        try (out; Connection conn = dataSource.getConnection()) {
             String currentDate = dateFormat.format(new Date());
 
             String paymentQuery = "SELECT cc.id, cc.firstName, cc.lastName, cc.expiration FROM creditcards cc " +

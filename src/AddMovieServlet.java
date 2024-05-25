@@ -54,7 +54,7 @@ public class AddMovieServlet extends HttpServlet {
         System.out.println("title: " + title + "year: " + year + "director: " + director + "star-mame: " + starName + "genre: " + genreName);
 
         // Call the stored procedure to add the movie
-        try (Connection conn = dataSource.getConnection()) {
+        try (out; Connection conn = dataSource.getConnection()) {
 
             String sql = "{CALL add_movie(?, ?, ?, ?, ?, ?)}";
             CallableStatement stmt = conn.prepareCall(sql);

@@ -32,7 +32,7 @@ public class DashboardServlet extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 
-        try (Connection conn = dataSource.getConnection()) {
+        try (out; Connection conn = dataSource.getConnection()) {
             DatabaseMetaData metadata = conn.getMetaData();
             ResultSet tablesResultSet = metadata.getTables("moviedb", null, "%", null);
 

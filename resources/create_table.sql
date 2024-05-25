@@ -83,3 +83,10 @@ CREATE TABLE moviedb.employees (
     fullname varchar(100)
 );
 
+CREATE TABLE ft_movie_titles (
+    movieID VARCHAR(10),
+    title VARCHAR(100) NOT NULL,
+    PRIMARY KEY (movieID),
+    FULLTEXT (title),
+    FOREIGN KEY (movieID) REFERENCES movies(id)
+);

@@ -49,7 +49,7 @@ public class SingleStarServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
-        try (Connection conn = dataSource.getConnection()) {
+        try (out; Connection conn = dataSource.getConnection()) {
 
             String queryStarInfo = "SELECT s.name, s.birthYear FROM stars AS s WHERE s.id = ?";
 

@@ -18,53 +18,55 @@
   <script src="https://kit.fontawesome.com/4d7e7da3eb.js" crossorigin="anonymous"></script>
 
 </head>
-<body>
-<header>
-  <nav class="nav-bar">
-    <div class="left-nav">
-      <div class="logo-container">
-        <a id="home-button" href="../index.html" class="gradient-text">Fabflix</a>
+<body class="gradient-background">
+  <header>
+    <nav class="nav-bar">
+      <div class="left-nav">
+        <div class="logo-container">
+          <a id="home-button" href="../index.html" class="gradient-text">Fabflix</a>
+        </div>
       </div>
-    </div>
-    <div class="right-nav">
-      <div>
-        <a id="checkout-button" href="shopping-cart.html">Cart <i class="fas fa-shopping-cart"></i></a>
-      </div>
-      <div class="search-dropdown">
-        Search <i class='fas fa-search'></i>
-        <form id="search-dropdown-form" class="floating">
-          <input type="text" class="search-bar" name="title" placeholder="Title">
-          <input type="text" class="search-bar" name="year" placeholder="Year">
-          <input type="text" class="search-bar" name="director" placeholder="Director">
-          <input type="text" class="search-bar" name="starName" placeholder="Star">
-          <input id="search-submit" type="submit" value="Submit">
+      <div class="right-nav">
+        <form id="nav-search-form" class="search-form">
+          <div class="nav-title-search-bar-container">
+            <button type="button" onclick="showAdvanced()" id="adv-search-toggle" class="hidden"><i class='fas fa-ellipsis-h'></i></button>
+            <input type="text" class="nav-title-search-bar" name="title" placeholder="Search for movie titles">
+            <button id="nav-search-submit" type="submit"><i class='fas fa-search'></i></button>
+          </div>
+          <div id="adv-search-dropdown" class="floating hidden">
+            <input type="text" class="adv-search-bar search-bar" name="year" placeholder="Year">
+            <input type="text" class="adv-search-bar search-bar" name="director" placeholder="Director">
+            <input type="text" class="adv-search-bar search-bar" name="starName" placeholder="Star">
+          </div>
         </form>
+        <div>
+          <a id="checkout-button" href="public/shopping-cart.html">Cart <i class="fas fa-shopping-cart"></i></a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="shopping-cart-container floating">
+      <div class="shopping-cart-head">
+        <h1>Shopping Cart</h1>
+        <h3 id="item-count"></h3>
+      </div>
+
+      <div class="table-container">
+        <table id="shopping-cart-table" class="table floating">
+          <thead class="table-head">
+            <tr>
+              <th>Movie</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="cart-items-table-body" class="table-body"></tbody>
+        </table>
       </div>
     </div>
-  </nav>
-</header>
-<main>
-  <div class="shopping-cart-container floating">
-    <div class="shopping-cart-head">
-      <h1>Shopping Cart</h1>
-      <h3 id="item-count"></h3>
-    </div>
-
-    <div class="table-container">
-      <table id="shopping-cart-table" class="table floating">
-        <thead class="table-head">
-          <tr>
-            <th>Movie</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody id="cart-items-table-body" class="table-body"></tbody>
-      </table>
-    </div>
-  </div>
-</main>
+  </main>
 
 
 <!-- Load jQuery and Bootstrap JS -->
