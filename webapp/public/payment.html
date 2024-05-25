@@ -16,18 +16,20 @@
           </div>
         </div>
         <div class="right-nav">
+          <form id="nav-search-form" class="search-form">
+            <div class="nav-title-search-bar-container">
+              <button type="button" onclick="showAdvanced()" id="adv-search-toggle" class="hidden"><i class='fas fa-ellipsis-h'></i></button>
+              <input type="text" class="nav-title-search-bar" name="title" placeholder="Search for movie titles">
+              <button id="nav-search-submit" type="submit"><i class='fas fa-search'></i></button>
+            </div>
+            <div id="adv-search-dropdown" class="floating hidden">
+              <input type="text" class="adv-search-bar search-bar" name="year" placeholder="Year">
+              <input type="text" class="adv-search-bar search-bar" name="director" placeholder="Director">
+              <input type="text" class="adv-search-bar search-bar" name="starName" placeholder="Star">
+            </div>
+          </form>
           <div>
-            <a id="checkout-button" href="shopping-cart.html">Cart <i class="fas fa-shopping-cart"></i></a>
-          </div>
-          <div class="search-dropdown">
-            Search <i class='fas fa-search'></i>
-            <form id="search-dropdown-form" class="floating">
-              <input type="text" class="search-bar" name="title" placeholder="Title">
-              <input type="text" class="search-bar" name="year" placeholder="Year">
-              <input type="text" class="search-bar" name="director" placeholder="Director">
-              <input type="text" class="search-bar" name="starName" placeholder="Star">
-              <input id="search-submit" type="submit" value="Submit">
-            </form>
+            <a id="checkout-button" href="public/shopping-cart.html">Cart <i class="fas fa-shopping-cart"></i></a>
           </div>
         </div>
       </nav>
