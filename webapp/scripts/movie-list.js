@@ -118,7 +118,10 @@ function fetchMovies() {
 
     let genre = getParameterByName('genre');
     let firstChar = getParameterByName('firstChar');
-    let searchQuery = getParameterByName('query');
+    let title = getParameterByName('title');
+    let year = getParameterByName('year');
+    let director = getParameterByName('director');
+    let starName = getParameterByName('starName')
 
     if (genre !== null) {
         params.push('genre=' + genre);
@@ -126,8 +129,17 @@ function fetchMovies() {
     if (firstChar !== null) {
         params.push('firstChar=' + firstChar);
     }
-    if (searchQuery !== null) {
-        params.push('query=' + searchQuery);
+    if (title !== null) {
+        params.push('title=' + title);
+    }
+    if (year !== null) {
+        params.push('year=' + year);
+    }
+    if (director !== null) {
+        params.push('director=' + director);
+    }
+    if (starName !== null) {
+        params.push('starName=' + starName);
     }
 
     let pageSetupURL = "page=" + page + "&pageLimit=" + pageLimit + "&sort=" + sort + "&";
