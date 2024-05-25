@@ -65,7 +65,7 @@ public class ShoppingCartServlet extends HttpServlet {
             session.setAttribute("user",user);
         }
 
-        try (Connection conn = dataSource.getConnection()) {
+        try (out; Connection conn = dataSource.getConnection()) {
             String action = request.getParameter("action");
             String movieId = request.getParameter("movie-id");
 

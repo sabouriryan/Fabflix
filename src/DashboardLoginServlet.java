@@ -44,7 +44,7 @@ public class DashboardLoginServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter();
 
-        try (Connection conn = dataSource.getConnection()) {
+        try (out; Connection conn = dataSource.getConnection()) {
             // employees table for the dashboard instead of customers
             String loginQuery = "SELECT * FROM employees WHERE email = ?";
 

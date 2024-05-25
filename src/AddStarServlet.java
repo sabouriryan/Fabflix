@@ -52,7 +52,7 @@ public class AddStarServlet extends HttpServlet {
         }
 
         // Perform database insertion
-        try (Connection conn = dataSource.getConnection()) {
+        try (out; Connection conn = dataSource.getConnection()) {
             String idNumQuery = "SELECT COALESCE(MAX(CAST(SUBSTRING(id, 3) AS UNSIGNED)) + 1, 1) FROM stars";
 
             Statement idStatement = conn.createStatement();
