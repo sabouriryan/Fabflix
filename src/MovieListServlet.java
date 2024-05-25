@@ -70,14 +70,14 @@ public class MovieListServlet extends HttpServlet {
             int sortMethod = Integer.parseInt(request.getParameter("sort"));
 
             if (request.getParameter("title") != null || request.getParameter("year") != null
-                || request.getParameter("director") != null || request.getParameter("starName") != null) {
+                    || request.getParameter("director") != null || request.getParameter("starName") != null) {
                 System.out.println("Server received search request for " + request.getQueryString());
                 handleSearchRequest(request, out, conn, page, pageLimit, sortMethod);
             } else if (request.getParameter("genre") != null || request.getParameter("firstChar") != null) {
                 System.out.println("Server received browse request for " +request.getQueryString());
                 handleBrowseRequest(request, out, conn, page, pageLimit, sortMethod);
             } else {
-                System.out.println("Servlet received request to movie-list, but no parameters");
+                System.out.println("Servlet received request but no parameters");
             }
 
         } catch (Exception e) {
@@ -121,17 +121,25 @@ public class MovieListServlet extends HttpServlet {
         String director = request.getParameter("director");
         String starName = request.getParameter("starName");
 
-        String searchQuery = getSearchQuery(title, year, director, starName);
-        searchQuery += getSortMethod(sortMethod);
-        searchQuery += "LIMIT ? OFFSET ?";
+        String searchQuery = getSearchQuery(title, year, director, starName) +
+                             getSortMethod(sortMethod) +
+                             "LIMIT ? OFFSET ?";
 
-        //System.out.println("Search query: " + searchQuery);
+        System.out.println("Search query: " + searchQuery);
         PreparedStatement preStmtSearch = conn.prepareStatement(searchQuery);
         int parameterIndex = 1;
 
         if (title != null) {
-            preStmtSearch.setString(parameterIndex++, "%" + title + "%");
+            // Split title into keywords and construct the boolean full-text search query
+            String[] keywords = title.split("\\s+");
+            StringBuilder booleanQuery = new StringBuilder();
+            for (String keyword : keywords) {
+                booleanQuery.append("+").append(keyword.toLowerCase()).append("* ");
+            }
+            System.out.println(booleanQuery.toString().trim());
+            preStmtSearch.setString(parameterIndex++, booleanQuery.toString().trim());
         }
+
         if (year != null) {
             preStmtSearch.setInt(parameterIndex++, Integer.parseInt(year));
         }
@@ -145,7 +153,7 @@ public class MovieListServlet extends HttpServlet {
         int offset = (page - 1) * pageLimit;
         preStmtSearch.setInt(parameterIndex++, pageLimit);
         preStmtSearch.setInt(parameterIndex, offset);
-    
+
         JsonArray output = new JsonArray();
         try (ResultSet rs = preStmtSearch.executeQuery()) {
             while (rs.next()) {
@@ -155,36 +163,38 @@ public class MovieListServlet extends HttpServlet {
         preStmtSearch.close();
         out.write(output.toString());
     }
-    
+
+
     private static String getSearchQuery(String title, String year, String director, String starName) {
         String query = "SELECT m.*, r.rating FROM moviedb.movies m " +
                 "LEFT JOIN moviedb.ratings r ON m.id = r.movieId ";
-    
+
         boolean whereAdded = false;
-    
+
         if (title != null) {
-            query += "WHERE m.title LIKE ? ";
+            query += "JOIN moviedb.ft_movie_titles ft ON m.id = ft.movieID ";
+            query += "WHERE MATCH (ft.title) AGAINST (? IN BOOLEAN MODE) ";
             whereAdded = true;
         }
         if (year != null) {
-            // Assuming 'year' is exact match
-            query += (whereAdded ? " AND " : "WHERE ") + "m.year = ? ";
+            query += (whereAdded ? "AND " : "WHERE ") + "m.year = ? ";
             whereAdded = true;
         }
         if (director != null) {
-            query += (whereAdded ? " AND " : "WHERE ") + "m.director LIKE ? ";
+            query += (whereAdded ? "AND " : "WHERE ") + "m.director LIKE ? ";
             whereAdded = true;
         }
         if (starName != null) {
-            query += (whereAdded ? " AND " : "WHERE ");
+            query += (whereAdded ? "AND " : "WHERE ");
             query += "m.id IN (SELECT sim.movieId FROM moviedb.stars_in_movies sim " +
-            " INNER JOIN moviedb.stars s ON sim.starId = s.id " +
-            " WHERE LOWER(s.name) LIKE LOWER(?))";
+                    "INNER JOIN moviedb.stars s ON sim.starId = s.id " +
+                    "WHERE LOWER(s.name) LIKE LOWER(?))";
         }
 
         return query;
     }
-    
+
+
     private void handleBrowseRequest(HttpServletRequest request, PrintWriter out, Connection conn, int page, int pageLimit, int sortMethod) throws SQLException {
         String genre = request.getParameter("genre");
         String firstChar = request.getParameter("firstChar");
