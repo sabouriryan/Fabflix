@@ -48,7 +48,7 @@ public class LoginServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter();
 
-        try (Connection conn = dataSource.getConnection()) {
+        try (out; Connection conn = dataSource.getConnection()) {
             verifyRecaptcha(recaptchaResponse);
 
             String loginQuery = "SELECT * FROM customers WHERE email = ?";

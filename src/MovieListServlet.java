@@ -64,7 +64,7 @@ public class MovieListServlet extends HttpServlet {
         HttpSession session = request.getSession(true);
         session.setAttribute("queryString", request.getQueryString());
 
-        try (Connection conn = dataSource.getConnection()) {
+        try (out; Connection conn = dataSource.getConnection()) {
             int page = Integer.parseInt(request.getParameter("page"));
             int pageLimit = Integer.parseInt(request.getParameter("pageLimit"));
             int sortMethod = Integer.parseInt(request.getParameter("sort"));

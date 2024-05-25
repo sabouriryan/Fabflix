@@ -35,7 +35,7 @@ public class MainServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
-        try (Connection conn = dataSource.getConnection()) {
+        try (out; Connection conn = dataSource.getConnection()) {
 
             Statement stmtGenre = conn.createStatement();
             String queryAllGenres = "SELECT name FROM genres ORDER BY name ASC";
