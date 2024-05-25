@@ -1,4 +1,10 @@
-let cachedSuggestions = [];
+let cachedSuggestions = sessionStorage.getItem("cachedSuggestions")
+    ? JSON.parse(sessionStorage.getItem("cachedSuggestions")) : {};
+
+function updateCache(query, suggestions) {
+    cachedSuggestions[query] = suggestions;
+    sessionStorage.setItem("cachedSuggestions", JSON.stringify(cachedSuggestions));
+}
 
 let adv_search_toggle = $("#adv-search-toggle");
 let adv_search_dropdown = $("#adv-search-dropdown");
@@ -27,8 +33,12 @@ function showAdvanced() {
 function getSuggestions(query, done) {
     console.log("Autocomplete search initiated")
 
-    // TODO: if you want to check past query results first, you can do it here
-
+    if (cachedSuggestions[query]) {
+        console.log("Cache hit for query:", query);
+        console.log("Suggestions:", cachedSuggestions[query]);
+        done({ suggestions: cachedSuggestions[query] });
+        return;
+    }
 
     $.ajax({
         "method": "GET",
@@ -45,9 +55,9 @@ function getSuggestions(query, done) {
 }
 
 function ajaxSuccessCallback(data, query, done) {
-    console.log("raw data" + data)
-
-    // TODO: if you want to cache the result into a global variable you can do it here
+    console.log("Successful ajax request for query:", query);
+    console.log("Suggestions:", data);
+    updateCache(query, data);
 
     done( { suggestions: data } );
 }
