@@ -1,9 +1,6 @@
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.CallableStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 import com.google.gson.JsonObject;
 import jakarta.servlet.ServletConfig;
@@ -56,7 +53,7 @@ public class AddMovieServlet extends HttpServlet {
         // Call the stored procedure to add the movie
         try (out; Connection conn = dataSource.getConnection()) {
 
-            String sql = "{CALL add_movie(?, ?, ?, ?, ?, ?)}";
+            String sql = "{CALL add_movie(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
             CallableStatement stmt = conn.prepareCall(sql);
 
             stmt.setString(1, title);
@@ -65,18 +62,25 @@ public class AddMovieServlet extends HttpServlet {
             stmt.setString(4, starName);
             stmt.setString(5, genreName);
             stmt.registerOutParameter(6, java.sql.Types.VARCHAR);
+            stmt.registerOutParameter(7, java.sql.Types.VARCHAR);
+            stmt.registerOutParameter(8, java.sql.Types.VARCHAR);
+            stmt.registerOutParameter(9, Types.INTEGER);
 
             // Execute the stored procedure
             stmt.execute();
 
             String status = stmt.getString(6);
+            String movie_id = stmt.getString(7);
+            String star_id = stmt.getString(8);
+            int genre_id = stmt.getInt(9);
             stmt.close();
 
             if (status.equals("fail")) {
                 output.addProperty("status", "fail");
-                output.addProperty("message", "Duplicate movie detected for star = " + starName + ", year = " + year + ", director = " + director); ;
+                output.addProperty("message", "Duplicate movie detected for title = " + title + ", year = " + year + ", director = " + director); ;
             } else {
                 output.addProperty("status", "success");
+                output.addProperty("message", "Movie added successfully - MovieID: " + movie_id + ", starID: " + star_id + ", genreID: " + genre_id);
             }
             out.write(output.toString());
 

@@ -6,7 +6,10 @@ CREATE PROCEDURE add_movie(
     IN movie_director VARCHAR(50),
     IN star_name VARCHAR(100),
     IN genre_name VARCHAR(100),
-    OUT status VARCHAR(100)
+    OUT status VARCHAR(100),
+    OUT out_movie_id VARCHAR(10),
+    OUT out_star_id VARCHAR(10),
+    OUT out_genre_id INT
 )
 add_movie_proc: BEGIN
     DECLARE star_id VARCHAR(10);
@@ -19,6 +22,9 @@ add_movie_proc: BEGIN
     IF movie_id_check IS NOT NULL THEN
             -- Movie title is a duplicate, end the procedure
             Set status = 'fail';
+            SET out_movie_id = NULL;
+            SET out_star_id = NULL;
+            SET out_genre_id = NULL;
             LEAVE add_movie_proc;
     END IF;
 
@@ -52,6 +58,9 @@ add_movie_proc: BEGIN
     INSERT INTO genres_in_movies (genreId, movieId) VALUES (genre_id, movie_id);
 
     Set status = 'success';
+    SET out_movie_id = movie_id;
+    SET out_star_id = star_id;
+    SET out_genre_id = genre_id;
 END //
 
 DELIMITER ;

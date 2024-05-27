@@ -18,7 +18,7 @@ function addMovie(movieEvent) {
             url: "api/addMovie?" + queryString,
             success: function(response) {
                 if (response["status"] === "success") {
-                    alert("Movie added successfully!");
+                    alert(response["message"]);
                 } else {
                     alert(response["message"]);
                 }
